@@ -1,0 +1,1160 @@
+<title>Hindsight</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
+<style>
+/* Hindsight design system v8
+   Type     Geist 13 / 15 / 17 / 20 / 28 / 44. Weights 400 500 600. Newsreader (upright) only for the clue headline,
+            the round verdict and the scenario title: the game reports on you like a newspaper.
+   Colour   Neutrals + brand indigo (actions, progress, mark). Gain/loss only on money and lines. Amber only for shorts.
+   Shape    Three radii: 10 small controls, 14 buttons, 22 surfaces. Squircle corners where supported.
+   Space    4pt grid. 20px phone margins, 24px between sections.
+   Motion   Three curves. Standard 250ms (UI feedback), Emphasised 450ms (screen changes, digit rolls),
+            Reveal 2.4s (ease in, long damped ease out) for the one moment per screen where money moves. */
+:root {
+  color-scheme: dark;
+  --bg: #09090b; --s1: #141417; --s2: #1f1f24; --s3: #2c2c33; --hair: rgb(255 255 255 / 8%);
+  --t1: #f6f6f8; --t2: #a3a3ad; --t3: #85858f;
+  --brand: #8b74ff; --cta-bg: #6548ee; --on-cta: #fff;
+  --gain: #3fd58f; --loss: #ff5d5d; --short: #ffb020;
+  --paper: #e6e1d6; --ink: #16130f; --ink2: #5e574c; --seg-on: #3d3d45;
+  --mat: rgb(9 9 11 / 74%);
+  --r-s: 10px; --r-m: 14px; --r-l: 22px;
+  --std: cubic-bezier(.2, 0, 0, 1); --emph: cubic-bezier(.3, 0, 0, 1);
+  --maxw: 480px; --gut: 20px;
+  --f: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --cb1: #121216; --cb2: #08080a; --cgl: #7660ff; --cglo: .26; --cdot: #b3a5ff; --cdoto: .62; --ck0: #45454f; --cm0: #1f1f25; --ca0: .55; --ck1: #383841; --cm1: #1c1c22; --ca1: .5; --ck2: #2d2d35; --cm2: #18181d; --ca2: .6;
+  --cfg: #f4f4f6; --cfg2: rgb(255 255 255 / 60%); --cfg3: rgb(255 255 255 / 55%); --cedge: inset 0 1px 0 rgb(255 255 255 / 10%), inset 0 0 0 1px rgb(255 255 255 / 7%); --csh: 0 24px 48px -26px rgb(70 50 200 / 55%); --csh2: 0 34px 60px -26px rgb(90 70 230 / 65%);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f6f8; --s1: #fff; --s2: #efeff3; --s3: #e2e2e8; --hair: rgb(0 0 0 / 8%);
+  --t1: #0b0b0d; --t2: #52525c; --t3: #686872;
+  --brand: #5a3fe6; --cta-bg: #5a3fe6; --seg-on: #fff;
+  --gain: #067a47; --loss: #c4242b; --short: #915400;
+  --paper: #fffdf7; --mat: rgb(246 246 248 / 78%);
+  --cb1: #ffffff; --cb2: #ececf2; --cgl: #8b74ff; --cglo: .2; --cdot: #5a3fe6; --cdoto: .55; --ck0: #d6d6de; --cm0: #ececf2; --ca0: .9; --ck1: #dcdce3; --cm1: #efeff4; --ca1: .85; --ck2: #e2e2e8; --cm2: #f2f2f6; --ca2: .9;
+  --cfg: #0b0b0d; --cfg2: rgb(11 11 13 / 58%); --cfg3: rgb(11 11 13 / 50%); --cedge: inset 0 1px 0 #fff, inset 0 0 0 1px rgb(0 0 0 / 7%); --csh: 0 24px 48px -28px rgb(70 50 200 / 30%); --csh2: 0 34px 60px -26px rgb(90 70 230 / 38%);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+    --bg: #f6f6f8; --s1: #fff; --s2: #efeff3; --s3: #e2e2e8; --hair: rgb(0 0 0 / 8%);
+    --t1: #0b0b0d; --t2: #52525c; --t3: #686872;
+    --brand: #5a3fe6; --cta-bg: #5a3fe6; --seg-on: #fff;
+    --gain: #067a47; --loss: #c4242b; --short: #915400;
+    --paper: #fffdf7; --mat: rgb(246 246 248 / 78%);
+    --cb1: #ffffff; --cb2: #ececf2; --cgl: #8b74ff; --cglo: .2; --cdot: #5a3fe6; --cdoto: .55; --ck0: #d6d6de; --cm0: #ececf2; --ca0: .9; --ck1: #dcdce3; --cm1: #efeff4; --ca1: .85; --ck2: #e2e2e8; --cm2: #f2f2f6; --ca2: .9;
+  --cfg: #0b0b0d; --cfg2: rgb(11 11 13 / 58%); --cfg3: rgb(11 11 13 / 50%); --cedge: inset 0 1px 0 #fff, inset 0 0 0 1px rgb(0 0 0 / 7%); --csh: 0 24px 48px -28px rgb(70 50 200 / 30%); --csh2: 0 34px 60px -26px rgb(90 70 230 / 38%);
+  }
+}
+* { box-sizing: border-box; }
+html { background: var(--bg); touch-action: manipulation; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--t1); font: 400 15px/22px var(--f); -webkit-font-smoothing: antialiased; font-variant-numeric: tabular-nums; overflow-x: hidden; }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; -webkit-tap-highlight-color: transparent; text-align: inherit; touch-action: manipulation; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 8px; }
+h1, h2, h3, p, ul, ol, figure, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.gain { color: var(--gain); } .loss { color: var(--loss); } .t2 { color: var(--t2); } .t3 { color: var(--t3); }
+.x13 { font-size: 13px; line-height: 18px; } .x15 { font-size: 15px; line-height: 22px; } .x17 { font-size: 17px; line-height: 24px; }
+.x20 { font-size: 20px; line-height: 26px; letter-spacing: -0.01em; }
+
+/* the light: three layers in different places; changing mood crossfades them, so it reads as light moving, not a recolour */
+.aura { position: fixed; left: -12%; right: -12%; top: -8%; height: 82vh; pointer-events: none; z-index: 0; will-change: transform; }
+.aura i { position: absolute; inset: 0; opacity: 0; transition: opacity .9s var(--emph); }
+.aura .a { background: radial-gradient(40% 46% at 20% 22%, rgb(118 96 255 / 40%), transparent 70%), radial-gradient(30% 36% at 78% 10%, rgb(166 120 255 / 22%), transparent 70%); animation: drift-a 24s ease-in-out infinite alternate; }
+.aura .g { background: radial-gradient(42% 46% at 68% 16%, rgb(63 213 143 / 30%), transparent 70%), radial-gradient(30% 34% at 16% 6%, rgb(40 190 170 / 18%), transparent 70%); animation: drift-g 28s ease-in-out infinite alternate; }
+.aura .l { background: radial-gradient(42% 46% at 34% 8%, rgb(255 93 93 / 28%), transparent 70%), radial-gradient(30% 34% at 88% 20%, rgb(255 140 110 / 14%), transparent 70%); animation: drift-l 26s ease-in-out infinite alternate; }
+body[data-mood="brand"] .aura .a, body[data-mood="gain"] .aura .g, body[data-mood="loss"] .aura .l { opacity: 1; }
+@keyframes drift-a { from { transform: translate(-3%, -2%) scale(1); } to { transform: translate(5%, 4%) scale(1.1); } }
+@keyframes drift-g { from { transform: translate(4%, -1%) scale(1.06); } to { transform: translate(-4%, 3%) scale(1); } }
+@keyframes drift-l { from { transform: translate(-2%, 2%) scale(1); } to { transform: translate(4%, -2%) scale(1.08); } }
+:root[data-theme="light"] .aura i { filter: saturate(.9); } :root[data-theme="light"] .aura { opacity: .55; }
+#app { position: relative; z-index: 1; }
+
+/* layout */
+.page { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gut) 148px; min-height: calc(100vh - 60px); }
+.col > * + * { margin-top: 32px; }
+.split > .col + .col { margin-top: 24px; }
+
+/* top bar: full width, content aligned to the page column */
+.top { position: sticky; top: 0; z-index: 20; height: 60px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 0 calc(max(var(--gut), (100% - var(--maxw)) / 2 + var(--gut)) - 10px) 0 max(var(--gut), (100% - var(--maxw)) / 2 + var(--gut));
+  view-transition-name: top; isolation: isolate; }
+.top::before { content: ""; position: absolute; inset: 0 0 -40px 0; z-index: -1; pointer-events: none;
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--bg) 54%, color-mix(in srgb, var(--bg) 70%, transparent) 72%, transparent 100%);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); mask-image: linear-gradient(to bottom, #000 60%, transparent); }
+.brandmark { display: inline-flex; align-items: center; gap: 8px; justify-self: start; font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
+.brandmark svg { width: 22px; height: 22px; color: var(--brand); }
+.top .tr { display: flex; justify-self: end; }
+.ib { width: 44px; height: 44px; border-radius: var(--r-m); display: grid; place-items: center; color: var(--t1); justify-self: end; transition: background .25s var(--std), transform .25s var(--std); }
+.ib:hover { background: var(--s2); } .ib:active { transform: scale(.94); }
+.ib svg { width: 20px; height: 20px; }
+.prog { display: flex; gap: 4px; }
+.prog i { width: 24px; height: 4px; border-radius: 2px; background: var(--s3); }
+.prog i.on { background: var(--brand); }
+
+/* odometer (small discrete changes: stepper counts and year digits) */
+.odo { display: inline-flex; }
+.odo .d { display: inline-block; height: 1em; overflow: hidden; }
+.odo .d > span { display: flex; flex-direction: column; transition: transform var(--dur, .45s) var(--emph); transition-delay: var(--dl, 0ms); }
+.odo .d b { display: block; height: 1em; line-height: 1em; font-weight: inherit; text-align: center; }
+
+/* money: baseline-aligned ₹, sized to always fit */
+.num { display: flex; align-items: baseline; font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; font-size: 44px; white-space: nowrap; }
+.num .cur { font-size: 0.6em; font-weight: 500; color: var(--t2); letter-spacing: 0; margin-right: 0.08em; }
+.hero { padding-top: 28px; }
+.hero .num { margin-top: 8px; view-transition-name: hero-num; }
+.kick { color: var(--t2); font-size: 13px; line-height: 18px; display: flex; align-items: center; gap: 6px; }
+.sub { margin-top: 10px; color: var(--t2); text-wrap: pretty; }
+.sub b { color: var(--t1); font-weight: 500; }
+.chip { display: inline-flex; align-items: center; height: 24px; padding: 0 8px; border-radius: 8px; font-size: 13px; font-weight: 500; background: var(--s2); margin-right: 8px; white-space: nowrap; vertical-align: 1px; }
+.pair { white-space: nowrap; } .vsb { margin-right: 8px; }
+.aft { display: block; margin-top: 6px; } .pre { margin-right: 8px; }
+.chip.gain { background: color-mix(in srgb, var(--gain) 16%, transparent); } .chip.loss { background: color-mix(in srgb, var(--loss) 16%, transparent); }
+.fade { transition: opacity .45s var(--emph), transform .45s var(--emph); }
+.pending .fade { opacity: 0; transform: translateY(6px); }
+.pending .after { display: none; }
+.after { animation: rise .45s var(--emph) both; }
+
+/* year slots */
+.yr { display: inline-flex; align-items: flex-end; font-weight: 600; letter-spacing: 0.02em; color: inherit; }
+.yr .slot { position: relative; display: inline-block; width: 0.62em; height: 1em; margin: 0 0.04em; overflow: hidden; }
+.yr .slot::after { content: ""; position: absolute; left: 1px; right: 1px; bottom: 0.08em; height: 1.5px; background: currentColor; opacity: 0.45; }
+.yr .slot > span { position: absolute; inset: 0 auto auto 0; width: 100%; display: flex; flex-direction: column; opacity: 0; }
+.yr .slot b { display: block; height: 1em; line-height: 1em; text-align: center; font-weight: inherit; }
+.yr.spin .slot > span { opacity: 0.4; animation: spin .42s linear infinite; filter: blur(.4px); }
+.yr.spin .slot::after { opacity: 0; }
+@keyframes spin { to { transform: translateY(-10em); } }
+
+/* the clue: the one paper object */
+.clue { background: var(--paper); color: var(--ink); border-radius: var(--r-l); padding: 14px 18px 18px; box-shadow: 0 1px 0 rgb(0 0 0 / 4%), 0 16px 32px -22px rgb(0 0 0 / 50%); }
+:root[data-theme="light"] .clue { box-shadow: 0 0 0 1px rgb(0 0 0 / 6%), 0 10px 28px -20px rgb(0 0 0 / 25%); }
+.mast { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; border-bottom: 1px solid rgb(22 19 15 / 20%); padding-bottom: 8px; font-size: 11px; line-height: 16px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: var(--ink2); }
+.mast em { font-family: var(--serif); font-style: normal; font-size: 15px; letter-spacing: 0; text-transform: none; font-weight: 500; color: var(--ink); white-space: nowrap; }
+.mast > span { white-space: nowrap; margin-left: auto; }
+.mast .yr { font-size: 13px; color: var(--ink); letter-spacing: 0.06em; }
+.hl { font-family: var(--serif); font-weight: 500; font-size: 20px; line-height: 26px; letter-spacing: -0.005em; margin-top: 10px; text-wrap: pretty; }
+
+/* section labels: always outside the group */
+.label { display: flex; justify-content: space-between; align-items: center; min-height: 36px; color: var(--t2); font-size: 13px; line-height: 18px; padding: 0; margin-bottom: 6px; }
+.label.ctlrow { padding: 0; margin-bottom: 8px; }
+.label button { min-height: 44px; display: inline-flex; align-items: center; gap: 4px; color: var(--t1); font-weight: 500; margin: -4px 0; }
+.label button svg { width: 14px; height: 14px; color: var(--t2); }
+
+/* groups + rows */
+.group { background: var(--s1); border-radius: var(--r-l); overflow: hidden; }
+:root[data-theme="light"] .group { box-shadow: 0 0 0 1px var(--hair); }
+.row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; height: 64px; padding: 0 16px; position: relative; }
+.row + .row::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; height: 1px; background: var(--hair); }
+.nm { min-width: 0; display: flex; flex-direction: column; justify-content: center; height: 100%; transition: opacity .25s var(--std); }
+.nm b { font-weight: 500; font-size: 15px; line-height: 20px; display: flex; align-items: center; gap: 2px; min-width: 0; }
+.nm b .nt { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nm b svg { width: 14px; height: 14px; flex: none; color: var(--t3); }
+.nm span.ds { color: var(--t2); font-size: 13px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+button.nm:active { opacity: .55; }
+.row.off .nm b { font-weight: 400; color: var(--t2); } .row.off .nm span.ds { color: var(--t3); }
+.row.has-ret { grid-template-columns: minmax(0, 1fr) auto auto; }
+.row > .ret { align-self: center; font-weight: 500; font-size: 15px; line-height: 20px; white-space: nowrap; }
+.row.has-ret { height: auto; min-height: 64px; padding-top: 10px; padding-bottom: 10px; } .row.has-ret .nm span.ds { white-space: normal; }
+.ds .ret2 { display: none; } .ds .ret2 em { font-style: normal; font-weight: 500; }
+@media (max-width: 359px) { .top .brandmark > span { display: none; } }
+@media (max-width: 389px) { .row > .ret { display: none; } .row.has-ret { grid-template-columns: minmax(0, 1fr) auto; } .ds .ret2 { display: inline; } .sb { width: 28px; height: 28px; } .sb::after { inset: -8px; } .ct { width: 26px; } .row { height: auto; min-height: 64px; padding: 10px 14px; column-gap: 8px; } .nm span.ds { white-space: normal; } }
+.stp { display: flex; align-items: center; }
+.sb { width: 32px; height: 32px; border-radius: 50%; background: var(--s2); display: grid; place-items: center; position: relative; color: var(--t1); transition: transform .25s var(--std), background .25s var(--std); }
+.sb::after { content: ""; position: absolute; inset: -6px; }
+.sb svg { width: 16px; height: 16px; }
+.sb:hover:not(:disabled) { background: var(--s3); }
+.sb:disabled { background: var(--s2); color: var(--t3); opacity: .38; }
+.sb:active:not(:disabled) { transform: scale(.88); }
+.ct { width: 32px; display: flex; justify-content: center; font-size: 17px; line-height: 1; font-weight: 600; color: var(--t3); --dur: .25s; }
+.row.on .ct { color: var(--t1); } .row.sh .ct { color: var(--short); }
+.pv { width: 48px; display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.pv .odo { font-size: 17px; font-weight: 600; color: var(--t3); --dur: .25s; }
+.pv small { margin-top: 3px; font-size: 10px; line-height: 12px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--t3); }
+.pv.l .odo { color: var(--t1); } .pv.s .odo, .pv.s small { color: var(--short); }
+.rv { text-align: right; display: flex; flex-direction: column; }
+.rv b { font-weight: 600; font-size: 15px; line-height: 20px; } .rv span { font-size: 13px; line-height: 18px; }
+
+/* long / short */
+.mode { display: inline-flex; background: var(--s2); border-radius: var(--r-s); padding: 2px; }
+.mode button { position: relative; height: 32px; padding: 0 14px; font-weight: 500; font-size: 13px; color: var(--t2); }
+.mode button::after { content: ""; position: absolute; inset: -6px 0; }
+.mode button span { position: relative; z-index: 1; }
+.mode button::before { content: ""; position: absolute; inset: 0; border-radius: 8px; background: var(--seg-on); box-shadow: 0 1px 2px rgb(0 0 0 / 20%); opacity: 0; transform: scale(.94); transition: opacity .25s var(--std), transform .25s var(--std); }
+.mode button[aria-pressed="true"] { color: var(--t1); }
+.mode button[aria-pressed="true"]::before { opacity: 1; transform: none; }
+.mode button.shm[aria-pressed="true"] { color: var(--short); }
+.ctl { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.tb { min-height: 44px; padding: 0 4px; color: var(--t2); font-weight: 500; font-size: 13px; }
+.tb:hover:not(:disabled) { color: var(--t1); } .tb:disabled { color: var(--t3); opacity: .6; }
+.hint { color: var(--t2); font-size: 13px; line-height: 18px; margin: -2px 0 10px; }
+
+/* dock */
+.dock { position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; background: var(--mat); -webkit-backdrop-filter: blur(20px) saturate(160%); backdrop-filter: blur(20px) saturate(160%); border-top: 1px solid var(--hair); view-transition-name: dock; }
+.dock-in { max-width: var(--maxw); margin: 0 auto; padding: 12px var(--gut) calc(12px + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: 10px; }
+.alloc { display: flex; align-items: center; gap: 12px; }
+.segs { flex: 1; display: flex; gap: 3px; }
+.segs i { flex: 1; height: 6px; border-radius: 3px; background: var(--s3); transform-origin: left center; }
+.segs i.l { background: var(--t2); } .segs i.s { background: var(--short); }
+.segs i.new { animation: grow .45s var(--emph); }
+@keyframes grow { from { transform: scaleX(.2); opacity: .4; } }
+.alloc span { font-size: 13px; line-height: 18px; color: var(--t2); min-width: 48px; text-align: right; }
+.cta { width: 100%; height: 54px; border-radius: var(--r-m); background: var(--cta-bg); color: var(--on-cta); font-weight: 600; font-size: 17px; text-align: center; transition: transform .25s var(--std), background .25s var(--std), color .25s var(--std); }
+.cta:active:not(:disabled) { transform: scale(.98); }
+.cta:disabled { background: var(--s2); color: var(--t3); }
+.cta2 { width: 100%; height: 44px; color: var(--t2); font-weight: 500; text-align: center; border-radius: var(--r-m); transition: color .25s var(--std); }
+.cta2:hover { color: var(--t1); }
+
+/* charts */
+.chart { position: relative; }
+.chart.bleed { margin: 0 calc(-1 * var(--gut)); }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: pan-y; }
+.chart text { font: 500 12px var(--f); fill: var(--t3); }
+.legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; line-height: 18px; color: var(--t2); margin-bottom: 12px; min-height: 18px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; }
+.legend b { color: var(--t1); font-weight: 600; }
+.legend.later { opacity: 0; transition: opacity .45s var(--emph); }
+.legend.later.in { opacity: 1; }
+.land { transform-box: fill-box; transform-origin: center; animation: land .6s var(--emph) both; }
+.halo { transform-box: fill-box; transform-origin: center; animation: halo 1.1s var(--emph) both; }
+@keyframes land { from { transform: scale(0); } 60% { transform: scale(1.15); } to { transform: scale(1); } }
+@keyframes halo { from { transform: scale(.6); opacity: .5; } to { transform: scale(3.2); opacity: 0; } }
+
+/* line colour = where the line is right now against the bank */
+.lc .you { stroke: var(--gain); transition: stroke .35s var(--std); } .lc .yd { stroke: var(--gain); transition: stroke .35s var(--std); }
+.lc .end, .lc .gdot { fill: var(--gain); transition: fill .35s var(--std); } .lc .hl0 { stroke: var(--gain); }
+.lc[data-side="loss"] .you, .lc[data-side="loss"] .yd, .lc[data-side="loss"] .hl0 { stroke: var(--loss); }
+.lc[data-side="loss"] .end, .lc[data-side="loss"] .gdot { fill: var(--loss); }
+
+/* verdict */
+.verdict h2 { font-family: var(--serif); font-size: 28px; line-height: 32px; font-weight: 500; letter-spacing: -0.012em; text-wrap: balance; }
+.verdict p { margin-top: 6px; color: var(--t2); }
+.casc .row { animation: rise .45s var(--emph) both; animation-delay: calc(var(--i) * 40ms); }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+
+/* sheet */
+.sheet-wrap { position: fixed; inset: 0; z-index: 50; }
+.scrim { position: absolute; inset: 0; background: rgb(0 0 0 / 50%); opacity: 0; transition: opacity .45s var(--emph); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; max-width: 520px; margin: 0 auto; background: var(--s1); border-radius: var(--r-l) var(--r-l) 0 0; padding: 8px var(--gut) calc(20px + env(safe-area-inset-bottom)); transform: translateY(100%); transition: transform .45s var(--emph); max-height: 92vh; overflow: auto; }
+.sheet-wrap.open .scrim { opacity: 1; } .sheet-wrap.open .sheet { transform: none; }
+.grab { width: 36px; height: 5px; border-radius: 3px; background: var(--s3); margin: 0 auto 16px; }
+.sheet h2 { font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em; }
+.sheet .meta { color: var(--t2); margin-top: 2px; }
+.tiles { display: flex; gap: 8px; } .tiles .tile { flex: 1; min-width: 0; }
+.tile { background: var(--s2); border-radius: var(--r-m); padding: 10px 12px; display: flex; flex-direction: column; }
+.tile span { color: var(--t2); font-size: 13px; line-height: 18px; } .tile b { font-weight: 600; font-size: 17px; line-height: 24px; }
+.sheet-ctl { display: flex; justify-content: space-between; align-items: center; }
+
+/* intro */
+.tag { font-size: 38px; line-height: 46px; font-weight: 400; letter-spacing: -0.0467em; padding-top: 40px; text-wrap: balance; }
+.tag-sub { margin-top: 12px; font-size: 18px; line-height: 26px; letter-spacing: -0.035em; color: var(--t3); max-width: 520px; text-wrap: pretty; }
+.tag span { display: block; }
+.card { position: relative; aspect-ratio: 1.586; border-radius: var(--r-l); padding: 20px; color: var(--cfg); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; isolation: isolate;
+  background: var(--cb2);
+  box-shadow: var(--cedge), var(--csh); transition: transform .45s var(--emph), box-shadow .45s var(--emph); }
+.card::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .14; mix-blend-mode: overlay;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"); }
+.card::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .45s var(--emph); background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(255 255 255 / 12%), transparent 62%); }
+.card .art { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; transition: transform 1.2s var(--emph); }
+.topo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; fill: none; stroke: rgb(255 255 255 / 10%); stroke-width: .8; pointer-events: none; transition: transform 1.2s var(--emph); }
+.card > :not(.topo):not(.art), .poster > :not(.topo) { position: relative; z-index: 1; }
+@media (hover: hover) {
+  .card:hover { transform: translateY(-3px); box-shadow: var(--cedge), var(--csh2); }
+  .card:hover::before { opacity: 1; }
+  .card:hover .art { transform: translate(var(--px, 0), var(--py, 0)) scale(1.03); }
+}
+.card .ct-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.card .brandmark, .card .brandmark svg { color: var(--cfg); }
+.card .yrbox { text-align: right; font-size: 13px; line-height: 18px; color: var(--cfg2); }
+.card .yrbox .yv { font-size: 20px; line-height: 24px; font-weight: 600; color: var(--cfg); letter-spacing: .02em; }
+.card .num { font-size: 28px; } .card .num .cur { color: var(--cfg3); }
+.card .lbl { display: block; font-size: 13px; line-height: 18px; color: var(--cfg2); margin-bottom: 4px; }
+.steps .row { grid-template-columns: 24px minmax(0, 1fr); height: 64px; }
+.steps .n { color: var(--brand); font-weight: 600; }
+.steps .row + .row::before { display: none; }
+
+/* result */
+.years { display: flex; align-items: center; gap: 10px; font-size: 28px; line-height: 32px; font-weight: 600; letter-spacing: -0.02em; }
+.years .odo .d > span { --dur: 1.1s; }
+.years .arr { color: var(--t3); font-weight: 400; }
+.ttl { font-family: var(--serif); font-size: 28px; line-height: 32px; font-weight: 500; margin-top: 6px; }
+.story { margin-top: 10px; color: var(--t2); }
+.linkb { color: var(--brand); font-weight: 500; min-height: 44px; }
+.hist { background: var(--s1); border-radius: var(--r-l); padding: 18px; }
+:root[data-theme="light"] .hist { box-shadow: 0 0 0 1px var(--hair); }
+.hist h2 { font-family: var(--serif); font-size: 28px; line-height: 32px; font-weight: 500; letter-spacing: -0.012em; margin-top: 2px; }
+.hist svg { display: block; width: 100%; height: auto; margin-top: 18px; overflow: visible; }
+.hist text { font: 500 12px var(--f); fill: var(--t3); }
+.hist .legend { margin: 14px 0 0; }
+.pread { margin-bottom: 6px; }
+.poster { aspect-ratio: 4 / 5; border-radius: var(--r-l); padding: 22px; color: #f4f4f6; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; isolation: isolate;
+  background: radial-gradient(90% 60% at 10% 8%, rgb(118 96 255 / 42%) 0%, transparent 62%), radial-gradient(95% 75% at 100% 100%, var(--pc), transparent 62%), linear-gradient(160deg, #141418, #08080a); box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), inset 0 0 0 1px rgb(255 255 255 / 7%); }
+.poster::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .14; mix-blend-mode: overlay;
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"); }
+.poster .brandmark, .poster .brandmark svg { color: #fff; }
+.poster .p-top { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgb(255 255 255 / 60%); }
+.poster .num { font-size: 44px; } .poster .num .cur { color: rgb(255 255 255 / 55%); }
+.poster .p-sub { margin-top: 8px; font-size: 15px; color: rgb(255 255 255 / 70%); }
+.poster .p-sub b { font-weight: 600; }
+.pgrid { display: grid; gap: 5px; }
+.pgrid div { display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px; }
+.pgrid i { aspect-ratio: 1; border-radius: 5px; }
+.q4 { background: #3fd58f; } .q3 { background: rgb(255 255 255 / 24%); } .q2 { background: #ff9a5c; } .q1 { background: #ff4d5e; }
+.poster .p-foot { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgb(255 255 255 / 60%); }
+.poster .p-foot b { color: #f4f4f6; font-weight: 500; }
+.p-info { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; margin: -14px 0 -14px -8px; padding: 0 8px; color: rgb(255 255 255 / 60%); font-size: 13px; }
+.p-info svg { width: 16px; height: 16px; }
+.sqinfo { margin-top: 12px; background: var(--s1); border-radius: var(--r-m); padding: 14px 16px; font-size: 13px; line-height: 18px; color: var(--t2); }
+.sqinfo ul { margin: 8px 0 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.sqinfo li { display: flex; align-items: center; gap: 8px; } .sqinfo i { width: 12px; height: 12px; border-radius: 3px; flex: none; }
+.share-acts { display: flex; gap: 8px; margin-top: 12px; }
+.share-acts button { flex: 1; height: 44px; border-radius: var(--r-m); background: var(--s1); font-weight: 500; text-align: center; transition: transform .25s var(--std); }
+.share-acts button:active { transform: scale(.98); }
+:root[data-theme="light"] .share-acts button { box-shadow: 0 0 0 1px var(--hair); }
+
+/* details */
+details.more { border-top: 1px solid var(--hair); }
+details.more > summary { list-style: none; min-height: 56px; display: flex; align-items: center; justify-content: space-between; font-weight: 500; cursor: pointer; }
+details.more > summary::-webkit-details-marker { display: none; }
+details.more > summary svg { width: 16px; height: 16px; color: var(--t2); transition: transform .25s var(--std); }
+details.more[open] > summary svg { transform: rotate(180deg); }
+.dsec + .dsec { margin-top: 24px; }
+.dsec h3 { font-size: 17px; line-height: 24px; font-weight: 600; margin-bottom: 10px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 18px; }
+.tbl th { text-align: right; color: var(--t3); font-weight: 500; padding: 8px 0 8px 12px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+.tbl td { text-align: right; padding: 10px 0 10px 12px; border-bottom: 1px solid var(--hair); white-space: nowrap; }
+.tbl th:first-child, .tbl td:first-child { text-align: left; padding-left: 0; }
+.scroll { overflow-x: auto; }
+.src p { color: var(--t2); font-size: 13px; line-height: 18px; } .src p + p { margin-top: 8px; }
+.heads li { font-family: var(--serif); font-size: 17px; line-height: 22px; padding: 12px 0; border-bottom: 1px solid var(--hair); }
+.heads li span { display: block; font-family: var(--f); font-size: 13px; line-height: 18px; color: var(--t3); margin-top: 2px; }
+.prices .row { height: 56px; }
+.prices .rv b { font-weight: 500; }
+.rnd .row { height: auto; padding: 14px 16px; align-items: start; }
+.rnd .nm span { white-space: normal; color: var(--t2); font-size: 13px; line-height: 18px; }
+.rnd .nm span.t3 { color: var(--t3); }
+
+
+/* desktop: the asset detail opens inline under its row (bottom sheets are a phone pattern) */
+.xrow { padding: 4px 16px 18px; display: flex; flex-direction: column; gap: 12px; animation: rise .45s var(--emph) both; }
+.xrow + .row::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; height: 1px; background: var(--hair); }
+.nm b svg { transition: transform .25s var(--std); }
+.row.open .nm b svg { transform: rotate(90deg); }
+.row.open .nm b { color: var(--t1); }
+details.more.wide { margin-top: 32px; }
+.dgrid > .dsec + .dsec { margin-top: 24px; }
+@media (min-width: 960px) {
+  details.more.wide { margin-top: 56px; }
+  .dgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start; padding-bottom: 8px; }
+  .dgrid > .dsec + .dsec { margin-top: 0; }
+}
+
+/* squircle corners where supported */
+@supports (corner-shape: squircle) {
+  .group, .clue, .hist, .poster, .card, .tile { corner-shape: squircle; border-radius: 34px; }
+  .cta, .share-acts button, .ib { corner-shape: squircle; border-radius: 22px; }
+  .sheet { corner-shape: squircle; border-radius: 34px 34px 0 0; }
+}
+
+/* desktop: two intentional columns, both top-aligned; the action column carries its button inline */
+@media (min-width: 960px) {
+  :root { --maxw: 1080px; --gut: 40px; }
+  .page { padding-bottom: 64px; }
+  .split { display: grid; grid-template-columns: minmax(0, 1fr) 440px; gap: 80px; align-items: start; padding-top: 48px; }
+  .split > .col + .col { margin-top: 0; }
+  .split.center { align-items: center; min-height: calc(100vh - 160px); }
+  .chart.bleed { margin: 0; }
+  .dock { position: static; margin-top: 24px; border: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .dock-in { padding: 0; }
+  .num { font-size: 52px; }
+  .tag { font-size: 48px; line-height: 56px; padding-top: 0; text-wrap: wrap; }
+  .hero { padding-top: 0; }
+  .tag-sub { margin-top: 18px; font-size: 22px; line-height: 29px; letter-spacing: -0.057em; }
+  .split.mid > .col:first-child { position: sticky; top: 108px; height: calc(100vh - 156px); min-height: min-content; display: flex; flex-direction: column; justify-content: center; }
+}
+::view-transition-old(root) { animation: vt-out .25s var(--std) both; }
+::view-transition-new(root) { animation: vt-in .45s var(--emph) both; }
+::view-transition-group(hero-num) { animation-duration: .45s; animation-timing-function: var(--emph); }
+@keyframes vt-out { to { opacity: 0; } }
+@keyframes vt-in { from { opacity: 0; transform: translateY(12px); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+</style>
+
+<div class="aura" id="aura" aria-hidden="true"><i class="a"></i><i class="g"></i><i class="l"></i></div>
+<div id="app"></div>
+<div class="sheet-wrap" id="sheet" hidden><div class="scrim"></div><section class="sheet" role="dialog" aria-modal="true" aria-labelledby="shT" id="sheetBody"></section></div>
+
+<script>
+const DATA = /*__DATA__*/null;
+const BY_ID = Object.fromEntries(DATA.scenarios.map(s => [s.id, s]));
+const START_CASH = 100000, BUNDLES = 10, LONG_MAX = 4, SHORT_MAX = 2, SIM_N = 5000;
+const LEVEL_IDX = [0, 4, 8, 12], RESULT_IDX = 16;
+const REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- formatting ---------- */
+const nf = new Intl.NumberFormat('en-IN', { maximumFractionDigits: 0 });
+const digits = v => nf.format(Math.abs(Math.round(v)));
+const inr = v => (v < 0 ? '−' : '') + '₹' + digits(v);
+const sgn = v => (v >= 0 ? '+' : '−') + '₹' + digits(v);
+function inrShort(v) {
+  const t = (x, d) => x.toFixed(d).replace(/\.0+$|(\.\d*?)0+$/, '$1');
+  if (v >= 1e7) return '₹' + t(v / 1e7, 2) + ' Cr';
+  if (v >= 1e5) return '₹' + t(v / 1e5, 2) + 'L';
+  if (v >= 1e3) return '₹' + t(v / 1e3, 1) + 'K';
+  return '₹' + Math.round(v);
+}
+function pct(r) { const p = (r - 1) * 100, a = Math.abs(p); const s = a >= 1000 ? nf.format(Math.round(a)) : a >= 100 ? a.toFixed(0) : a.toFixed(1); return (p >= 0 ? '+' : '−') + s + '%'; }
+function mult(r) { return r >= 100 ? nf.format(Math.round(r)) + '×' : r >= 10 ? r.toFixed(1) + '×' : r >= 0.1 ? r.toFixed(2) + '×' : r > 0 ? r.toPrecision(2) + '×' : '0×'; }
+const tone = r => (r >= 1 ? 'gain' : 'loss');
+/* two multiples shown side by side get enough decimals to tell them apart */
+function multPair(a, b) { if (a >= 10 || b >= 10 || a === b) return [mult(a), mult(b)]; for (const k of [2, 3, 4]) { const x = a.toFixed(k), y = b.toFixed(k); if (x !== y) return [x + '×', y + '×']; } return [mult(a), mult(b)]; }
+function moneyPair(a, b) { const x = inrShort(a), y = inrShort(b); return x === y ? [inr(a), inr(b)] : [x, y]; }
+function priceFmt(v) { return v >= 1000 ? '₹' + nf.format(Math.round(v)) : v >= 10 ? '₹' + v.toFixed(1) : '₹' + v.toFixed(2); }
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const SHORT_NAMES = { 'Hindustan Aeronautics': 'HAL', 'Reliance Communications': 'RCom', 'Punjab National Bank': 'PNB', 'Kotak Mahindra Bank': 'Kotak Bank', 'State Bank of India': 'SBI',
+  'Reliance Industries': 'Reliance', 'Jubilant FoodWorks': 'Jubilant', 'Bharat Electronics': 'BEL', 'Hindustan Unilever': 'HUL', 'Adani Enterprises': 'Adani Ent.', 'Hindustan Copper': 'Hind Copper',
+  'HCL Technologies': 'HCL Tech', 'Tanla Platforms': 'Tanla', 'Muthoot Finance': 'Muthoot', 'Reliance Power': 'R-Power', 'Ashok Leyland': 'Ashok Ley.', 'Page Industries': 'Page Ind.', 'Cochin Shipyard': 'Cochin Ship.', 'Fixed Deposit': 'Fixed deposit' };
+const sn = o => SHORT_NAMES[o.name] || o.name;
+
+/* ---------- storage (per-viewer convenience only) ---------- */
+function store(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+function fetchStore(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch (e) { return d; } }
+
+/* ---------- icons: one set, 1.75 stroke ---------- */
+const ic = p => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const I = {
+  x: ic('<path d="M6 6l12 12M18 6L6 18"/>'), plus: ic('<path d="M12 5v14M5 12h14"/>'), minus: ic('<path d="M5 12h14"/>'),
+  down: ic('<path d="M6 9l6 6 6-6"/>'), chev: ic('<path d="M9 6l6 6-6 6"/>'), swap: ic('<path d="M7 7h11l-3-3M17 17H6l3 3"/>'),
+  light: ic('<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6l1.4 1.4M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4L6 18M18 6l1.4-1.4"/>'),
+  dark: ic('<path d="M20.5 13.2A8.5 8.5 0 1 1 10.8 3.5a6.6 6.6 0 0 0 9.7 9.7z"/>'),
+  auto: ic('<circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor" stroke="none"/>'),
+  info: ic('<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5"/><circle cx="12" cy="7.8" r=".6" fill="currentColor"/>'),
+  mark: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.6 13.2A7.6 7.6 0 1 0 7 6.4"/><path d="M3.8 3.6v4.2H8"/><circle cx="12" cy="12" r="1.9" fill="currentColor" stroke="none"/></svg>'
+};
+const brandmark = () => `<span class="brandmark">${I.mark}<span>Hindsight</span></span>`;
+
+/* ---------- theme ---------- */
+const ROOT = document.documentElement, HOST_THEME = ROOT.getAttribute('data-theme');
+let THEME = fetchStore('ht-theme', 'dark');
+function applyTheme() {
+  if (THEME === 'light' || THEME === 'dark') ROOT.setAttribute('data-theme', THEME);
+  else if (HOST_THEME) ROOT.setAttribute('data-theme', HOST_THEME);
+  else ROOT.removeAttribute('data-theme');
+}
+function setTheme(t) {
+  THEME = t; store('ht-theme', t); applyTheme();
+  const b = document.querySelector('[data-act="theme"]'); if (b) { b.innerHTML = I[THEME]; b.setAttribute('aria-label', themeLabel()); }
+}
+const themeLabel = () => `Theme: ${THEME}. Change theme.`;
+applyTheme();
+
+/* ---------- model ---------- */
+let S = { screen: 'intro' };
+const sc = () => BY_ID[S.sid];
+const endIdx = s => s.options[0].prices.length - 1;
+const yearAt = (s, i) => s.dates[i].slice(0, 4);
+const label = (s, i) => (i === endIdx(s) ? 'Nov 2026' : s.labels[i]);
+const colorOf = (s, i) => 'c' + (s.options[i].type === 'fd' ? 6 : i + 1);
+const fdOf = s => s.options.find(o => o.type === 'fd');
+const fdGrowth = (s, a, b) => { const p = fdOf(s).prices; return p[b] / p[a]; };
+const shortable = o => o.type !== 'fd';
+const shownDigits = L => [0, 2, 3, 4][L - 1];
+const masked = (y, n) => y.slice(0, n) + 'x'.repeat(4 - n);
+const segsOf = (mode, s) => [[0, 4], [4, 8], [8, 12], [12, mode === 'hold' ? endIdx(s) : RESULT_IDX]];
+function rng(seed) { let h = 2166136261; for (const ch of seed) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return () => { h = (h + 0x6D2B79F5) | 0; let t = Math.imul(h ^ (h >>> 15), 1 | h); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+function initials(name) { const w = name.replace(/[.&]/g, '').split(/\s+/).filter(Boolean); return (w.length > 1 ? w[0][0] + w[1][0] : name.slice(0, 2)).toUpperCase(); }
+const avatar = (cn, name, sm) => `<span class="av${sm ? ' sm' : ''}" style="--ac:var(--${cn})" aria-hidden="true">${esc(initials(name))}</span>`;
+
+/* A long bundle is worth X × (price ratio). A short bundle is margin-backed: X × (2 − price ratio),
+   wiped out for good if the ratio reaches 2 at any six-month check. Alloc entries are signed: +n long, −n short. */
+const TBL = new Map();
+function table(s, a, b) {
+  const key = s.id + '|' + a + '|' + b; let t = TBL.get(key); if (t) return t;
+  const n = b - a, L = [], Sh = [];
+  s.options.forEach(o => {
+    const p = o.prices, l = new Array(n + 1), sh = new Array(n + 1); l[0] = sh[0] = 1; let dead = false;
+    for (let k = 1; k <= n; k++) { const m = p[a + k] / p[a]; l[k] = m; if (m >= 2) dead = true; sh[k] = dead ? 0 : 2 - m; }
+    L.push(l); Sh.push(sh);
+  });
+  t = { L, S: Sh, n }; TBL.set(key, t); return t;
+}
+function pathFor(s, allocs, segs) {
+  const out = [START_CASH]; let V = START_CASH;
+  segs.forEach(([a, b], r) => {
+    const T = table(s, a, b), al = allocs[r], X = V / BUNDLES;
+    for (let k = 1; k <= b - a; k++) { let v = 0; for (let i = 0; i < al.length; i++) { const c = al[i]; if (c > 0) v += c * T.L[i][k]; else if (c < 0) v -= c * T.S[i][k]; } out[a + k] = v * X; }
+    V = out[b];
+  });
+  return out;
+}
+function roundVals(s, rd) {
+  const T = table(s, rd.d, rd.d + 4), X = rd.value / BUNDLES, out = [];
+  for (let k = 0; k <= 4; k++) { let v = 0; rd.alloc.forEach((c, i) => { if (c > 0) v += c * T.L[i][k]; else if (c < 0) v -= c * T.S[i][k]; }); out.push(v * X); }
+  return out;
+}
+function roundDetail(s, rd) {
+  const T = table(s, rd.d, rd.d + 4), X = rd.value / BUNDLES, out = [];
+  rd.alloc.forEach((a, i) => {
+    if (!a) return;
+    const c = Math.abs(a), short = a < 0, m = (short ? T.S : T.L)[i][4], inv = c * X, now = inv * m;
+    const dead = short && m === 0 ? T.L[i].findIndex((v, k) => k > 0 && v >= 2) : -1;
+    out.push({ i, a, c, short, inv, now, g: now / inv, dead });
+  });
+  return out;
+}
+const choicesFor = o => { const ch = [0]; for (let c = 1; c <= LONG_MAX; c++) ch.push(c); if (shortable(o)) for (let c = 1; c <= SHORT_MAX; c++) ch.push(-c); return ch; };
+/* Best or worst split for one round: exact, by dynamic programming over (option, bundles used). */
+function extremeAlloc(s, a, b, maxi) {
+  const T = table(s, a, b), n = s.options.length, e = b - a, back = [];
+  let dp = new Array(BUNDLES + 1).fill(null); dp[0] = 0;
+  for (let i = 0; i < n; i++) {
+    const nd = new Array(BUNDLES + 1).fill(null), bk = new Array(BUNDLES + 1).fill(null);
+    for (let k = 0; k <= BUNDLES; k++) {
+      if (dp[k] === null) continue;
+      for (const c of choicesFor(s.options[i])) {
+        const nk = k + Math.abs(c); if (nk > BUNDLES) continue;
+        const v = dp[k] + (c > 0 ? c * T.L[i][e] : c < 0 ? -c * T.S[i][e] : 0);
+        if (nd[nk] === null || (maxi ? v > nd[nk] : v < nd[nk])) { nd[nk] = v; bk[nk] = [k, c]; }
+      }
+    }
+    dp = nd; back.push(bk);
+  }
+  const al = new Array(n).fill(0); let k = BUNDLES;
+  for (let i = n - 1; i >= 0; i--) { const [pk, c] = back[i][k]; al[i] = c; k = pk; }
+  return al;
+}
+/* Every valid split of one round, enumerated (a few tens of thousands): exact best, worst, median and rank. */
+const SPL = {};
+function splitStats(s, d) {
+  const key = s.id + '|' + d; if (SPL[key]) return SPL[key];
+  const T = table(s, d, d + 4), ch = s.options.map(choicesFor), n = s.options.length, vals = [];
+  (function rec(i, left, acc) {
+    if (i === n) { if (left === 0) vals.push(acc / BUNDLES); return; }
+    for (const c of ch[i]) { const b = Math.abs(c); if (b > left) continue; rec(i + 1, left - b, acc + (c > 0 ? c * T.L[i][4] : c < 0 ? -c * T.S[i][4] : 0)); }
+  })(0, BUNDLES, 0);
+  vals.sort((a, b) => a - b);
+  return (SPL[key] = { vals, n: vals.length, med: vals[vals.length >> 1], best: vals[vals.length - 1], worst: vals[0] });
+}
+function rankOf(vals, m) {
+  const lb = (x) => { let lo = 0, hi = vals.length; while (lo < hi) { const mid = (lo + hi) >> 1; if (vals[mid] < x) lo = mid + 1; else hi = mid; } return lo; };
+  const lo = lb(m - 1e-9), hi = lb(m + 1e-9); return (lo + (hi - lo) / 2) / vals.length;
+}
+/* Uniformly random valid split, drawn exactly using counts of completions. */
+const WAYS = {};
+function waysFor(s) {
+  if (WAYS[s.id]) return WAYS[s.id];
+  const n = s.options.length, ch = s.options.map(choicesFor), w = Array.from({ length: n + 1 }, () => new Array(BUNDLES + 1).fill(0)); w[n][0] = 1;
+  for (let i = n - 1; i >= 0; i--) for (let k = 0; k <= BUNDLES; k++) { let t = 0; for (const c of ch[i]) { const b = Math.abs(c); if (b <= k) t += w[i + 1][k - b]; } w[i][k] = t; }
+  return (WAYS[s.id] = { w, ch });
+}
+function sampleAlloc(W, rand, n) {
+  let left = BUNDLES; const al = new Array(n).fill(0);
+  for (let i = 0; i < n; i++) {
+    let r = rand() * W.w[i][left], pick = 0;
+    for (const c of W.ch[i]) { const b = Math.abs(c); if (b > left) continue; const wt = W.w[i + 1][left - b]; if (!wt) continue; pick = c; if (r < wt) break; r -= wt; }
+    al[i] = pick; left -= Math.abs(pick);
+  }
+  return al;
+}
+const SIM = {};
+function simulate(s, mode) {
+  const key = s.id + mode; if (SIM[key]) return SIM[key];
+  const W = waysFor(s), rand = rng(s.id), segs = segsOf(mode, s), end = segs[3][1], n = s.options.length;
+  const finals = [], cols = Array.from({ length: end + 1 }, () => []);
+  for (let t = 0; t < SIM_N; t++) { const p = pathFor(s, [0, 1, 2, 3].map(() => sampleAlloc(W, rand, n)), segs); finals.push(p[end]); for (let k = 0; k <= end; k++) cols[k].push(p[k]); }
+  const median = cols.map(c => { c.sort((x, y) => x - y); const m = c.length >> 1; return c.length % 2 ? c[m] : (c[m - 1] + c[m]) / 2; });
+  finals.sort((x, y) => x - y);
+  return (SIM[key] = { median, finals, splits: W.w[0][BUNDLES] });
+}
+function summary(s, mode) {
+  const segs = segsOf(mode, s), end = segs[3][1];
+  const you = pathFor(s, S.rounds.map(r => r.alloc), segs);
+  const bA = segs.map(([a, b]) => extremeAlloc(s, a, b, true)), wA = segs.map(([a, b]) => extremeAlloc(s, a, b, false));
+  const best = pathFor(s, bA, segs), worst = pathFor(s, wA, segs), sim = simulate(s, mode);
+  return { segs, end, you, bA, wA, best, worst, med: sim.median, splits: sim.splits, beat: rankOf(sim.finals, you[end]), fdEnd: START_CASH * fdGrowth(s, 0, end) };
+}
+
+/* ---------- actions ---------- */
+const placedOf = al => al.reduce((a, c) => a + Math.abs(c), 0);
+const sideOf = i => { const a = S.alloc[i]; return a < 0 ? 'short' : a > 0 ? 'long' : ((S.side && S.side[i]) || 'long'); };
+function save() { if (S.screen !== 'intro') store('ht5-game', S); }
+function newGame() {
+  const played = fetchStore('ht5-played', []);
+  let pool = DATA.scenarios.filter(x => !played.includes(x.id));
+  if (!pool.length) { pool = DATA.scenarios; store('ht5-played', []); }
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  store('ht5-played', [...fetchStore('ht5-played', []).filter(x => x !== pick.id), pick.id]);
+  const n = pick.options.length;
+  S = { screen: 'level', sid: pick.id, level: 1, value: START_CASH, alloc: new Array(n).fill(0), side: new Array(n).fill('long'), rounds: [], anim: true };
+  go();
+}
+function lockIn() { S.rounds.push({ level: S.level, d: LEVEL_IDX[S.level - 1], value: S.value, alloc: S.alloc.slice() }); S.screen = 'round'; S.anim = true; go(); }
+function next() {
+  const s = sc(), rd = S.rounds[S.rounds.length - 1];
+  if (S.rounds.length < 4) { S.level += 1; S.value = roundVals(s, rd)[4]; S.screen = 'level'; } else S.screen = 'result';
+  S.anim = true; go();
+}
+function go() { save(); swapTo(render); }
+
+
+/* ---------- primitives ---------- */
+const SHORT_DESC = {"State-owned coal miner": "State coal miner", "State-owned steelmaker": "State steelmaker", "Consumer lender (NBFC)": "Consumer lender", "Military aircraft maker": "Military aircraft", "Biotech and biosimilars": "Biotech", "Telecom operator (ADAG)": "Telecom operator", "Electricity meter maker": "Electricity meters", "Shrimp feed and seafood": "Shrimp feed", "State-owned oil producer": "State oil producer", "Soaps, detergents, foods": "Soaps and detergents", "India's largest carmaker": "Largest carmaker", "State-owned copper miner": "State copper miner", "Royal Enfield motorcycles": "Royal Enfield maker", "Jockey innerwear licensee": "Jockey innerwear", "Oil-to-retail conglomerate": "Oil to retail", "Business messaging (CPaaS)": "Business messaging", "Rural kiosks and e-commerce": "Rural kiosks", "Runs Domino's Pizza in India": "Domino's in India", "Watches & jewellery (Tanishq)": "Tanishq, watches", "Electrodes for steel furnaces": "Graphite electrodes", "Construction and infrastructure": "Construction", "Cigarettes, hotels, packaged food": "Cigarettes, hotels", "State-owned power equipment maker": "Power equipment", "Guaranteed 6% a year": "Guaranteed 6%"};
+const sd = o => SHORT_DESC[o.desc] || o.desc;
+const $ = id => document.getElementById(id);
+const WHEN = ['6 months', '1 year', '18 months', '2 years'];
+const STOPS = ['Start', '6M', '1Y', '18M', '2Y'];
+const D10 = '0123456789'.split('').map(n => `<b>${n}</b>`).join('');
+let MOOD = 'brand', TIMERS = [], SHEET = null, LASTFOCUS = null, EXP = null;
+const isDesk = () => window.matchMedia('(min-width: 960px)').matches;
+const buzz = ms => { try { navigator.vibrate && navigator.vibrate(ms || 8); } catch (e) {} };
+/* Reveal curve: quadratic ease-in for the first 30% of the time, then a long quintic ease-out.
+   Velocities match at the join, so it accelerates gently and settles slowly with no overshoot. */
+const REVEAL_MS = 2400, IN_T = 0.3, IN_P = 0.517;
+const reveal = t => (t <= 0 ? 0 : t >= 1 ? 1 : t < IN_T ? IN_P * (t / IN_T) ** 2 : IN_P + (1 - IN_P) * (1 - Math.pow(1 - (t - IN_T) / (1 - IN_T), 5)));
+
+/* odometer: only for small discrete changes (stepper counts, year digits) */
+const strip = (from, to, k = 0) => `<span class="d"><span style="transform:translateY(${-from}em);--dl:${k * 40}ms"${to != null && to !== from ? ` data-t="${to}"` : ''}>${D10}</span></span>`;
+function odoInner(str, roll) { let k = 0; return [...str].map(c => (/\d/.test(c) ? strip(roll ? 0 : +c, roll ? +c : null, k++) : `<span class="c">${c}</span>`)).join(''); }
+function setOdo(odo, str) {
+  const old = odo.dataset.s || '';
+  if (old.length === str.length && old.replace(/\d/g, '0') === str.replace(/\d/g, '0')) {
+    const ds = odo.querySelectorAll('.d > span'); let k = 0;
+    [...str].forEach(c => { if (/\d/.test(c)) { ds[k].style.transform = `translateY(${-c}em)`; k++; } });
+  } else { odo.innerHTML = odoInner(str, !REDUCED); rollSoon(odo); }
+  odo.dataset.s = str;
+}
+function rollAll(root) { root.querySelectorAll('[data-t]').forEach(e => { if (e.closest('.late')) return; e.style.transform = `translateY(${-e.dataset.t}em)`; e.removeAttribute('data-t'); }); }
+const rollSoon = root => requestAnimationFrame(() => requestAnimationFrame(() => rollAll(root)));
+function rollLate(root) { root.querySelectorAll('.late').forEach(l => { const c = +l.dataset.c; l.outerHTML = strip(0, c); }); rollSoon(root); }
+
+/* money: plain tabular figures that count; the size always fits its column */
+function numHTML(v, id) { return `<div class="num"${id ? ` id="${id}"` : ''} role="text" aria-label="${inr(v)}"><span class="cur" aria-hidden="true">₹</span><span class="dg" aria-hidden="true">${digits(v)}</span></div>`; }
+function setNum(el, v) { if (!el) return; el.querySelector('.dg').textContent = digits(v); el.setAttribute('aria-label', inr(v)); }
+function fit(el) {
+  if (!el || !el.isConnected) return; el.style.fontSize = '';
+  let s = parseFloat(getComputedStyle(el).fontSize); const w = el.clientWidth;
+  while (el.scrollWidth > w + 0.5 && s > 24) { s -= 2; el.style.fontSize = s + 'px'; }
+}
+const fitAll = root => root.querySelectorAll('.num').forEach(fit);
+/* lock a counting number at the size its widest value needs, so it never reflows mid-count */
+function lockFit(el, vals) { const keep = el.querySelector('.dg').textContent; const widest = vals.reduce((a, v) => (digits(v).length > digits(a).length ? v : a), vals[0]); setNum(el, widest); fit(el); el.querySelector('.dg').textContent = keep; }
+
+/* year: revealed digits roll in; hidden digits are slots that spin while time passes */
+function yearHTML(y, n, from = n) {
+  const lab = n ? `Year ${y.slice(0, n)}, last ${4 - n} digit${4 - n > 1 ? 's' : ''} hidden` : 'Year hidden';
+  return `<span class="yr odo" role="img" aria-label="${lab}">${[...y].map((c, k) => (k < n ? (k >= from ? `<span class="late" data-c="${c}"><span class="slot"><span>${D10}</span></span></span>` : strip(+c)) : `<span class="slot"><span>${D10}</span></span>`)).join('')}</span>`;
+}
+function topBar(step) {
+  if (!step) return `<header class="top">${brandmark()}<span></span><button class="ib" data-act="theme" aria-label="${themeLabel()}">${I[THEME]}</button></header>`;
+  const segs = [1, 2, 3, 4].map(i => `<i class="${i <= step ? 'on' : ''}"></i>`).join('');
+  return `<header class="top">${brandmark()}<div class="prog" role="img" aria-label="${step <= 4 ? `Round ${step} of 4` : 'All four rounds played'}">${segs}</div><div class="tr"><button class="ib" data-act="theme" aria-label="${themeLabel()}">${I[THEME]}</button><button class="ib" data-act="home" aria-label="Exit. Your game is saved.">${I.x}</button></div></header>`;
+}
+const beatTxt = b => (b >= 0.995 ? 'all' : b < 0.005 ? 'none' : Math.round(b * 100) + '%');
+const pill = (cls, txt, label) => `<span class="chip ${cls}">${label ? `<span class="lb">${label}</span>` : ''}${txt}</span>`;
+const vsBank = (a, b) => `<span class="pair">${a}<span class="vsb">vs the bank’s</span>${b}</span>`;
+const chip = (r, bankR) => bankR == null ? pill(tone(r), pct(r)) : vsBank(pill(tone(r), pct(r)), pill(tone(bankR), pct(bankR)));
+
+/* ---------- newspaper clue ---------- */
+const SECTION_RULES = [[/Oscar|film/i, 'Arts'], [/cricket|Olympic|shuttler|badminton|javelin|chess|T20|double century|Tendulkar|IPL|World Cup/i, 'Sport'],
+  [/Moon|lunar|Mars|ISRO|satellite|orbit|polio|vaccine|space shuttle|Chandrayaan/i, 'Science'],
+  [/IPO|takeover|steelmaker|carmaker|bidding|e-commerce|funding|tax|retail giant|insurer|economy|billion|crore|airwaves|spectrum|Apple|Microsoft|iPhone|noodle|toll|liquor|insolvency|Air India|assembling|Hutchison|Jaguar|Corus|Arcelor|licence|software company/i, 'Business'],
+  [/\bUS\b|Pakistan/i, 'World']];
+const sectionOf = t => (SECTION_RULES.find(([re]) => re.test(t)) || [0, 'Nation'])[1];
+const clueHTML = (s, i, y, n) => `<figure class="clue"><figcaption class="mast"><em>The Bombay Ledger</em><span>${sectionOf(s.headlines[i].text)} · ${yearHTML(y, n)}</span></figcaption><blockquote class="hl">${esc(s.headlines[i].text)}</blockquote></figure>`;
+
+/* ---------- charts ---------- */
+const pathOf = (a, x, y) => a.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join('');
+const gutOf = el => (el.classList.contains('bleed') && innerWidth < 960 ? 20 : 0);
+const at = (a, pos) => { const i = Math.min(a.length - 2, Math.floor(pos)), f = pos - i; return a[i] + (a[i + 1] - a[i]) * f; };
+function bindScrub(el, n, xOf, W, onShow, onHide, isBusy) {
+  const root = el.querySelector('svg'), hit = el.querySelector('.hit'); let cur = -1;
+  const idx = e => { const r = root.getBoundingClientRect(), px = (e.clientX - r.left) * (W / r.width); let best = 0; for (let i = 1; i < n; i++) if (Math.abs(xOf(i) - px) < Math.abs(xOf(best) - px)) best = i; return best; };
+  const show = i => { if (isBusy()) return; cur = i; onShow(i); }, hide = () => { if (isBusy()) return; cur = -1; onHide(); };
+  hit.addEventListener('pointermove', e => show(idx(e))); hit.addEventListener('pointerdown', e => show(idx(e))); hit.addEventListener('pointerleave', hide); hit.addEventListener('blur', hide);
+  hit.addEventListener('keydown', e => { if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); show(Math.max(0, Math.min(n - 1, (cur < 0 ? n - 1 : cur) + (e.key === 'ArrowRight' ? 1 : -1)))); } if (e.key === 'Escape') hide(); });
+}
+/* One chart for the round and the whole game. The line runs edge to edge; labels live in the legend above.
+   The whole line takes the colour of where it is right now against the bank: green above, red below. While it draws,
+   every crossing flips the line, the dots and the light behind the screen together. */
+function lineChart(el, o) {
+  const { you, bank, xl, ticks, log, markIdx, play, legendEl, heroEl, onScrub, onLand, onSide } = o;
+  const W = Math.max(280, Math.round(el.clientWidth || 340)), H = o.height || 196, g = gutOf(el), m = { l: 8, r: 8, t: 14, b: 28 }, n = you.length;
+  const vals = you.concat(bank).map(v => Math.max(v, 1));
+  let y;
+  if (log) { const a = Math.log(Math.min(...vals) * 0.9), b = Math.log(Math.max(...vals) * 1.1); y = v => m.t + (H - m.t - m.b) * (1 - (Math.log(Math.max(v, 1)) - a) / (b - a)); }
+  else { const mn = Math.min(...vals), mx = Math.max(...vals), pad = (mx - mn || mx * 0.1) * 0.14; y = v => m.t + (H - m.t - m.b) * (1 - (v - mn + pad) / (mx - mn + 2 * pad)); }
+  const x = i => m.l + (W - m.l - m.r) * i / (n - 1), cid = 'c' + Math.random().toString(36).slice(2, 8);
+  const gap = i => y(bank[i]) - y(you[i]), sideOf = (d, prev) => (d > 0.5 ? 'gain' : d < -0.5 ? 'loss' : prev);
+  const firstSide = (() => { for (let k = 0; k < n; k++) { const s = sideOf(gap(k), null); if (s) return s; } return 'gain'; })();
+  const finalSide = sideOf(gap(n - 1), null) || firstSide;
+  const headGap = pos => { const i = Math.min(n - 2, Math.floor(pos)), f = pos - i; return gap(i) + (gap(i + 1) - gap(i)) * f; };
+  const tx = (i, k, last) => (k === 0 ? Math.max(x(i), g) : last ? Math.min(x(i), W - g) : x(i));
+  el.innerHTML = `<svg class="lc" data-side="${play ? firstSide : finalSide}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.aria)}">
+    <defs><clipPath id="${cid}"><rect class="cpr" x="0" y="0" width="${play ? 0 : W}" height="${H}"/></clipPath></defs>
+    <line x1="0" x2="${W}" y1="${y(you[0])}" y2="${y(you[0])}" stroke="var(--hair)"/>
+    ${markIdx != null ? `<line x1="${x(markIdx)}" x2="${x(markIdx)}" y1="${m.t - 6}" y2="${H - m.b}" stroke="var(--t3)" stroke-dasharray="2 4"/><text x="${x(markIdx) + 6}" y="${m.t + 4}">Game ended</text>` : ''}
+    <g clip-path="url(#${cid})"><path d="${pathOf(bank, x, y)}" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"/>
+      <path class="you" d="${pathOf(you, x, y)}" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+      ${(o.dots || []).map(i => `<circle class="yd" cx="${x(i)}" cy="${y(you[i])}" r="3.25" fill="var(--bg)" stroke-width="2"/>`).join('')}
+      <circle cx="${x(n - 1)}" cy="${y(bank[n - 1])}" r="3" fill="var(--t3)"/></g>
+    <circle class="hl0" cx="${x(n - 1)}" cy="${y(you[n - 1])}" r="5" fill="none" stroke-width="2" opacity="0"/>
+    <circle class="end" cx="${x(n - 1)}" cy="${y(you[n - 1])}" r="5" stroke="var(--bg)" stroke-width="2" style="opacity:${play ? 0 : 1}"/>
+    ${ticks.map((i, k) => `<text x="${tx(i, k, k === ticks.length - 1)}" y="${H - 6}" text-anchor="${k === 0 ? 'start' : k === ticks.length - 1 ? 'end' : 'middle'}">${esc(xl[i])}</text>`).join('')}
+    <line class="guide" x1="0" x2="0" y1="${m.t - 6}" y2="${H - m.b + 2}" stroke="var(--t3)" stroke-width="1" visibility="hidden"/><circle class="gdot" r="5.5" stroke="var(--bg)" stroke-width="3" visibility="hidden"/>
+    <rect class="hit" x="0" y="0" width="${W}" height="${H - m.b + 4}" fill="transparent" tabindex="0" aria-label="Scrub the chart with the arrow keys"/></svg>`;
+  const svg = el.querySelector('svg'), guide = el.querySelector('.guide'), dot = el.querySelector('.gdot'), rect = el.querySelector('.cpr'), end = el.querySelector('.end'), halo = el.querySelector('.hl0');
+  const setSide = sd => { if (svg.dataset.side !== sd) svg.dataset.side = sd; onSide && onSide(sd); };
+  setSide(play ? firstSide : finalSide);
+  legendEl.innerHTML = o.legend(null); legendEl.classList.toggle('later', play); legendEl.classList.toggle('in', !play);
+  let busy = play;
+  bindScrub(el, n, x, W, i => { guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('visibility', 'visible'); dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(you[i])); dot.setAttribute('visibility', 'visible'); legendEl.innerHTML = o.legend(i); onScrub(i); },
+    () => { guide.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); legendEl.innerHTML = o.legend(null); onScrub(null); }, () => busy);
+  if (!play) return;
+  lockFit(heroEl, you); setNum(heroEl, you[0]);
+  /* time runs on the Reveal curve, but every crossing of the bank line slows it for a beat so the flip lands */
+  let tau = 0, last = performance.now() + 350, slowUntil = 0;
+  (function tick(t) {
+    if (t < last) return requestAnimationFrame(tick);
+    const rate = t < slowUntil ? 0.22 + 0.78 * Math.pow(1 - (slowUntil - t) / 700, 2) : 1;
+    tau = Math.min(1, tau + (t - last) / REVEAL_MS * rate); last = t;
+    const k = reveal(tau), pos = k * (n - 1);
+    rect.setAttribute('width', x(pos) + 3); setNum(heroEl, at(you, pos));
+    const sd = sideOf(headGap(pos), svg.dataset.side);
+    if (sd !== svg.dataset.side) { setSide(sd); if (k > 0.02 && k < 0.98) { buzz(6); slowUntil = t + 700; } }
+    if (tau < 1) return requestAnimationFrame(tick);
+    rect.setAttribute('width', W); setNum(heroEl, you[n - 1]); busy = false; setSide(finalSide);
+    end.style.opacity = 1; end.classList.add('land'); halo.setAttribute('opacity', 1); halo.classList.add('halo');
+    legendEl.classList.add('in'); buzz(12); fit(heroEl);
+    setTimeout(() => onLand && onLand(), 200);
+  })(performance.now());
+}
+/* 5,000 random plays: the bars you beat are brand-coloured; three readable ticks */
+function histSVG(finals, you, bank) {
+  const W = 400, H = 136, base = H - 26, B = 34, pos = finals.filter(v => v > 0);
+  const lo = Math.max(1, Math.min(pos[0], you || pos[0], bank) * 0.92), hi = Math.max(pos[pos.length - 1], you, bank) * 1.06, la = Math.log(lo), lb = Math.log(hi);
+  const xv = v => W * (Math.log(Math.max(v, lo)) - la) / (lb - la), counts = new Array(B).fill(0);
+  pos.forEach(v => { counts[Math.min(B - 1, Math.floor(xv(v) / W * B))]++; });
+  const mc = Math.max(...counts), bw = W / B, xy = xv(Math.max(you, lo)), xb = xv(bank);
+  const bars = counts.map((c, i) => { const h = c ? Math.max(3, c / mc * (base - 30)) : 0, x0 = i * bw; return h ? `<rect x="${(x0 + 1).toFixed(1)}" y="${(base - h).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${x0 + bw <= xy + 0.5 ? 'var(--brand)' : 'var(--s3)'}"/>` : ''; }).join('');
+  const cand = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) for (const k of [1, 2, 5]) { const v = k * 10 ** e; if (v >= lo && v <= hi) cand.push(v); }
+  const tk = cand.length <= 3 ? cand : [...new Set([cand[0], cand[Math.round((cand.length - 1) / 2)], cand[cand.length - 1]])];
+  const anc = v => (v < 36 ? 'start' : v > W - 36 ? 'end' : 'middle'), close = Math.abs(xy - xb) < 64;
+  const ya = close ? (xy < xb ? 'end' : 'start') : anc(xy), ba = close ? (xy < xb ? 'start' : 'end') : anc(xb), yd = close ? (xy < xb ? -6 : 6) : 0, bd = close ? (xy < xb ? 6 : -6) : 0;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of ${nf.format(finals.length)} random plays. You ${inr(you)}. The bank ${inr(bank)}.">${bars}
+    <line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--hair)"/>
+    <line x1="${xb}" x2="${xb}" y1="16" y2="${base}" stroke="var(--t2)" stroke-width="1.25" stroke-dasharray="2 3"/><text x="${xb + bd}" y="10" text-anchor="${ba}" style="fill:var(--t2)">Bank</text>
+    <line x1="${xy}" x2="${xy}" y1="16" y2="${base}" stroke="var(--t1)" stroke-width="2"/><circle cx="${xy}" cy="16" r="3.5" fill="var(--t1)"/><text x="${xy + yd}" y="10" text-anchor="${ya}" style="fill:var(--t1);font-weight:600">You</text>
+    ${tk.map(v => `<line x1="${xv(v)}" x2="${xv(v)}" y1="${base}" y2="${base + 4}" stroke="var(--t3)"/><text x="${xv(v)}" y="${H - 4}" text-anchor="${anc(xv(v))}">${inrShort(v)}</text>`).join('')}</svg>`;
+}
+/* price since the start, in the sheet: % only, so prices don't give the year away */
+const stopLabel = k => (k === 0 ? 'Start' : k === 1 ? '6 months in' : k % 2 === 0 ? `${k / 2} year${k > 2 ? 's' : ''} in` : `${Math.floor(k / 2)}½ years in`);
+const PW = 360, PH = 140, PM = { l: 6, r: 6, t: 14, b: 24 };
+function priceGeom(vals) {
+  const n = vals.length, mn = Math.min(...vals), mx = Math.max(...vals), sp = mx - mn || mx * 0.1;
+  return { n, x: i => PM.l + (PW - PM.l - PM.r) * i / (n - 1), y: v => PM.t + (PH - PM.t - PM.b) * (1 - (v - mn + sp * 0.1) / (sp * 1.2)) };
+}
+function priceHTML(vals) {
+  const { n, x, y } = priceGeom(vals), r = vals[n - 1] / vals[0], col = `var(--${tone(r)})`;
+  return `<div class="pchart" data-v="${vals.map(v => +v.toPrecision(6)).join(',')}"><p class="legend pread">Since start <b class="${tone(r)}">${pct(r)}</b></p><div class="chart">
+    <svg viewBox="0 0 ${PW} ${PH}" role="img" aria-label="Price change since the start: ${pct(r)}"><line x1="0" x2="${PW}" y1="${y(vals[0])}" y2="${y(vals[0])}" stroke="var(--hair)"/>
+    <path d="${pathOf(vals, x, y)}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    ${vals.map((v, i) => `<circle cx="${x(i)}" cy="${y(v)}" r="${i === n - 1 ? 4.5 : 3}" fill="${i === n - 1 ? col : 'var(--s1)'}" stroke="${col}" stroke-width="2"/>`).join('')}
+    <text x="0" y="${PH - 4}" style="font:500 12px var(--f);fill:var(--t3)">Start</text><text x="${PW}" y="${PH - 4}" text-anchor="end" style="font:500 12px var(--f);fill:var(--t3)">Now</text>
+    <line class="guide" x1="0" x2="0" y1="${PM.t - 6}" y2="${PH - PM.b + 2}" stroke="var(--t3)" visibility="hidden"/><circle class="gdot" r="5.5" stroke="var(--s1)" stroke-width="3" visibility="hidden"/>
+    <rect class="hit" x="0" y="0" width="${PW}" height="${PH - PM.b + 4}" fill="transparent" tabindex="0" aria-label="Price history. Use the arrow keys to read each six-month point."/></svg></div></div>`;
+}
+function bindPrice(root) {
+  root.querySelectorAll('.pchart').forEach(pc => {
+    if (pc.dataset.bound) return; pc.dataset.bound = 1;
+    const vals = pc.dataset.v.split(',').map(Number), { n, x, y } = priceGeom(vals), read = pc.querySelector('.pread'), base = read.innerHTML, el = pc.querySelector('.chart');
+    const guide = el.querySelector('.guide'), dot = el.querySelector('.gdot');
+    bindScrub(el, n, x, PW, i => { const r = vals[i] / vals[0]; guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('visibility', 'visible'); dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(vals[i])); dot.setAttribute('fill', `var(--${tone(r)})`); dot.setAttribute('visibility', 'visible');
+        read.innerHTML = `${stopLabel(i)} <b class="${tone(r)}">${i ? pct(r) : '0%'}</b>`; },
+      () => { guide.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); read.innerHTML = base; }, () => false);
+  });
+}
+
+/* topographic contour lines: two soft summits, deterministic per seed */
+function topoPaths(w, h, seed) {
+  const r = rng(seed), out = [], cx = 0.9 * w, cy = 0.08 * h, ph = r() * 6.28, ph2 = r() * 6.28, step = Math.max(w, h) * 0.07;
+  for (let k = 1; k <= 18; k++) { const base = step * (k + 0.35 * Math.sin(k * 1.3)); let d = '';
+    for (let j = 0; j <= 160; j++) { const t = j / 160 * Math.PI * 2, rad = base * (1 + 0.1 * Math.sin(2 * t + ph + k * 0.28) + 0.045 * Math.sin(3 * t - ph2 + k * 0.2));
+      d += (j ? 'L' : 'M') + (cx + rad * Math.cos(t)).toFixed(1) + ' ' + (cy + rad * 0.78 * Math.sin(t)).toFixed(1); }
+    out.push(d + 'Z'); }
+  return out;
+}
+const topoSVG = (w, h, seed) => `<svg class="topo" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${topoPaths(w, h, seed).map(d => `<path d="${d}"/>`).join('')}</svg>`;
+
+/* ---------- home card: Onyx glow. India from the Survey of India boundary (DataMeet), one dot per grid cell ---------- */
+const INDIA = {"india-dots": "9688,452,9922,452,9218,687,9453,687,9688,687,9922,687,10157,687,9453,922,9688,922,9922,922,10157,922,10391,922,10626,922,11095,922,11330,922,11565,922,9688,1156,9922,1156,10157,1156,10391,1156,10626,1156,10861,1156,11095,1156,11330,1156,9453,1391,9688,1391,9922,1391,10157,1391,10391,1391,10626,1391,10861,1391,11095,1391,11330,1391,9453,1626,9688,1626,9922,1626,10157,1626,10391,1626,10626,1626,10861,1626,11095,1626,9688,1860,9922,1860,10157,1860,10391,1860,10626,1860,10861,1860,11095,1860,9922,2095,10157,2095,10391,2095,10626,2095,10861,2095,9688,2330,9922,2330,10157,2330,10391,2330,10626,2330,10861,2330,9688,2564,9922,2564,10157,2564,10391,2564,10626,2564,10861,2564,11095,2564,9453,2799,9688,2799,9922,2799,10157,2799,10391,2799,10626,2799,10861,2799,11095,2799,11330,2799,11565,2799,9453,3034,9688,3034,9922,3034,10157,3034,10391,3034,10626,3034,10861,3034,11095,3034,11330,3034,11565,3034,9218,3268,9453,3268,9688,3268,9922,3268,10157,3268,10391,3268,10626,3268,10861,3268,11095,3268,11330,3268,16257,3268,16492,3268,16727,3268,8984,3503,9218,3503,9453,3503,9688,3503,9922,3503,10157,3503,10391,3503,10626,3503,10861,3503,11095,3503,11330,3503,11565,3503,11799,3503,16023,3503,16257,3503,16492,3503,16727,3503,8280,3737,8514,3737,8749,3737,8984,3737,9218,3737,9453,3737,9688,3737,9922,3737,10157,3737,10391,3737,10626,3737,10861,3737,11095,3737,11330,3737,11565,3737,11799,3737,12034,3737,14380,3737,15553,3737,15788,3737,16023,3737,16257,3737,16492,3737,16727,3737,16961,3737,17196,3737,8045,3972,8280,3972,8514,3972,8749,3972,8984,3972,9218,3972,9453,3972,9688,3972,9922,3972,10157,3972,10391,3972,10626,3972,10861,3972,11095,3972,11330,3972,11565,3972,11799,3972,12034,3972,12268,3972,12503,3972,12738,3972,12972,3972,14380,3972,15553,3972,15788,3972,16023,3972,16257,3972,16492,3972,16727,3972,17196,3972,8280,4207,8514,4207,8749,4207,8984,4207,9218,4207,9453,4207,9688,4207,9922,4207,10157,4207,10391,4207,10626,4207,10861,4207,11095,4207,11330,4207,11565,4207,11799,4207,12034,4207,12268,4207,12503,4207,12738,4207,12972,4207,13207,4207,13442,4207,13676,4207,14380,4207,14615,4207,14850,4207,15084,4207,15319,4207,15553,4207,15788,4207,16023,4207,16257,4207,16492,4207,8280,4441,8514,4441,8749,4441,8984,4441,9218,4441,9453,4441,9688,4441,9922,4441,10157,4441,10391,4441,10626,4441,10861,4441,11095,4441,11330,4441,11565,4441,11799,4441,12034,4441,12268,4441,12503,4441,12738,4441,12972,4441,13207,4441,13442,4441,13676,4441,13911,4441,14146,4441,14850,4441,15084,4441,15319,4441,15553,4441,15788,4441,16023,4441,16257,4441,16492,4441,8514,4676,8749,4676,8984,4676,9218,4676,9453,4676,9688,4676,9922,4676,10157,4676,10391,4676,10626,4676,10861,4676,11095,4676,11330,4676,11565,4676,11799,4676,12034,4676,12268,4676,12503,4676,12738,4676,12972,4676,13207,4676,13442,4676,13676,4676,13911,4676,14146,4676,15084,4676,15319,4676,15553,4676,15788,4676,16023,4676,16257,4676,8514,4911,8749,4911,8984,4911,9218,4911,9453,4911,9688,4911,9922,4911,10157,4911,10391,4911,10626,4911,10861,4911,11095,4911,11330,4911,11565,4911,11799,4911,12034,4911,12268,4911,12503,4911,12738,4911,12972,4911,13207,4911,13442,4911,13676,4911,13911,4911,14146,4911,15788,4911,16023,4911,16257,4911,7810,5145,8045,5145,8280,5145,8514,5145,8749,5145,8984,5145,9218,5145,9453,5145,9688,5145,9922,5145,10157,5145,10391,5145,10626,5145,10861,5145,11095,5145,11330,5145,11565,5145,11799,5145,12034,5145,12268,5145,12503,5145,12738,5145,12972,5145,13207,5145,13442,5145,13676,5145,13911,5145,14146,5145,14380,5145,15319,5145,15553,5145,15788,5145,7810,5380,8045,5380,8280,5380,8514,5380,8749,5380,8984,5380,9218,5380,9453,5380,9688,5380,9922,5380,10157,5380,10391,5380,10626,5380,10861,5380,11095,5380,11330,5380,11565,5380,11799,5380,12034,5380,12268,5380,12503,5380,12738,5380,12972,5380,13207,5380,13442,5380,13676,5380,13911,5380,14146,5380,14380,5380,15788,5380,8280,5614,8514,5614,8749,5614,8984,5614,9218,5614,9453,5614,9688,5614,9922,5614,10157,5614,10391,5614,10626,5614,10861,5614,11095,5614,11330,5614,11565,5614,11799,5614,12034,5614,12268,5614,12503,5614,12738,5614,12972,5614,13207,5614,13442,5614,13676,5614,13911,5614,14146,5614,14380,5614,15788,5614,8045,5849,8280,5849,8514,5849,8749,5849,8984,5849,9218,5849,9453,5849,9688,5849,9922,5849,10157,5849,10391,5849,10626,5849,10861,5849,11095,5849,11330,5849,11565,5849,11799,5849,12034,5849,12268,5849,12503,5849,12738,5849,12972,5849,13207,5849,13442,5849,13676,5849,13911,5849,14146,5849,8280,6084,8514,6084,8749,6084,9218,6084,9453,6084,9688,6084,9922,6084,10157,6084,10391,6084,10626,6084,10861,6084,11095,6084,11330,6084,11565,6084,11799,6084,12034,6084,12268,6084,12503,6084,12738,6084,12972,6084,13207,6084,13442,6084,13676,6084,9218,6318,9453,6318,9688,6318,9922,6318,10157,6318,10391,6318,10626,6318,10861,6318,11095,6318,11330,6318,11565,6318,11799,6318,12034,6318,12268,6318,12503,6318,12738,6318,12972,6318,13207,6318,13442,6318,13676,6318,9218,6553,9453,6553,9688,6553,9922,6553,10157,6553,10391,6553,10626,6553,10861,6553,11095,6553,11330,6553,11565,6553,11799,6553,12034,6553,12268,6553,12503,6553,12738,6553,12972,6553,13207,6553,13442,6553,9218,6788,9453,6788,9688,6788,9922,6788,10157,6788,10391,6788,10626,6788,10861,6788,11095,6788,11330,6788,11565,6788,11799,6788,12034,6788,12268,6788,12503,6788,12738,6788,12972,6788,9218,7022,9453,7022,9688,7022,9922,7022,10157,7022,10391,7022,10626,7022,10861,7022,11095,7022,11330,7022,11565,7022,11799,7022,12034,7022,12268,7022,12503,7022,12738,7022,12972,7022,9218,7257,9453,7257,9688,7257,9922,7257,10157,7257,10391,7257,10626,7257,10861,7257,11095,7257,11330,7257,11565,7257,11799,7257,12034,7257,12268,7257,12503,7257,9218,7492,9453,7492,9688,7492,9922,7492,10157,7492,10391,7492,10626,7492,10861,7492,11095,7492,11330,7492,11565,7492,11799,7492,12034,7492,12268,7492,9453,7726,9688,7726,9922,7726,10157,7726,10391,7726,10626,7726,10861,7726,11095,7726,11330,7726,11565,7726,11799,7726,12034,7726,9453,7961,9688,7961,9922,7961,10157,7961,10391,7961,10626,7961,10861,7961,11095,7961,11330,7961,11565,7961,11799,7961,9453,8196,9688,8196,9922,8196,10157,8196,10391,8196,10626,8196,10861,8196,11095,8196,11330,8196,9688,8430,9922,8430,10157,8430,10391,8430,10626,8430,10861,8430,11095,8430,11330,8430,9688,8665,9922,8665,10157,8665,10391,8665,10626,8665,10861,8665,11095,8665,11330,8665,9922,8899,10157,8899,10391,8899,10626,8899,10861,8899,11095,8899,11330,8899,11565,8899,9922,9134,10157,9134,10391,9134,10626,9134,10861,9134,11095,9134,11330,9134,11565,9134,15788,9134,9922,9369,10157,9369,10391,9369,10626,9369,10861,9369,11095,9369,11330,9369,15788,9369,10157,9603,10391,9603,10626,9603,10861,9603,11095,9603,11330,9603,10157,9838,10391,9838,10626,9838,10861,9838,11095,9838,11330,9838,10391,10072,10626,10072,10861,10072,11095,10072,10391,10307,10626,10307,10861,10307,11095,10307,10391,10542,10626,10542,10861,10542,10626,10776", "islands-andaman": "15553,9838,15788,8899,15788,9603,15788,10542,16022,10776,16022,11011,16022,11246", "islands-lakshadweep": "8749,9369,8749,9603,8749,9838,8984,10072,9453,9603"};
+const CHEV = ['M780.4 -130L76.9 436.2C1 511.8 1 587.2 76.9 662.8L780.4 1229H1859V-130H780.4Z', 'M954.5 -182L251 427.6C175 508.9 175 590.1 251 671.4L954.5 1281H1859V-182H954.5Z', 'M1128.6 -130L425 436.2C349 511.8 349 587.2 425 662.8L1128.6 1229H1859V-130H1128.6Z'];
+const CHX = [20, 194, 368];
+let CARD_SVG = '';
+/* colours come from --c* tokens (dark and light) so one SVG serves both themes */
+function cardArt() {
+  if (CARD_SVG) return CARD_SVG;
+  const dots = Object.values(INDIA).map(str => { const a = str.split(',').map(Number); let o = ''; for (let i = 0; i < a.length; i += 2) o += `<circle cx="${a[i] / 10}" cy="${a[i + 1] / 10}" r="5.03"/>`; return o; }).join('');
+  const stop = (o, c, a) => `<stop offset="${o}" style="stop-color:var(${c});stop-opacity:${a}"/>`;
+  const grads = CHX.map((x, i) => `<linearGradient id="hc${i}" x1="${x}" y1="0" x2="1859" y2="0" gradientUnits="userSpaceOnUse">${stop(0, '--ck' + i, 1)}${stop(.07, '--ck' + i, .9)}${stop(.22, '--cm' + i, .5)}${stop(.36, '--cm' + i, .18)}${stop(.5, '--cm' + i, 0)}</linearGradient>`).join('');
+  return (CARD_SVG = `<svg class="art" viewBox="0 0 1743 1099" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hcb" x1="0" y1="0" x2="1743" y2="1099" gradientUnits="userSpaceOnUse">${stop(0, '--cb1', 1)}${stop(1, '--cb2', 1)}</linearGradient><radialGradient id="hcg" cx="1230" cy="520" r="640" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--cgl);stop-opacity:var(--cglo)"/>${stop(1, '--cgl', 0)}</radialGradient>${grads}</defs>
+    <rect width="1743" height="1099" fill="url(#hcb)"/><rect width="1743" height="1099" fill="url(#hcg)"/><g style="fill:var(--cdot);fill-opacity:var(--cdoto)">${dots}</g>${CHEV.map((d, i) => `<path d="${d}" fill="url(#hc${i})" style="opacity:var(--ca${i})"/>`).join('')}</svg>`);
+}
+
+/* ---------- intro ---------- */
+function renderIntro() {
+  const saved = fetchStore('ht5-game', null);
+  const can = saved && saved.sid && BY_ID[saved.sid] && saved.screen !== 'intro' && saved.alloc && saved.alloc.length === 6;
+  const resumeLbl = can ? (saved.screen === 'level' ? `Resume round ${saved.level}` : saved.screen === 'round' ? 'Resume your game' : 'See your last result') : '';
+  const fd8 = START_CASH * fdGrowth(DATA.scenarios[0], 0, RESULT_IDX);
+  const step = (n, t, d) => `<li class="row"><span class="n">${n}</span><div class="nm"><b><span class="nt">${t}</span></b><span class="ds">${d}</span></div></li>`;
+  return `${topBar(0)}<div class="split center"><div class="col">
+      <section><h1 class="tag">Everyone’s a genius in hindsight.</h1><p class="tag-sub">Go back in time and bet on the Indian markets. Would you make it big or will the classic FD beat you?</p></section></div>
+    <div class="col">
+      <div class="card" id="card" aria-hidden="true">${cardArt()}<div class="ct-row">${brandmark()}<div class="yrbox"><span class="yv">20__</span></div></div>
+        <div class="ct-row" style="align-items:flex-end"><div><span class="lbl">Your balance</span>${numHTML(START_CASH)}</div><span class="lbl">10 × ₹10,000</span></div></div>
+      <ol class="group steps">${step(1, 'Bet your ₹1 lakh', 'Ten bundles on stocks, metals and more.')}${step(2, 'Jump two years ahead', 'Watch real prices play out.')}${step(3, 'Read the news, rebalance', 'A headline and past returns are your clues.')}${step(4, `Beat ${inr(fd8)}`, 'What the bank’s 6% pays over eight years.')}</ol>
+      <p class="x13 t3">${DATA.scenarios.length} real scenarios between 2000 and 2026. Prices from NSE and the World Bank.</p>
+      <div class="dock"><div class="dock-in"><button class="cta" data-act="new">Go back in time</button>${can ? `<button class="cta2" data-act="resume">${resumeLbl}</button>` : ''}</div></div>
+    </div></div>`;
+}
+
+/* ---------- level ---------- */
+const spansFor = (L, d) => [['2Y', d - 4], ['4Y', d - 8], ['6Y', d - 12]].slice(0, L - 1);
+const lastRound = () => S.rounds[S.rounds.length - 1];
+/* one position control: − and + move a single position from short 2 to long 4; below zero is a short */
+function stepperHTML(s, i, prevA) {
+  const o = s.options[i], a = S.alloc[i], n = Math.abs(a), p = Math.abs(prevA ?? a), full = placedOf(S.alloc) >= BUNDLES;
+  const canDec = a > 0 || (shortable(o) && a > -SHORT_MAX && !full), canInc = a < 0 || (a < LONG_MAX && !full);
+  const decWhy = canDec ? '' : !shortable(o) ? 'A fixed deposit can’t be shorted' : a <= -SHORT_MAX ? `Maximum ${SHORT_MAX} short` : 'All ten placed';
+  const incWhy = canInc ? '' : a >= LONG_MAX ? `Maximum ${LONG_MAX} long` : 'All ten placed', side = a > 0 ? 'Long' : a < 0 ? 'Short' : 'None';
+  return `<div class="stp"><button class="sb" data-act="dec" data-i="${i}" ${canDec ? '' : 'disabled'} title="${decWhy}" aria-label="${a > 0 ? 'Remove a long bundle from' : 'Short a bundle of'} ${esc(o.name)}">${I.minus}</button>
+    <span class="pv ${a > 0 ? 'l' : a < 0 ? 's' : 'z'}" aria-hidden="true"><span class="odo">${strip(p, n)}</span><small>${side}</small></span><span class="sr" aria-live="polite">${n ? side + ' ' + n : 'No position'} on ${esc(o.name)}</span>
+    <button class="sb" data-act="inc" data-i="${i}" ${canInc ? '' : 'disabled'} title="${incWhy}" aria-label="${a < 0 ? 'Remove a short bundle from' : 'Add a long bundle to'} ${esc(o.name)}">${I.plus}</button></div>`;
+}
+function levelRow(s, i, L, d, prevA) {
+  const o = s.options[i], a = S.alloc[i], n = Math.abs(a), sp = spansFor(L, d), k = Math.min(S.span || 0, Math.max(0, sp.length - 1));
+  const r = sp.length ? o.prices[d] / o.prices[sp[k][1]] : null, ret = r ? `<span class="ret ${tone(r)}">${pct(r)}</span>` : '';
+  const open = EXP === i && isDesk();
+  return `<li class="row lv${r ? ' has-ret' : ''}${n ? ' on' : ''}${a < 0 ? ' sh' : ''}${open ? ' open' : ''}"><button class="nm" data-act="open" data-i="${i}" aria-expanded="${open}" aria-label="${esc(o.name)}, details"><b><span class="nt">${esc(sn(o))}</span>${I.chev}</b><span class="ds">${r ? `<span class="ret2"><em class="${tone(r)}">${pct(r)}</em> · </span>` : ''}${esc(sd(o))}</span></button>${ret}${stepperHTML(s, i, prevA)}</li>${open ? `<li class="xrow">${expandHTML(s, i)}</li>` : ''}`;
+}
+function betHTML(s, prevAlloc) {
+  const L = S.level, d = LEVEL_IDX[L - 1], prev = lastRound(), placed = placedOf(S.alloc);
+  const same = prev && S.alloc.every((c, i) => c === prev.alloc[i]), sp = spansFor(L, d), k = Math.min(S.span || 0, Math.max(0, sp.length - 1));
+  const spanCtl = sp.length > 1 ? `<button data-act="span" aria-label="Showing ${sp[k][0]} returns. Switch period.">${sp[k][0]} return ${I.swap}</button>` : sp.length ? `<span>${sp[0][0]} return</span>` : '';
+  return `<div class="label"><span>${inr(S.value / BUNDLES)} a bundle</span>${spanCtl}</div>${L === 1 ? '<p class="hint">+ bets it goes up. − bets it goes down: a short, which is wiped out if the price doubles.</p>' : ''}
+    <ul class="group">${s.options.map((_, i) => levelRow(s, i, L, d, prevAlloc ? prevAlloc[i] : undefined)).join('')}</ul>
+    <div class="label" style="margin:4px 0 0"><span>Up to 4 long or 2 short each</span><span>${prev ? `<button class="tb" data-act="keep" ${same ? 'disabled' : ''}>Keep last</button>` : ''}<button class="tb" data-act="clear" ${placed ? '' : 'disabled'} style="margin-left:12px">Clear</button></span></div>`;
+}
+function dockHTML(prevPlaced) {
+  const placed = placedOf(S.alloc), left = BUNDLES - placed, segs = [];
+  S.alloc.forEach(a => { for (let k = 0; k < Math.abs(a); k++) segs.push(a < 0 ? 's' : 'l'); });
+  while (segs.length < BUNDLES) segs.push('');
+  const pp = prevPlaced ?? placed;
+  return `<div class="dock-in"><div class="alloc" aria-hidden="true"><div class="segs">${segs.map((c, k) => `<i class="${c}${c && k >= pp && k < placed ? ' new' : ''}"></i>`).join('')}</div><span>${left ? left + ' left' : 'All in'}</span></div>
+    <button class="cta" data-act="lock" ${left ? 'disabled' : ''}>${left ? `Place ${left} more` : S.level < 4 ? 'Fast-forward 2 years' : 'Lock final picks'}</button></div>`;
+}
+/* the chart's readout already gives the change since the start, so the tiles add what it doesn't: the last two years, the low and the high */
+function tilesHTML(o, L, d) {
+  if (L < 2) return '';
+  const p = o.prices.slice(0, d + 1), t = [];
+  if (L > 2) t.push(['Last 2Y', p[d] / p[d - 4]]);
+  t.push(['Low', Math.min(...p) / p[0]], ['High', Math.max(...p) / p[0]]);
+  return `<div class="tiles">${t.map(([lab, r]) => `<div class="tile"><span>${lab}</span><b class="${Math.abs(r - 1) < 5e-4 ? '' : tone(r)}">${Math.abs(r - 1) < 5e-4 ? 'Start price' : pct(r)}</b></div>`).join('')}</div>`;
+}
+function expandHTML(s, i) {
+  const L = S.level, d = LEVEL_IDX[L - 1], o = s.options[i], prev = lastRound(), sp = spansFor(L, d);
+  const tiles = tilesHTML(o, L, d);
+  const was = prev && prev.alloc[i] ? (() => { const x = roundDetail(s, prev).find(z => z.i === i); return `<p class="x13 t2">Last round: ${x.short ? 'short' : 'long'} ${x.c} · <span class="${x.now >= x.inv ? 'gain' : 'loss'}">${sgn(x.now - x.inv)}</span>${x.dead > 0 ? ' · wiped out' : ''}</p>`; })() : '';
+  return `<p class="x13 t2">${esc(o.desc)} · ${({ stock: 'Stock', commodity: 'Commodity', currency: 'Currency', fd: 'Fixed deposit' })[o.type]}</p>
+    ${L > 1 ? priceHTML(o.prices.slice(0, d + 1)) : '<p class="x13 t2">No price history yet. The headline is your only clue.</p>'}${tiles}${was}`;
+}
+function sheetHTML(s, i, prevA) {
+  const L = S.level, d = LEVEL_IDX[L - 1], o = s.options[i], prev = lastRound();
+  const tiles = tilesHTML(o, L, d);
+  const was = prev && prev.alloc[i] ? (() => { const x = roundDetail(s, prev).find(z => z.i === i); return `<p class="x15 t2">Last round: ${x.short ? 'short' : 'long'} ${x.c} · <span class="${x.now >= x.inv ? 'gain' : 'loss'}">${sgn(x.now - x.inv)}</span>${x.dead > 0 ? ' · wiped out' : ''}</p>`; })() : '';
+  return `<div class="grab"></div><div class="col"><div><h2 id="shT">${esc(o.name)}</h2><p class="meta x15">${esc(o.desc)} · ${({ stock: 'Stock', commodity: 'Commodity', currency: 'Currency', fd: 'Fixed deposit' })[o.type]}</p></div>
+    ${L > 1 ? priceHTML(o.prices.slice(0, d + 1)) : '<p class="x15 t2">No price history yet. The headline is your only clue.</p>'}
+    ${tiles}${was}
+    <div class="sheet-ctl"><span class="x15 t2">Your position</span>${stepperHTML(s, i, prevA)}</div>
+    <button class="cta" data-act="close">Done</button></div>`;
+}
+function renderLevel() {
+  const s = sc(), L = S.level, d = LEVEL_IDX[L - 1], prev = lastRound(), target = S.value * fdGrowth(s, d, d + 4);
+  const lr = prev ? roundVals(s, prev) : null;
+  return `${topBar(L)}<div class="split mid"><div class="col">
+      <section class="hero"><p class="kick">Round ${L} of 4${L === 4 ? ' · final picks' : ''}</p>${numHTML(S.value, 'heroNum')}
+        <p class="sub">${lr ? '<span class="pre">Last round</span>' + chip(lr[4] / lr[0], fdGrowth(s, prev.d, prev.d + 4)) + '<span class="aft">' : ''}The bank would make it <b>${inr(target)}</b>. Can you?${lr ? '</span>' : ''}</p></section>
+      ${clueHTML(s, L - 1, yearAt(s, d), shownDigits(L))}</div>
+    <div class="col"><section id="bet">${betHTML(s)}</section><div class="dock" id="dock">${dockHTML()}</div></div></div>`;
+}
+
+/* ---------- round ---------- */
+function renderRound() {
+  const s = sc(), rd = lastRound(), v = roundVals(s, rd), r = v[4] / v[0], d = rd.d, last = S.rounds.length === 4;
+  const fdv = v[0] * fdGrowth(s, d, d + 4), T = table(s, d, d + 4), gains = roundDetail(s, rd).map(x => ({ ...x, gain: x.now - x.inv }));
+  const order = s.options.map((_, i) => i).sort((a, b) => T.L[b][4] - T.L[a][4]), bestI = order[0], held = Object.fromEntries(gains.map(x => [x.i, x]));
+  const wiped = gains.filter(x => x.dead > 0), key = gains.slice().sort((a, b) => Math.abs(b.gain) - Math.abs(a.gain))[0];
+  let h, p;
+  if (wiped.length) { const w = wiped[0]; h = `Your ${esc(sn(s.options[w.i]))} short was wiped out.`; p = `It doubled within ${WHEN[w.dead - 1]}. ${sgn(w.gain)}.`; }
+  else { h = `${esc(sn(s.options[key.i]))} ${key.gain >= 0 ? 'carried' : 'sank'} you.`; p = `${sgn(key.gain)} on ${key.c} bundle${key.c > 1 ? 's' : ''}.`; }
+  if (!(held[bestI] && !held[bestI].short)) p += ` ${esc(sn(s.options[bestI]))} did ${pct(T.L[bestI][4])}.`;
+  const rows = order.map((i, k) => {
+    const o = s.options[i], Lm = T.L[i][4], Sh = T.S[i][4], x = held[i];
+    const meta = x ? `${x.short ? 'Short' : 'Long'} ${x.c} · ${x.dead > 0 ? '<span class="loss">wiped out</span>' : `<span class="${x.gain >= 0 ? 'gain' : 'loss'}">${sgn(x.gain)}</span>`}`
+      : !shortable(o) ? 'Can’t be shorted' : Sh === 0 ? 'Short would be wiped out' : `Short would be ${inr(10000 * Sh)}`;
+    return `<li class="row${x ? '' : ' off'}" style="--i:${k}"><div class="nm"><b><span class="nt">${esc(sn(o))}</span></b><span class="ds">${meta}</span></div><div class="rv"><b>${inr(10000 * Lm)}</b><span class="${tone(Lm)}">${pct(Lm)}</span></div></li>`;
+  }).join('');
+  const play = S.anim && !REDUCED, shown = last ? 4 : shownDigits(rd.level + 1), was = shownDigits(rd.level);
+  return `${topBar(rd.level)}<div class="split${play ? ' pending' : ''}"><div class="col">
+      <section class="hero"><p class="kick">2 years later · ${play ? yearHTML(yearAt(s, d + 4), shown, was).replace('class="yr odo"', 'class="yr odo spin" id="ryear"') : yearHTML(yearAt(s, d + 4), shown)}</p>${numHTML(v[4], 'heroNum')}
+        <p class="sub fade" id="delta">${chip(r, fdGrowth(s, d, d + 4))}<span class="aft">${inr(Math.abs(v[4] - fdv))} ${v[4] >= fdv ? 'ahead of' : 'behind'} the bank</span></p></section>
+      <section><div class="legend" id="legend"></div><div class="chart bleed" id="roundChart"></div></section>
+      <section class="verdict after"><h2>${h}</h2><p>${p}</p></section></div>
+    <div class="col"><section class="after"><p class="label"><span>₹10K in each</span><span>2 years on</span></p><ul class="group${play ? ' casc' : ''}">${rows}</ul></section>
+      <div class="dock"><div class="dock-in"><button class="cta" data-act="next">${last ? 'See the result' : 'Next round'}</button></div></div></div></div>`;
+}
+
+/* ---------- result + hold ---------- */
+const QS = m => (m >= 1.1 ? 4 : m >= 0.9 ? 3 : m >= 0.5 ? 2 : 1), EMO = { 4: '🟩', 3: '⬜', 2: '🟧', 1: '🟥' }, QC = { 4: '#3fd58f', 3: 'rgba(255,255,255,.24)', 2: '#ff9a5c', 1: '#ff4d5e' };
+const shareRows = s => S.rounds.map(rd => { const T = table(s, rd.d, rd.d + 4), out = []; rd.alloc.forEach((a, i) => { for (let k = 0; k < Math.abs(a); k++) out.push(QS((a > 0 ? T.L : T.S)[i][4])); }); return out.sort((x, y) => y - x); });
+const canShareFiles = (() => { try { return !!(navigator.canShare && navigator.canShare({ files: [new File([''], 'x.png', { type: 'image/png' })] })); } catch (e) { return false; } })();
+function posterHTML(s, R) {
+  const you = R.you[R.end], p = Math.round(R.beat * 100), rows = shareRows(s);
+  const [mY, mB] = multPair(you / START_CASH, R.fdEnd / START_CASH);
+  const txt = `Hindsight · Make it or break it.\n₹1,00,000 → ${inr(you)} (${mY})\nBank ${mB} · better than ${beatTxt(R.beat)} of random plays\n` + rows.map(r => r.map(q => EMO[q]).join('')).join('\n');
+  return `<figure class="poster" style="--pc:${you >= R.fdEnd ? 'rgb(40 180 125 / 60%)' : 'rgb(225 70 85 / 55%)'}" aria-label="Share card: ${inr(you)}, ${mult(you / START_CASH)}, better than ${beatTxt(R.beat)} of random plays">
+      ${topoSVG(400, 500, 'poster')}<div class="p-top">${brandmark()}<span>4 rounds · 8 years</span></div>
+      <div>${numHTML(you)}<p class="p-sub"><b class="${you >= R.fdEnd ? 'gain' : 'loss'}" style="color:${you >= R.fdEnd ? '#3fd58f' : '#ff6b6b'}">${mY}</b> · bank ${mB} · better than ${beatTxt(R.beat)}</p></div>
+      <div class="pgrid" aria-hidden="true">${rows.map(r => `<div>${r.map(q => `<i class="q${q}"></i>`).join('')}</div>`).join('')}</div>
+      <div class="p-foot"><button class="p-info" data-act="sqinfo" aria-expanded="false" aria-controls="sqinfo">${I.info}<span>What the squares mean</span></button><b>Make it or break it.</b></div></figure>
+    <div class="sqinfo" id="sqinfo" hidden><p>One square for each ₹10,000 bundle, one row for each round, best first. Colour shows what that bundle was worth two years later.</p>
+      <ul><li><i style="background:${QC[4]}"></i>Grew 10% or more</li><li><i style="background:${QC[3]}"></i>Within 10% either way</li><li><i style="background:${QC[2]}"></i>Lost 10% to half</li><li><i style="background:${QC[1]}"></i>Lost half or more</li></ul></div>
+    <div class="share-acts"><button data-act="image">${canShareFiles ? 'Share image' : 'Save image'}</button><button data-act="copy">Copy text</button></div><pre class="sr" id="shareTxt">${esc(txt)}</pre>`;
+}
+/* the poster as a real 1080×1350 PNG */
+async function posterPNG(s, R) {
+  try { await document.fonts.load('600 40px Geist'); await document.fonts.load('500 40px Geist'); } catch (e) {}
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H; const g = c.getContext('2d');
+  const bgG = g.createLinearGradient(0, 0, W * 0.6, H); bgG.addColorStop(0, '#141418'); bgG.addColorStop(1, '#08080a'); g.fillStyle = bgG; g.fillRect(0, 0, W, H);
+  const glow = (x, y, r, c) => { const q = g.createRadialGradient(x, y, 0, x, y, r); q.addColorStop(0, c); q.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = q; g.fillRect(0, 0, W, H); };
+  glow(W * 0.1, H * 0.08, W * 0.9, 'rgba(118,96,255,0.42)'); glow(W, H, W * 0.95, R.you[R.end] >= R.fdEnd ? 'rgba(40,180,125,0.6)' : 'rgba(225,70,85,0.55)');
+  g.strokeStyle = 'rgba(255,255,255,0.09)'; g.lineWidth = 2; topoPaths(W, H, 'poster').forEach(d => g.stroke(new Path2D(d)));
+  const P = 72, you = R.you[R.end], p = Math.round(R.beat * 100), F = w => `${w} Geist, system-ui, sans-serif`;
+  g.save(); g.translate(P, P + 4); g.scale(2.6, 2.6); g.strokeStyle = '#8b74ff'; g.lineWidth = 2.2; g.lineCap = 'round'; g.lineJoin = 'round';
+  g.stroke(new Path2D('M4.6 13.2A7.6 7.6 0 1 0 7 6.4')); g.stroke(new Path2D('M3.8 3.6v4.2H8')); g.fillStyle = '#8b74ff'; g.beginPath(); g.arc(12, 12, 1.9, 0, Math.PI * 2); g.fill(); g.restore();
+  g.fillStyle = '#f4f4f6'; g.font = F('600 46px'); g.textBaseline = 'middle'; g.fillText('Hindsight', P + 80, P + 36);
+  g.fillStyle = 'rgba(255,255,255,.6)'; g.font = F('500 34px'); g.textAlign = 'right'; g.fillText('4 rounds · 8 years', W - P, P + 36); g.textAlign = 'left';
+  g.textBaseline = 'alphabetic'; let size = 150; g.font = F(`600 ${size}px`); const dg = digits(you);
+  while (g.measureText(dg).width + size * 0.7 > W - 2 * P && size > 80) { size -= 6; g.font = F(`600 ${size}px`); }
+  g.fillStyle = 'rgba(255,255,255,.55)'; g.font = F(`500 ${Math.round(size * 0.6)}px`); g.fillText('₹', P, 520); const cw = g.measureText('₹').width + size * 0.08;
+  g.fillStyle = '#f4f4f6'; g.font = F(`600 ${size}px`); g.fillText(dg, P + cw, 520);
+  const [mY, mB] = multPair(you / START_CASH, R.fdEnd / START_CASH);
+  g.font = F('600 40px'); g.fillStyle = you >= R.fdEnd ? '#3fd58f' : '#ff6b6b'; const mtx = mY; g.fillText(mtx, P, 600);
+  const mw = g.measureText(mtx).width; g.font = F('500 40px'); g.fillStyle = 'rgba(255,255,255,.7)'; g.fillText(` · bank ${mB} · better than ${beatTxt(R.beat)}`, P + mw, 600);
+  const rows = shareRows(s), gap = 14, sq = (W - 2 * P - gap * 9) / 10, top = 700;
+  rows.forEach((r, ri) => r.forEach((q, ci) => { g.fillStyle = QC[q]; g.beginPath(); g.roundRect(P + ci * (sq + gap), top + ri * (sq + gap), sq, sq, 14); g.fill(); }));
+  g.textAlign = 'right'; g.fillStyle = '#f4f4f6'; g.font = F('600 34px'); g.fillText('Make it or break it.', W - P, H - P);
+  return new Promise(res => c.toBlob(res, 'image/png'));
+}
+/* Saving the poster: the viewer's downloads capability (a confirmation, or the share sheet in the Claude apps);
+   otherwise the browser's own share sheet where it accepts files; otherwise the button is hidden. */
+let DL = null; const dlReady = (async () => { try { DL = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { DL = null; } return DL; })();
+async function shareImage(b) {
+  const label = b.textContent, s = sc(), R = summary(s, S.screen === 'hold' ? 'hold' : 'result');
+  b.disabled = true; b.textContent = 'Preparing…';
+  try {
+    const blob = await posterPNG(s, R);
+    if (DL) { try { await DL.save({ filename: 'hindsight.png', data: blob }); b.textContent = 'Saved'; } catch (e) { b.textContent = e && (e.code === 'unavailable' || e.code === 'not_granted') ? 'Can’t save here' : label; } }
+    else if (canShareFiles) { try { await navigator.share({ files: [new File([blob], 'hindsight.png', { type: 'image/png' })], text: 'Trade the past.' }); } catch (e) {} b.textContent = label; }
+    else { const u = URL.createObjectURL(blob), a = document.createElement('a'); a.href = u; a.download = 'hindsight.png'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); b.textContent = 'Saved'; }
+  } finally { b.disabled = false; setTimeout(() => { if (b.isConnected) b.textContent = label; }, 1800); }
+}
+/* a plain download works on a hosted page; inside an embedding viewer without the downloads capability it would not, so the button goes */
+const EMBEDDED = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
+function initShare() { const b = app.querySelector('[data-act="image"]'); if (!b) return; dlReady.then(dl => { if (!dl && !canShareFiles && EMBEDDED && b.isConnected) b.remove(); }); }
+function histHTML(s, R, mode) {
+  const p = Math.round(R.beat * 100);
+  return `<section class="hist"><p class="x13 t2">Against ${nf.format(SIM_N)} random plays</p><h2>Better than ${beatTxt(R.beat)} of them.</h2>${histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd)}
+    <p class="legend"><span>Median <b>${inrShort(R.med[R.end])}</b></span><span>Perfect hindsight <b>${inrShort(R.best[R.end])}</b></span></p></section>`;
+}
+const allocText = (s, al) => al.map((a, i) => (a ? `${a < 0 ? 'Short' : 'Long'} ${Math.abs(a)} ${sn(s.options[i])}` : '')).filter(Boolean).join(', ');
+function priceTable(s, cols) {
+  const a = cols[0], z = cols[cols.length - 1], f = (o, k) => (o.type === 'fd' ? '₹' + o.prices[k].toFixed(1) : priceFmt(o.prices[k]));
+  return `<p class="label"><span>${esc(label(s, a))} → ${esc(label(s, z))}</span><span>Change</span></p><ul class="group prices">${s.options.map(o => { const g = o.prices[z] / o.prices[a];
+    return `<li class="row"><div class="nm"><b><span class="nt">${esc(sn(o))}</span></b><span class="ds" title="Source dates ${esc(o.src[a])} and ${esc(o.src[z])}">${f(o, a)} → ${f(o, z)}${o.type === 'fd' ? ' per ₹100' : ' per ' + esc(o.unit)}</span></div><div class="rv"><b class="${tone(g)}">${mult(g)}</b></div></li>`; }).join('')}</ul>`;
+}
+const sourcesHTML = () => `<div class="dsec src"><h3>Sources and rules</h3>
+  <p>Stocks: NSE bhavcopy closes on the first trading day of each half-year, adjusted for splits, bonuses, demergers and rights issues; 11 Nov 2026 closes from the NSE Bhavcopy MCP. Metals and crude: World Bank Pink Sheet monthly averages in rupees at FRED's USD/INR. Dollar and euro: FRED. The bank: a 6% fixed deposit, compounded.</p>
+  <p>A short bundle is worth bundle × (2 − price ratio) and is wiped out if the price doubles at any six-month check. Price returns only; no dividends, taxes, fees or borrow costs. Best and worst are exact, checked across every valid split. Random plays: ${nf.format(SIM_N)} games picking a random valid split each round.</p>
+  <p>India outline on the home card: Survey of India state map, via DataMeet. Hindsight is a game for learning and fun. Nothing here is investment advice.</p></div>`;
+const verdictOf = (you, bank, when) => you >= bank ? ['You made it.', `${inr(you - bank)} ahead of the bank’s 6%${when}.`]
+  : you >= START_CASH ? ['Close, but the bank won.', `You made ${inr(you - START_CASH)}. A fixed deposit would have made ${inr(bank - START_CASH)}.`]
+  : ['You broke it.', `You lost ${inr(START_CASH - you)}. The bank would have paid you ${inr(bank)}.`];
+function renderResult() {
+  const s = sc(), R = summary(s, 'result'), you = R.you[R.end], play = S.anim && !REDUCED;
+  const first = s.story.split(/(?<=\.)\s/)[0];
+  const rounds = R.segs.map(([a, b], r) => {
+    const g = al => { const T = table(s, a, b); let t = 0; al.forEach((c, i) => { if (c > 0) t += c * T.L[i][b - a]; else if (c < 0) t -= c * T.S[i][b - a]; }); return t / BUNDLES; };
+    const yr = R.you[b] / R.you[a], br = g(R.bA[r]);
+    return `<li class="row"><div class="nm"><b><span class="nt">Round ${r + 1} · ${label(s, a)}</span></b><span>You: ${esc(allocText(s, S.rounds[r].alloc))}</span><span class="t3">Best: ${esc(allocText(s, R.bA[r]))}</span></div><div class="rv"><b class="${tone(yr)}">${pct(yr)}</b><span class="t3">best ${pct(br)}</span></div></li>`;
+  }).join('');
+  return `${topBar(5)}<div class="split${play ? ' pending' : ''}"><div class="col">
+      <section class="hero"><p class="kick">8 years later</p>${numHTML(you, 'heroNum')}
+        <p class="sub fade">${(([a, b]) => vsBank(pill(tone(you / START_CASH), a), pill(tone(R.fdEnd / START_CASH), b)))(multPair(you / START_CASH, R.fdEnd / START_CASH))}<span class="aft">From ₹1,00,000</span></p></section>
+      <section><div class="legend" id="legend"></div><div class="chart bleed" id="finalChart"></div></section>
+      <section class="verdict fade"><h2>${verdictOf(you, R.fdEnd, '')[0]}</h2><p>${verdictOf(you, R.fdEnd, '')[1]}</p></section>
+      <section class="fade"><div class="years" role="text" aria-label="${yearAt(s, 0)} to ${yearAt(s, RESULT_IDX)}"><span class="odo" aria-hidden="true">${odoInner(yearAt(s, 0), false)}</span><span class="arr" aria-hidden="true">→</span><span class="odo" aria-hidden="true">${odoInner(yearAt(s, RESULT_IDX), false)}</span></div>
+        <p class="ttl">${esc(s.title)}</p><p class="story" id="story">${esc(first)}</p>${first.length < s.story.length ? '<button class="linkb" data-act="story">Read the story</button>' : ''}</section>
+      ${histHTML(s, R, 'result')}</div>
+    <div class="col"><section>${posterHTML(s, R)}</section>
+      <div class="dock"><div class="dock-in"><button class="cta" data-act="hold">Hold till today</button><button class="cta2" data-act="new">Play again</button></div></div></div></div>
+      <details class="more wide"><summary>Details ${I.down}</summary><div class="dgrid">
+        <div class="dsec"><h3>Round by round</h3><ul class="group rnd">${rounds}</ul></div>
+        <div class="dsec"><h3>The headlines</h3><ul class="heads">${s.headlines.map((x, i) => `<li>${esc(x.text)}<span>Round ${i + 1} · ${esc(x.when)}</span></li>`).join('')}</ul></div>
+        <div class="dsec"><h3>Prices</h3>${priceTable(s, [...LEVEL_IDX, RESULT_IDX])}</div>${sourcesHTML()}</div></details>`;
+}
+function renderHold() {
+  const s = sc(), R = summary(s, 'hold'), atRes = summary(s, 'result').you[RESULT_IDX], you = R.you[R.end], play = S.anim && !REDUCED;
+  const T = table(s, 12, R.end), dead = S.rounds[3].alloc.map((a, i) => (a < 0 && T.S[i][T.n] === 0 ? i : -1)).filter(i => i >= 0);
+  return `${topBar(5)}<div class="split${play ? ' pending' : ''}"><div class="col">
+      <section class="hero"><p class="kick">Held to today · 11 Nov 2026</p>${numHTML(you, 'heroNum')}
+        <p class="sub fade">${chip(you / atRes, fdGrowth(s, RESULT_IDX, R.end))}<span class="aft">Since the game ended · ${mult(you / START_CASH)} overall</span></p>
+        ${dead.length ? `<p class="sub fade">${dead.map(i => `Your ${esc(sn(s.options[i]))} short didn’t survive.`).join(' ')}</p>` : ''}</section>
+      <section><div class="legend" id="legend"></div><div class="chart bleed" id="holdChart"></div></section>
+      <section class="verdict fade"><h2>${verdictOf(you, R.fdEnd, ' by today')[0]}</h2><p>${verdictOf(you, R.fdEnd, ' by today')[1]}</p></section></div>
+    <div class="col">${histHTML(s, R, 'hold')}
+      <div class="dock"><div class="dock-in"><button class="cta" data-act="new">Play again</button><button class="cta2" data-act="back-result">Back to result</button></div></div></div></div>
+      <details class="more wide"><summary>Details ${I.down}</summary><div class="dgrid"><div class="dsec"><h3>Prices to today</h3>${priceTable(s, [...LEVEL_IDX, RESULT_IDX, endIdx(s)])}</div>${sourcesHTML()}</div></details>`;
+}
+
+/* ---------- render + wiring ---------- */
+const app = $('app');
+function render() {
+  TIMERS.forEach(t => clearInterval(t)); TIMERS = []; EXP = null;
+  if (SHEET != null) closeSheet(true);
+  if (S.screen !== 'intro' && (!BY_ID[S.sid] || !S.alloc || S.alloc.length !== 6)) S = { screen: 'intro' };
+  const html = ({ intro: renderIntro, level: renderLevel, round: renderRound, result: renderResult, hold: renderHold }[S.screen] || renderIntro)();
+  const cut = html.indexOf('</header>') + 9;
+  app.innerHTML = html.slice(0, cut) + '<main class="page">' + html.slice(cut) + '</main>';
+  fitAll(app);
+  initShare();
+  document.body.dataset.mood = 'brand';
+  drawCharts(!!S.anim);
+  rollSoon(app);
+  if (S.anim) { S.anim = false; save(); }
+}
+function drawCharts(animate) {
+  const s = sc(), play = animate && !REDUCED;
+  const yr = $('cardYear');
+  if (yr && !REDUCED) { const years = ['2000', '2003', '2007', '2008', '2010', '2012', '2014', '2016', '2018', '2004']; let k = 0; TIMERS.push(setInterval(() => { k = (k + 1) % years.length; setOdo(yr, years[k]); }, 2400)); }
+  const card = $('card');
+  if (card && !REDUCED && window.matchMedia('(hover: hover)').matches) {
+    card.onpointermove = e => { const r = card.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width, fy = (e.clientY - r.top) / r.height;
+      card.style.setProperty('--mx', fx * 100 + '%'); card.style.setProperty('--my', fy * 100 + '%'); card.style.setProperty('--px', (fx - 0.5) * -10 + 'px'); card.style.setProperty('--py', (fy - 0.5) * -8 + 'px'); };
+  }
+  if (!s) return;
+  const mood = sd => { document.body.dataset.mood = sd; };
+  const pending = () => { const sp = app.querySelector('.split.pending'); if (sp) sp.classList.remove('pending'); };
+  const rc = $('roundChart');
+  if (rc) {
+    const rd = lastRound(), v = roundVals(s, rd), bank = [0, 1, 2, 3, 4].map(k => v[0] * fdGrowth(s, rd.d, rd.d + k)), hero = $('heroNum'), delta = $('delta'), base = delta.innerHTML;
+    const col = `var(--${tone(v[4] / bank[4])})`;
+    lineChart(rc, { you: v, bank, xl: STOPS, ticks: [0, 1, 2, 3, 4], dots: [0, 1, 2, 3], play, onSide: mood, legendEl: $('legend'), heroEl: hero,
+      aria: `Your money at each six-month stop: ${v.map((x, i) => STOPS[i] + ' ' + inr(x)).join(', ')}. The bank: ${inr(bank[4])}.`,
+      legend: i => i == null ? `<span><i style="background:${col}"></i>You <b style="color:${col}">${pct(v[4] / v[0])}</b></span><span><i style="background:var(--t3)"></i>Bank <b>${pct(bank[4] / bank[0])}</b></span>`
+        : `<span><b>${i ? WHEN[i - 1] + ' in' : 'Start'}</b></span><span>You <b>${inr(v[i])}</b></span><span>Bank <b>${inr(bank[i])}</b></span>`,
+      onScrub: i => { if (i == null) { setNum(hero, v[4]); delta.innerHTML = base; } else { setNum(hero, v[i]); delta.innerHTML = i ? `${chip(v[i] / v[0], fdGrowth(s, rd.d, rd.d + i))}<span class="aft">${WHEN[i - 1][0].toUpperCase() + WHEN[i - 1].slice(1)} in</span>` : 'Start'; } fit(hero); },
+      onLand: pending });
+    const ry = $('ryear'); if (ry && play) TIMERS.push(setTimeout(() => { if (ry.isConnected && ry.classList.contains('spin')) { ry.classList.remove('spin'); rollLate(ry); } }, 2000));
+  }
+  const fc = $('finalChart') || $('holdChart');
+  if (fc) {
+    const mode = fc.id === 'finalChart' ? 'result' : 'hold', R = summary(s, mode), labels = R.you.map((_, k) => label(s, k)), bank = R.you.map((_, k) => START_CASH * fdGrowth(s, 0, k)), hero = $('heroNum');
+    const n = R.you.length, ticks = mode === 'hold' ? [0, 16, n - 1] : [0, 4, 8, 12, 16], xl = labels.map(l => l.slice(-4)), col = `var(--${tone(R.you[n - 1] / bank[n - 1])})`;
+    const you = mode === 'hold' ? R.you : R.you;
+    lineChart(fc, { you, bank, xl, ticks, log: true, dots: mode === 'hold' ? [0, 4, 8, 12, 16] : [0, 4, 8, 12], markIdx: mode === 'hold' ? RESULT_IDX : null, play, onSide: mood, legendEl: $('legend'), heroEl: hero, height: 210,
+      aria: `You ${inr(R.you[n - 1])}, the bank ${inr(bank[n - 1])}`,
+      legend: i => { const k = i == null ? n - 1 : i, [a, b] = moneyPair(R.you[k], bank[k]); return i == null ? `<span><i style="background:${col}"></i>You <b>${a}</b></span><span><i style="background:var(--t3)"></i>Bank, 6% a year <b>${b}</b></span>`
+        : `<span><b>${esc(labels[i])}</b></span><span>You <b>${a}</b></span><span>Bank <b>${b}</b></span>`; },
+      onScrub: i => { setNum(hero, i == null ? R.you[n - 1] : R.you[i]); fit(hero); }, onLand: pending });
+  }
+}
+function openSheet(i) {
+  const w = $('sheet'), body = $('sheetBody'); SHEET = i; LASTFOCUS = document.activeElement;
+  body.innerHTML = sheetHTML(sc(), i); w.hidden = false; bindPrice(body);
+  requestAnimationFrame(() => requestAnimationFrame(() => { w.classList.add('open'); const f = body.querySelector('[data-act="inc"]:not(:disabled), [data-act="close"]'); f && f.focus({ preventScroll: true }); }));
+}
+function closeSheet(instant) {
+  const w = $('sheet'); w.classList.remove('open'); SHEET = null;
+  if (instant || REDUCED) w.hidden = true; else setTimeout(() => { if (SHEET == null) w.hidden = true; }, 450);
+  if (!instant && LASTFOCUS && document.contains(LASTFOCUS)) LASTFOCUS.focus({ preventScroll: true });
+}
+function refreshBet(prevAlloc, prevPlaced, focusSel, inSheet) {
+  const s = sc(); $('bet').innerHTML = betHTML(s, prevAlloc); $('dock').innerHTML = dockHTML(prevPlaced);
+  if (SHEET != null) $('sheetBody').innerHTML = sheetHTML(s, SHEET, prevAlloc[SHEET]);
+  rollSoon(document.body); bindPrice(document.body);
+  const scope = inSheet ? $('sheetBody') : app, f = focusSel && scope.querySelector(focusSel);
+  if (f && !f.disabled) f.focus({ preventScroll: true });
+}
+function copyShare(b) {
+  const txt = $('shareTxt').textContent, ok = () => { b.textContent = 'Copied'; setTimeout(() => { b.textContent = 'Copy text'; }, 1800); };
+  const fallback = () => {
+    try { const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); const done = document.execCommand('copy'); ta.remove(); if (done) return ok(); } catch (e) {}
+    const pre = $('shareTxt'); pre.className = 'x13 t2'; pre.style.whiteSpace = 'pre-wrap'; pre.style.userSelect = 'all'; pre.style.marginTop = '12px'; b.textContent = 'Select the text below';
+  };
+  try { navigator.clipboard.writeText(txt).then(ok, fallback); } catch (e) { fallback(); }
+}
+function swapTo(fn) { const run = () => { fn(); window.scrollTo({ top: 0, behavior: 'auto' }); }; if (document.startViewTransition && !REDUCED) { const vt = document.startViewTransition(run); [vt.ready, vt.finished, vt.updateCallbackDone].forEach(p => p && p.catch(() => {})); } else run(); }
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  const act = b.dataset.act, i = +b.dataset.i, inSheet = !!b.closest('#sheet');
+  if (act === 'theme') return setTheme({ dark: 'light', light: 'auto', auto: 'dark' }[THEME] || 'dark');
+  if (act === 'new') return newGame();
+  if (act === 'home') return swapTo(() => { S = { screen: 'intro' }; render(); });
+  if (act === 'resume') { S = fetchStore('ht5-game', { screen: 'intro' }); S.anim = false; return go(); }
+  if (act === 'lock') return lockIn();
+  if (act === 'next') return next();
+  if (act === 'hold') { S.screen = 'hold'; S.anim = true; return go(); }
+  if (act === 'back-result') { S.screen = 'result'; S.anim = false; return go(); }
+  if (act === 'copy') return copyShare(b);
+  if (act === 'image') return shareImage(b);
+  if (act === 'sqinfo') { const p = $('sqinfo'), open = p.hidden; p.hidden = !open; b.setAttribute('aria-expanded', String(open)); return; }
+  if (act === 'story') { $('story').textContent = sc().story; b.remove(); return; }
+  if (act === 'close') return closeSheet();
+  if (S.screen !== 'level') return;
+  if (act === 'open') { if (!isDesk()) return openSheet(i); EXP = EXP === i ? null : i; return refreshBet(S.alloc.slice(), placedOf(S.alloc), `[data-act="open"][data-i="${i}"]`); }
+  const s = sc(), o = s.options[i], a = S.alloc[i], placed = placedOf(S.alloc), prevAlloc = S.alloc.slice();
+  if (act === 'span') S.span = ((S.span || 0) + 1) % spansFor(S.level, LEVEL_IDX[S.level - 1]).length;
+  else if (act === 'inc') { if (a < 0) S.alloc[i] = a + 1; else { if (a >= LONG_MAX || placed >= BUNDLES) return; S.alloc[i] = a + 1; } buzz(); }
+  else if (act === 'dec') { if (a > 0) S.alloc[i] = a - 1; else { if (!shortable(o) || a <= -SHORT_MAX || placed >= BUNDLES) return; S.alloc[i] = a - 1; } buzz(); }
+  else if (act === 'clear') S.alloc = S.alloc.map(() => 0);
+  else if (act === 'keep') S.alloc = lastRound().alloc.slice();
+  else return;
+  save();
+  refreshBet(prevAlloc, placed, b.dataset.i != null ? `[data-act="${act}"][data-i="${i}"]` : b.dataset.v ? `[data-act="${act}"][data-v="${b.dataset.v}"]` : `[data-act="${act}"]`, inSheet);
+});
+document.addEventListener('keydown', e => {
+  if (SHEET == null) return;
+  if (e.key === 'Escape') { e.preventDefault(); return closeSheet(); }
+  if (e.key === 'Tab') { const f = [...$('sheetBody').querySelectorAll('button:not(:disabled), [tabindex="0"]')]; if (!f.length) return; const a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
+});
+$('sheet').addEventListener('click', e => { if (e.target.classList.contains('scrim')) closeSheet(); });
+/* the light drifts on its own and moves gently with scroll */
+let aT = 0; window.addEventListener('scroll', () => { if (aT || REDUCED) return; aT = requestAnimationFrame(() => { aT = 0; const a = $('aura'); if (a) a.style.transform = `translate3d(0, ${(-window.scrollY * 0.12).toFixed(1)}px, 0)`; }); }, { passive: true });
+let rT; window.addEventListener('resize', () => { clearTimeout(rT); rT = setTimeout(() => { fitAll(app); drawCharts(false); }, 150); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => fitAll(app));
+try { window.claude?.hot?.snapshot?.(() => S); } catch (e) {}
+function start(data) { S = data && data.screen ? data : { screen: 'intro' }; S.anim = false; render(); }
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+</script>

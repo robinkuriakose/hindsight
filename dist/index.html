@@ -11,14 +11,14 @@
 <meta property="og:site_name" content="Hindsight">
 <meta property="og:title" content="Hindsight · Everyone’s a genius in hindsight">
 <meta property="og:description" content="Go back in time with ₹1 lakh and bet on real Indian markets from 2000 to 2026. Would you make it big, or will the classic FD beat you?">
-<meta property="og:image" content="og.png">
+<meta property="og:image" content="https://playhindsight.vercel.app/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-
+<meta property="og:url" content="https://playhindsight.vercel.app/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Hindsight · Everyone’s a genius in hindsight">
 <meta name="twitter:description" content="Go back in time with ₹1 lakh and bet on real Indian markets from 2000 to 2026. Would you make it big, or will the classic FD beat you?">
-<meta name="twitter:image" content="og.png">
+<meta name="twitter:image" content="https://playhindsight.vercel.app/og.png">
 <title>Hindsight · Everyone’s a genius in hindsight</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -47,6 +47,8 @@
   --maxw: 480px; --gut: 20px;
   --f: 'Geist', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --serif: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+  --cb1: #121216; --cb2: #08080a; --cgl: #7660ff; --cglo: .26; --cdot: #b3a5ff; --cdoto: .62; --ck0: #45454f; --cm0: #1f1f25; --ca0: .55; --ck1: #383841; --cm1: #1c1c22; --ca1: .5; --ck2: #2d2d35; --cm2: #18181d; --ca2: .6;
+  --cfg: #f4f4f6; --cfg2: rgb(255 255 255 / 60%); --cfg3: rgb(255 255 255 / 55%); --cedge: inset 0 1px 0 rgb(255 255 255 / 10%), inset 0 0 0 1px rgb(255 255 255 / 7%); --csh: 0 24px 48px -26px rgb(70 50 200 / 55%); --csh2: 0 34px 60px -26px rgb(90 70 230 / 65%);
 }
 :root[data-theme="light"] {
   color-scheme: light;
@@ -55,6 +57,8 @@
   --brand: #5a3fe6; --cta-bg: #5a3fe6; --seg-on: #fff;
   --gain: #067a47; --loss: #c4242b; --short: #915400;
   --paper: #fffdf7; --mat: rgb(246 246 248 / 78%);
+  --cb1: #ffffff; --cb2: #ececf2; --cgl: #8b74ff; --cglo: .2; --cdot: #5a3fe6; --cdoto: .55; --ck0: #d6d6de; --cm0: #ececf2; --ca0: .9; --ck1: #dcdce3; --cm1: #efeff4; --ca1: .85; --ck2: #e2e2e8; --cm2: #f2f2f6; --ca2: .9;
+  --cfg: #0b0b0d; --cfg2: rgb(11 11 13 / 58%); --cfg3: rgb(11 11 13 / 50%); --cedge: inset 0 1px 0 #fff, inset 0 0 0 1px rgb(0 0 0 / 7%); --csh: 0 24px 48px -28px rgb(70 50 200 / 30%); --csh2: 0 34px 60px -26px rgb(90 70 230 / 38%);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
@@ -64,6 +68,8 @@
     --brand: #5a3fe6; --cta-bg: #5a3fe6; --seg-on: #fff;
     --gain: #067a47; --loss: #c4242b; --short: #915400;
     --paper: #fffdf7; --mat: rgb(246 246 248 / 78%);
+    --cb1: #ffffff; --cb2: #ececf2; --cgl: #8b74ff; --cglo: .2; --cdot: #5a3fe6; --cdoto: .55; --ck0: #d6d6de; --cm0: #ececf2; --ca0: .9; --ck1: #dcdce3; --cm1: #efeff4; --ca1: .85; --ck2: #e2e2e8; --cm2: #f2f2f6; --ca2: .9;
+  --cfg: #0b0b0d; --cfg2: rgb(11 11 13 / 58%); --cfg3: rgb(11 11 13 / 50%); --cedge: inset 0 1px 0 #fff, inset 0 0 0 1px rgb(0 0 0 / 7%); --csh: 0 24px 48px -28px rgb(70 50 200 / 30%); --csh2: 0 34px 60px -26px rgb(90 70 230 / 38%);
   }
 }
 * { box-sizing: border-box; }
@@ -106,6 +112,7 @@ body[data-mood="brand"] .aura .a, body[data-mood="gain"] .aura .g, body[data-moo
   -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent); mask-image: linear-gradient(to bottom, #000 60%, transparent); }
 .brandmark { display: inline-flex; align-items: center; gap: 8px; justify-self: start; font-weight: 600; font-size: 17px; letter-spacing: -0.02em; }
 .brandmark svg { width: 22px; height: 22px; color: var(--brand); }
+.top .tr { display: flex; justify-self: end; }
 .ib { width: 44px; height: 44px; border-radius: var(--r-m); display: grid; place-items: center; color: var(--t1); justify-self: end; transition: background .25s var(--std), transform .25s var(--std); }
 .ib:hover { background: var(--s2); } .ib:active { transform: scale(.94); }
 .ib svg { width: 20px; height: 20px; }
@@ -270,9 +277,9 @@ button.nm:active { opacity: .55; }
 .tag { font-size: 38px; line-height: 46px; font-weight: 400; letter-spacing: -0.0467em; padding-top: 40px; text-wrap: balance; }
 .tag-sub { margin-top: 12px; font-size: 18px; line-height: 26px; letter-spacing: -0.035em; color: var(--t3); max-width: 520px; text-wrap: pretty; }
 .tag span { display: block; }
-.card { position: relative; aspect-ratio: 1.586; border-radius: var(--r-l); padding: 20px; color: #f4f4f6; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; isolation: isolate;
-  background: radial-gradient(120% 100% at 0% 0%, #6a55f0 0%, transparent 58%), radial-gradient(90% 90% at 100% 100%, #2a1e7a 0%, transparent 62%), #17132f;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 16%), inset 0 0 0 1px rgb(255 255 255 / 7%), 0 24px 48px -26px rgb(70 50 200 / 55%); transition: transform .45s var(--emph), box-shadow .45s var(--emph); }
+.card { position: relative; aspect-ratio: 1.586; border-radius: var(--r-l); padding: 20px; color: var(--cfg); overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; isolation: isolate;
+  background: var(--cb2);
+  box-shadow: var(--cedge), var(--csh); transition: transform .45s var(--emph), box-shadow .45s var(--emph); }
 .card::after { content: ""; position: absolute; inset: 0; z-index: -1; opacity: .14; mix-blend-mode: overlay;
   background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"); }
 .card::before { content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity .45s var(--emph); background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 0%), rgb(255 255 255 / 12%), transparent 62%); }
@@ -280,16 +287,16 @@ button.nm:active { opacity: .55; }
 .topo { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; fill: none; stroke: rgb(255 255 255 / 10%); stroke-width: .8; pointer-events: none; transition: transform 1.2s var(--emph); }
 .card > :not(.topo):not(.art), .poster > :not(.topo) { position: relative; z-index: 1; }
 @media (hover: hover) {
-  .card:hover { transform: translateY(-3px); box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), inset 0 0 0 1px rgb(255 255 255 / 9%), 0 34px 60px -26px rgb(90 70 230 / 65%); }
+  .card:hover { transform: translateY(-3px); box-shadow: var(--cedge), var(--csh2); }
   .card:hover::before { opacity: 1; }
   .card:hover .art { transform: translate(var(--px, 0), var(--py, 0)) scale(1.03); }
 }
 .card .ct-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-.card .brandmark { color: #fff; } .card .brandmark svg { color: #fff; }
-.card .yrbox { text-align: right; font-size: 13px; line-height: 18px; color: rgb(255 255 255 / 60%); }
-.card .yrbox .yv { font-size: 20px; line-height: 24px; font-weight: 600; color: #f4f4f6; letter-spacing: .02em; }
-.card .num { font-size: 28px; } .card .num .cur { color: rgb(255 255 255 / 55%); }
-.card .lbl { display: block; font-size: 13px; line-height: 18px; color: rgb(255 255 255 / 60%); margin-bottom: 4px; }
+.card .brandmark, .card .brandmark svg { color: var(--cfg); }
+.card .yrbox { text-align: right; font-size: 13px; line-height: 18px; color: var(--cfg2); }
+.card .yrbox .yv { font-size: 20px; line-height: 24px; font-weight: 600; color: var(--cfg); letter-spacing: .02em; }
+.card .num { font-size: 28px; } .card .num .cur { color: var(--cfg3); }
+.card .lbl { display: block; font-size: 13px; line-height: 18px; color: var(--cfg2); margin-bottom: 4px; }
 .steps .row { grid-template-columns: 24px minmax(0, 1fr); height: 64px; }
 .steps .n { color: var(--brand); font-weight: 600; }
 .steps .row + .row::before { display: none; }
@@ -391,7 +398,7 @@ details.more.wide { margin-top: 32px; }
   .tag { font-size: 48px; line-height: 56px; padding-top: 0; text-wrap: wrap; }
   .hero { padding-top: 0; }
   .tag-sub { margin-top: 18px; font-size: 22px; line-height: 29px; letter-spacing: -0.057em; }
-  .split.mid { align-items: center; min-height: calc(100vh - 220px); }
+  .split.mid > .col:first-child { position: sticky; top: 108px; height: calc(100vh - 156px); min-height: min-content; display: flex; flex-direction: column; justify-content: center; }
 }
 ::view-transition-old(root) { animation: vt-out .25s var(--std) both; }
 ::view-transition-new(root) { animation: vt-in .45s var(--emph) both; }
@@ -673,7 +680,7 @@ function yearHTML(y, n, from = n) {
 function topBar(step) {
   if (!step) return `<header class="top">${brandmark()}<span></span><button class="ib" data-act="theme" aria-label="${themeLabel()}">${I[THEME]}</button></header>`;
   const segs = [1, 2, 3, 4].map(i => `<i class="${i <= step ? 'on' : ''}"></i>`).join('');
-  return `<header class="top">${brandmark()}<div class="prog" role="img" aria-label="${step <= 4 ? `Round ${step} of 4` : 'All four rounds played'}">${segs}</div><button class="ib" data-act="home" aria-label="Exit. Your game is saved.">${I.x}</button></header>`;
+  return `<header class="top">${brandmark()}<div class="prog" role="img" aria-label="${step <= 4 ? `Round ${step} of 4` : 'All four rounds played'}">${segs}</div><div class="tr"><button class="ib" data-act="theme" aria-label="${themeLabel()}">${I[THEME]}</button><button class="ib" data-act="home" aria-label="Exit. Your game is saved.">${I.x}</button></div></header>`;
 }
 const beatTxt = b => (b >= 0.995 ? 'all' : b < 0.005 ? 'none' : Math.round(b * 100) + '%');
 const pill = (cls, txt, label) => `<span class="chip ${cls}">${label ? `<span class="lb">${label}</span>` : ''}${txt}</span>`;
@@ -814,14 +821,16 @@ const topoSVG = (w, h, seed) => `<svg class="topo" viewBox="0 0 ${w} ${h}" prese
 /* ---------- home card: Onyx glow. India from the Survey of India boundary (DataMeet), one dot per grid cell ---------- */
 const INDIA = {"india-dots": "9688,452,9922,452,9218,687,9453,687,9688,687,9922,687,10157,687,9453,922,9688,922,9922,922,10157,922,10391,922,10626,922,11095,922,11330,922,11565,922,9688,1156,9922,1156,10157,1156,10391,1156,10626,1156,10861,1156,11095,1156,11330,1156,9453,1391,9688,1391,9922,1391,10157,1391,10391,1391,10626,1391,10861,1391,11095,1391,11330,1391,9453,1626,9688,1626,9922,1626,10157,1626,10391,1626,10626,1626,10861,1626,11095,1626,9688,1860,9922,1860,10157,1860,10391,1860,10626,1860,10861,1860,11095,1860,9922,2095,10157,2095,10391,2095,10626,2095,10861,2095,9688,2330,9922,2330,10157,2330,10391,2330,10626,2330,10861,2330,9688,2564,9922,2564,10157,2564,10391,2564,10626,2564,10861,2564,11095,2564,9453,2799,9688,2799,9922,2799,10157,2799,10391,2799,10626,2799,10861,2799,11095,2799,11330,2799,11565,2799,9453,3034,9688,3034,9922,3034,10157,3034,10391,3034,10626,3034,10861,3034,11095,3034,11330,3034,11565,3034,9218,3268,9453,3268,9688,3268,9922,3268,10157,3268,10391,3268,10626,3268,10861,3268,11095,3268,11330,3268,16257,3268,16492,3268,16727,3268,8984,3503,9218,3503,9453,3503,9688,3503,9922,3503,10157,3503,10391,3503,10626,3503,10861,3503,11095,3503,11330,3503,11565,3503,11799,3503,16023,3503,16257,3503,16492,3503,16727,3503,8280,3737,8514,3737,8749,3737,8984,3737,9218,3737,9453,3737,9688,3737,9922,3737,10157,3737,10391,3737,10626,3737,10861,3737,11095,3737,11330,3737,11565,3737,11799,3737,12034,3737,14380,3737,15553,3737,15788,3737,16023,3737,16257,3737,16492,3737,16727,3737,16961,3737,17196,3737,8045,3972,8280,3972,8514,3972,8749,3972,8984,3972,9218,3972,9453,3972,9688,3972,9922,3972,10157,3972,10391,3972,10626,3972,10861,3972,11095,3972,11330,3972,11565,3972,11799,3972,12034,3972,12268,3972,12503,3972,12738,3972,12972,3972,14380,3972,15553,3972,15788,3972,16023,3972,16257,3972,16492,3972,16727,3972,17196,3972,8280,4207,8514,4207,8749,4207,8984,4207,9218,4207,9453,4207,9688,4207,9922,4207,10157,4207,10391,4207,10626,4207,10861,4207,11095,4207,11330,4207,11565,4207,11799,4207,12034,4207,12268,4207,12503,4207,12738,4207,12972,4207,13207,4207,13442,4207,13676,4207,14380,4207,14615,4207,14850,4207,15084,4207,15319,4207,15553,4207,15788,4207,16023,4207,16257,4207,16492,4207,8280,4441,8514,4441,8749,4441,8984,4441,9218,4441,9453,4441,9688,4441,9922,4441,10157,4441,10391,4441,10626,4441,10861,4441,11095,4441,11330,4441,11565,4441,11799,4441,12034,4441,12268,4441,12503,4441,12738,4441,12972,4441,13207,4441,13442,4441,13676,4441,13911,4441,14146,4441,14850,4441,15084,4441,15319,4441,15553,4441,15788,4441,16023,4441,16257,4441,16492,4441,8514,4676,8749,4676,8984,4676,9218,4676,9453,4676,9688,4676,9922,4676,10157,4676,10391,4676,10626,4676,10861,4676,11095,4676,11330,4676,11565,4676,11799,4676,12034,4676,12268,4676,12503,4676,12738,4676,12972,4676,13207,4676,13442,4676,13676,4676,13911,4676,14146,4676,15084,4676,15319,4676,15553,4676,15788,4676,16023,4676,16257,4676,8514,4911,8749,4911,8984,4911,9218,4911,9453,4911,9688,4911,9922,4911,10157,4911,10391,4911,10626,4911,10861,4911,11095,4911,11330,4911,11565,4911,11799,4911,12034,4911,12268,4911,12503,4911,12738,4911,12972,4911,13207,4911,13442,4911,13676,4911,13911,4911,14146,4911,15788,4911,16023,4911,16257,4911,7810,5145,8045,5145,8280,5145,8514,5145,8749,5145,8984,5145,9218,5145,9453,5145,9688,5145,9922,5145,10157,5145,10391,5145,10626,5145,10861,5145,11095,5145,11330,5145,11565,5145,11799,5145,12034,5145,12268,5145,12503,5145,12738,5145,12972,5145,13207,5145,13442,5145,13676,5145,13911,5145,14146,5145,14380,5145,15319,5145,15553,5145,15788,5145,7810,5380,8045,5380,8280,5380,8514,5380,8749,5380,8984,5380,9218,5380,9453,5380,9688,5380,9922,5380,10157,5380,10391,5380,10626,5380,10861,5380,11095,5380,11330,5380,11565,5380,11799,5380,12034,5380,12268,5380,12503,5380,12738,5380,12972,5380,13207,5380,13442,5380,13676,5380,13911,5380,14146,5380,14380,5380,15788,5380,8280,5614,8514,5614,8749,5614,8984,5614,9218,5614,9453,5614,9688,5614,9922,5614,10157,5614,10391,5614,10626,5614,10861,5614,11095,5614,11330,5614,11565,5614,11799,5614,12034,5614,12268,5614,12503,5614,12738,5614,12972,5614,13207,5614,13442,5614,13676,5614,13911,5614,14146,5614,14380,5614,15788,5614,8045,5849,8280,5849,8514,5849,8749,5849,8984,5849,9218,5849,9453,5849,9688,5849,9922,5849,10157,5849,10391,5849,10626,5849,10861,5849,11095,5849,11330,5849,11565,5849,11799,5849,12034,5849,12268,5849,12503,5849,12738,5849,12972,5849,13207,5849,13442,5849,13676,5849,13911,5849,14146,5849,8280,6084,8514,6084,8749,6084,9218,6084,9453,6084,9688,6084,9922,6084,10157,6084,10391,6084,10626,6084,10861,6084,11095,6084,11330,6084,11565,6084,11799,6084,12034,6084,12268,6084,12503,6084,12738,6084,12972,6084,13207,6084,13442,6084,13676,6084,9218,6318,9453,6318,9688,6318,9922,6318,10157,6318,10391,6318,10626,6318,10861,6318,11095,6318,11330,6318,11565,6318,11799,6318,12034,6318,12268,6318,12503,6318,12738,6318,12972,6318,13207,6318,13442,6318,13676,6318,9218,6553,9453,6553,9688,6553,9922,6553,10157,6553,10391,6553,10626,6553,10861,6553,11095,6553,11330,6553,11565,6553,11799,6553,12034,6553,12268,6553,12503,6553,12738,6553,12972,6553,13207,6553,13442,6553,9218,6788,9453,6788,9688,6788,9922,6788,10157,6788,10391,6788,10626,6788,10861,6788,11095,6788,11330,6788,11565,6788,11799,6788,12034,6788,12268,6788,12503,6788,12738,6788,12972,6788,9218,7022,9453,7022,9688,7022,9922,7022,10157,7022,10391,7022,10626,7022,10861,7022,11095,7022,11330,7022,11565,7022,11799,7022,12034,7022,12268,7022,12503,7022,12738,7022,12972,7022,9218,7257,9453,7257,9688,7257,9922,7257,10157,7257,10391,7257,10626,7257,10861,7257,11095,7257,11330,7257,11565,7257,11799,7257,12034,7257,12268,7257,12503,7257,9218,7492,9453,7492,9688,7492,9922,7492,10157,7492,10391,7492,10626,7492,10861,7492,11095,7492,11330,7492,11565,7492,11799,7492,12034,7492,12268,7492,9453,7726,9688,7726,9922,7726,10157,7726,10391,7726,10626,7726,10861,7726,11095,7726,11330,7726,11565,7726,11799,7726,12034,7726,9453,7961,9688,7961,9922,7961,10157,7961,10391,7961,10626,7961,10861,7961,11095,7961,11330,7961,11565,7961,11799,7961,9453,8196,9688,8196,9922,8196,10157,8196,10391,8196,10626,8196,10861,8196,11095,8196,11330,8196,9688,8430,9922,8430,10157,8430,10391,8430,10626,8430,10861,8430,11095,8430,11330,8430,9688,8665,9922,8665,10157,8665,10391,8665,10626,8665,10861,8665,11095,8665,11330,8665,9922,8899,10157,8899,10391,8899,10626,8899,10861,8899,11095,8899,11330,8899,11565,8899,9922,9134,10157,9134,10391,9134,10626,9134,10861,9134,11095,9134,11330,9134,11565,9134,15788,9134,9922,9369,10157,9369,10391,9369,10626,9369,10861,9369,11095,9369,11330,9369,15788,9369,10157,9603,10391,9603,10626,9603,10861,9603,11095,9603,11330,9603,10157,9838,10391,9838,10626,9838,10861,9838,11095,9838,11330,9838,10391,10072,10626,10072,10861,10072,11095,10072,10391,10307,10626,10307,10861,10307,11095,10307,10391,10542,10626,10542,10861,10542,10626,10776", "islands-andaman": "15553,9838,15788,8899,15788,9603,15788,10542,16022,10776,16022,11011,16022,11246", "islands-lakshadweep": "8749,9369,8749,9603,8749,9838,8984,10072,9453,9603"};
 const CHEV = ['M780.4 -130L76.9 436.2C1 511.8 1 587.2 76.9 662.8L780.4 1229H1859V-130H780.4Z', 'M954.5 -182L251 427.6C175 508.9 175 590.1 251 671.4L954.5 1281H1859V-182H954.5Z', 'M1128.6 -130L425 436.2C349 511.8 349 587.2 425 662.8L1128.6 1229H1859V-130H1128.6Z'];
-const CHX = [20, 194, 368], CHC = [['#45454f', '#1f1f25', .55], ['#383841', '#1c1c22', .5], ['#2d2d35', '#18181d', .6]];
+const CHX = [20, 194, 368];
 let CARD_SVG = '';
+/* colours come from --c* tokens (dark and light) so one SVG serves both themes */
 function cardArt() {
   if (CARD_SVG) return CARD_SVG;
   const dots = Object.values(INDIA).map(str => { const a = str.split(',').map(Number); let o = ''; for (let i = 0; i < a.length; i += 2) o += `<circle cx="${a[i] / 10}" cy="${a[i + 1] / 10}" r="5.03"/>`; return o; }).join('');
-  const grads = CHC.map(([tip, mid, a], i) => `<linearGradient id="hc${i}" x1="${CHX[i]}" y1="0" x2="1859" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="${tip}" stop-opacity="${a}"/><stop offset=".07" stop-color="${tip}" stop-opacity="${a * .9}"/><stop offset=".22" stop-color="${mid}" stop-opacity="${a * .5}"/><stop offset=".36" stop-color="${mid}" stop-opacity="${a * .18}"/><stop offset=".5" stop-color="${mid}" stop-opacity="0"/></linearGradient>`).join('');
-  return (CARD_SVG = `<svg class="art" viewBox="0 0 1743 1099" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hcb" x1="0" y1="0" x2="1743" y2="1099" gradientUnits="userSpaceOnUse"><stop stop-color="#121216"/><stop offset="1" stop-color="#08080a"/></linearGradient><radialGradient id="hcg" cx="1230" cy="520" r="640" gradientUnits="userSpaceOnUse"><stop stop-color="#7660ff" stop-opacity=".26"/><stop offset="1" stop-color="#7660ff" stop-opacity="0"/></radialGradient>${grads}</defs>
-    <rect width="1743" height="1099" fill="url(#hcb)"/><rect width="1743" height="1099" fill="url(#hcg)"/><g fill="#b3a5ff" fill-opacity=".62">${dots}</g>${CHEV.map((d, i) => `<path d="${d}" fill="url(#hc${i})"/>`).join('')}</svg>`);
+  const stop = (o, c, a) => `<stop offset="${o}" style="stop-color:var(${c});stop-opacity:${a}"/>`;
+  const grads = CHX.map((x, i) => `<linearGradient id="hc${i}" x1="${x}" y1="0" x2="1859" y2="0" gradientUnits="userSpaceOnUse">${stop(0, '--ck' + i, 1)}${stop(.07, '--ck' + i, .9)}${stop(.22, '--cm' + i, .5)}${stop(.36, '--cm' + i, .18)}${stop(.5, '--cm' + i, 0)}</linearGradient>`).join('');
+  return (CARD_SVG = `<svg class="art" viewBox="0 0 1743 1099" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="hcb" x1="0" y1="0" x2="1743" y2="1099" gradientUnits="userSpaceOnUse">${stop(0, '--cb1', 1)}${stop(1, '--cb2', 1)}</linearGradient><radialGradient id="hcg" cx="1230" cy="520" r="640" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:var(--cgl);stop-opacity:var(--cglo)"/>${stop(1, '--cgl', 0)}</radialGradient>${grads}</defs>
+    <rect width="1743" height="1099" fill="url(#hcb)"/><rect width="1743" height="1099" fill="url(#hcg)"/><g style="fill:var(--cdot);fill-opacity:var(--cdoto)">${dots}</g>${CHEV.map((d, i) => `<path d="${d}" fill="url(#hc${i})" style="opacity:var(--ca${i})"/>`).join('')}</svg>`);
 }
 
 /* ---------- intro ---------- */

@@ -1,4 +1,9 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "echo 'dist/ is prebuilt; see CLAUDE.md'",
+  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/(.*)",

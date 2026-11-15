@@ -1,0 +1,632 @@
+[
+ {
+  "id": "y2k",
+  "title": "The Millennium Bet",
+  "start": [
+   2000,
+   1
+  ],
+  "assets": [
+   "WIPRO",
+   "HCLTECH",
+   "RELIANCE",
+   "ITC",
+   "GOLD",
+   "USD"
+  ],
+  "story": "January 2000 was the height of the dot-com mania. Within two years Wipro had lost 42% and HCL Technologies 64%. Reliance compounded about 15x by 2008 despite the Ambani brothers' split, ITC rose almost 5x, and gold began a decade-long bull run from near a 20-year low. Patient HCL holders were finally rewarded after 2008, with about 17x more by 2026.",
+  "headlines": [
+   {
+    "text": "Three new states are carved out of Madhya Pradesh, Uttar Pradesh and Bihar",
+    "when": "November 2000"
+   },
+   {
+    "text": "Delhi's first Metro line opens to the public between Shahdara and Tis Hazari",
+    "when": "December 2002"
+   },
+   {
+    "text": "India's largest software company makes its stock market debut",
+    "when": "August 2004 (TCS lists)"
+   },
+   {
+    "text": "A visiting US President agrees a plan to separate India's civilian and military nuclear sites",
+    "when": "March 2006 (George W. Bush)"
+   }
+  ]
+ },
+ {
+  "id": "supercycle",
+  "title": "The Commodity Supercycle",
+  "start": [
+   2003,
+   1
+  ],
+  "assets": [
+   "BHEL",
+   "SAIL",
+   "COPPER",
+   "BRENT",
+   "SILVER",
+   "ALUMINIUM"
+  ],
+  "story": "China's building boom lifted metals and oil from 2003, and India's state-owned industrials went with it: SAIL rose 6x in two years and BHEL about 27x by 2011. Crude hit $147 a barrel in July 2008 and fell below $40 by December. After 2011 the party was over for steel: SAIL is lower today than in January 2011, while silver went on to multiply about 4x.",
+  "headlines": [
+   {
+    "text": "The Prime Minister announces India will send an unmanned mission to the Moon",
+    "when": "August 2003 (Chandrayaan announced)"
+   },
+   {
+    "text": "Parliament passes a law giving citizens the right to demand information from the government",
+    "when": "May 2005 (RTI Act)"
+   },
+   {
+    "text": "An Indian steelmaker wins a bidding war for Anglo-Dutch Corus",
+    "when": "January 2007 (Tata Steel)"
+   },
+   {
+    "text": "A film set in Mumbai's slums wins eight Oscars, two of them for A. R. Rahman",
+    "when": "February 2009 (Slumdog Millionaire)"
+   }
+  ]
+ },
+ {
+  "id": "openroad",
+  "title": "Open Road",
+  "start": [
+   2004,
+   1
+  ],
+  "assets": [
+   "MARUTI",
+   "MRF",
+   "ASHOKLEY",
+   "ONGC",
+   "BRENT",
+   "USD"
+  ],
+  "story": "India's car and truck boom: Maruti Suzuki rose 2.5x in eight years and MRF nearly 3x, while crude oil quadrupled. The bigger money came after 2012. MRF climbed another 18x to become India's most expensive share, and Maruti and Ashok Leyland gained 14-15x. ONGC, the oil producer, barely moved.",
+  "headlines": [
+   {
+    "text": "India's cricketers tour Pakistan for a full series for the first time in 14 years",
+    "when": "March 2004"
+   },
+   {
+    "text": "India plays its first-ever Twenty20 international, in Johannesburg",
+    "when": "December 2006"
+   },
+   {
+    "text": "A car priced at one lakh rupees is unveiled at the Delhi Auto Expo",
+    "when": "January 2008 (Tata Nano)"
+   },
+   {
+    "text": "The first 12-digit unique identity numbers are handed out in a Maharashtra village",
+    "when": "September 2010 (Aadhaar)"
+   }
+  ]
+ },
+ {
+  "id": "boombust",
+  "title": "Boom, Bust, Repeat",
+  "start": [
+   2007,
+   1
+  ],
+  "assets": [
+   "SUZLON",
+   "UNITECH",
+   "RCOM",
+   "ICICIBANK",
+   "TCS",
+   "BRENT"
+  ],
+  "story": "2007 was the top of India's great bull run. Suzlon, Unitech and Reliance Communications were the darlings; by 2015 they had lost 82-95% of their value, and Unitech's promoters later went to jail. ICICI Bank halved in the 2008 crash and recovered. TCS fell 60% and then rose about 10x from the bottom. Crude touched $147 in July 2008 before collapsing.",
+  "headlines": [
+   {
+    "text": "A British telecom giant pays over $10 billion for control of Hutchison Essar",
+    "when": "February 2007 (Vodafone)"
+   },
+   {
+    "text": "India's first lunar probe helps find evidence of water on the Moon",
+    "when": "September 2009 (Chandrayaan-1)"
+   },
+   {
+    "text": "Treasure worth over a lakh crore rupees is found in the vaults of a Kerala temple",
+    "when": "June 2011 (Padmanabhaswamy)"
+   },
+   {
+    "text": "The Supreme Court gives voters a 'None of the Above' button",
+    "when": "September 2013 (NOTA)"
+   }
+  ]
+ },
+ {
+  "id": "ipo",
+  "title": "The Biggest IPO Ever",
+  "start": [
+   2008,
+   3
+  ],
+  "assets": [
+   "RPOWER",
+   "RELIANCE",
+   "DLF",
+   "GOLD",
+   "BRENT",
+   "USD"
+  ],
+  "story": "Reliance Power's February 2008 IPO was oversubscribed about 70 times, then closed below its issue price on listing day. You arrived a month later. By 2016 it had lost 82% and DLF 86%. Reliance Industries went nowhere for eight years, then rose about 6x by 2026 on Jio and retail. Gold doubled, and crude ended below where you started.",
+  "headlines": [
+   {
+    "text": "An Indian carmaker agrees to buy Jaguar and Land Rover from Ford",
+    "when": "March 2008 (Tata Motors)"
+   },
+   {
+    "text": "The first double century in men's one-day international cricket is scored",
+    "when": "February 2010 (Sachin Tendulkar)"
+   },
+   {
+    "text": "Regulators suspend the flying licence of a liquor baron's airline",
+    "when": "October 2012 (Kingfisher Airlines)"
+   },
+   {
+    "text": "An Indian e-commerce startup raises $1 billion in a single funding round",
+    "when": "July 2014 (Flipkart)"
+   }
+  ]
+ },
+ {
+  "id": "telecom",
+  "title": "The Telecom Wars",
+  "start": [
+   2009,
+   1
+  ],
+  "assets": [
+   "RCOM",
+   "BHARTIARTL",
+   "IDEA",
+   "TCS",
+   "COPPER",
+   "USD"
+  ],
+  "story": "Right after the 2008 crash, a dozen operators were fighting a tariff war. Reliance Communications lost 86% by 2017 and later went bankrupt. Idea did well until Jio arrived in late 2016, then lost most of its value. Bharti Airtel went sideways for eight years before rising about 7.5x. The quiet winner was TCS, up 9.5x.",
+  "headlines": [
+   {
+    "text": "A former Infosys CEO is picked to lead a new national identity authority",
+    "when": "June 2009 (Nandan Nilekani)"
+   },
+   {
+    "text": "A 73-year-old activist's hunger strike for an anti-corruption ombudsman draws huge crowds",
+    "when": "April 2011 (Anna Hazare)"
+   },
+   {
+    "text": "Sachin Tendulkar plays his 200th and final Test match",
+    "when": "November 2013"
+   },
+   {
+    "text": "The Planning Commission is replaced by a new policy think tank",
+    "when": "January 2015 (NITI Aayog)"
+   }
+  ]
+ },
+ {
+  "id": "scams",
+  "title": "Scam Season",
+  "start": [
+   2010,
+   1
+  ],
+  "assets": [
+   "UNITECH",
+   "HCC",
+   "HINDCOPPER",
+   "BHARTIARTL",
+   "SILVER",
+   "GOLD"
+  ],
+  "story": "2010 brought the 2G spectrum and Commonwealth Games scandals. Unitech, whose managing director was arrested in the 2G case, lost 86% by 2018. HCC, the builder behind Lavasa, lost 44%, and Hindustan Copper fell 73% after a speculative frenzy. Silver nearly doubled to its 2011 peak and then gave most of it back. Bharti Airtel was the steady survivor.",
+  "headlines": [
+   {
+    "text": "The government auctions 3G mobile airwaves for the first time",
+    "when": "April-May 2010"
+   },
+   {
+    "text": "Two regional power grids collapse, leaving over 600 million people without electricity",
+    "when": "July 2012"
+   },
+   {
+    "text": "India's Mars orbiter reaches Mars on its first attempt",
+    "when": "September 2014 (Mangalyaan)"
+   },
+   {
+    "text": "Parliament passes a constitutional amendment to create a single nationwide sales tax",
+    "when": "August 2016 (GST bill)"
+   }
+  ]
+ },
+ {
+  "id": "credit",
+  "title": "Credit Where It's Due",
+  "start": [
+   2011,
+   7
+  ],
+  "assets": [
+   "BAJFINANCE",
+   "EICHERMOT",
+   "INFY",
+   "SBIN",
+   "GOLD",
+   "BRENT"
+  ],
+  "story": "Bajaj Finance turned loans for fridges and phones into one of India's greatest wealth creators: about 61x in eight years and about 179x by 2026. Royal Enfield's revival took Eicher Motors up 15x. Infosys doubled and SBI rose 49%, while crude crashed from over $100 to under $50 in 2014-15.",
+  "headlines": [
+   {
+    "text": "A former telecom minister is arrested over the allocation of 2G spectrum",
+    "when": "February 2011 (A. Raja)"
+   },
+   {
+    "text": "India launches its first mission to Mars",
+    "when": "November 2013 (Mangalyaan)"
+   },
+   {
+    "text": "A popular instant noodle brand is banned by the food regulator",
+    "when": "June 2015 (Maggi)"
+   },
+   {
+    "text": "Apple begins assembling iPhones at a plant in Bengaluru",
+    "when": "May 2017 (Wistron)"
+   }
+  ]
+ },
+ {
+  "id": "banks",
+  "title": "Banking on Growth",
+  "start": [
+   2012,
+   1
+  ],
+  "assets": [
+   "YESBANK",
+   "HDFCBANK",
+   "KOTAKBANK",
+   "PNB",
+   "SILVER",
+   "EUR"
+  ],
+  "story": "Yes Bank was India's fastest-growing bank and rose almost 7x in six years. Then it collapsed: by January 2020 it was back where you started, and an RBI rescue followed in March. Kotak and HDFC Bank compounded 6-8x. Punjab National Bank lost 58% as bad loans and the Nirav Modi fraud came to light.",
+  "headlines": [
+   {
+    "text": "WHO removes India from its list of countries where polio is endemic",
+    "when": "February 2012"
+   },
+   {
+    "text": "The government launches a campaign to turn India into a global manufacturing hub",
+    "when": "September 2014 (Make in India)"
+   },
+   {
+    "text": "An Indian shuttler wins Olympic silver in Rio",
+    "when": "August 2016 (P. V. Sindhu)"
+   },
+   {
+    "text": "An American retail giant buys a controlling stake in India's biggest e-commerce company",
+    "when": "May 2018 (Walmart-Flipkart)"
+   }
+  ]
+ },
+ {
+  "id": "premium",
+  "title": "Premium India",
+  "start": [
+   2012,
+   7
+  ],
+  "assets": [
+   "PAGEIND",
+   "ASIANPAINT",
+   "TITAN",
+   "JUBLFOOD",
+   "GOLD",
+   "BRENT"
+  ],
+  "story": "The brands India's new middle class paid up for. Page Industries (Jockey) rose 7x, Asian Paints and Titan more than 4x, and Jubilant FoodWorks (Domino's) nearly 3x. Crude lost 44% over the same eight years, and gold did little until 2019.",
+  "headlines": [
+   {
+    "text": "Saina Nehwal wins India's first Olympic medal in badminton",
+    "when": "August 2012 (London)"
+   },
+   {
+    "text": "A nationwide cleanliness campaign is launched on Gandhi Jayanti",
+    "when": "October 2014 (Swachh Bharat)"
+   },
+   {
+    "text": "The Supreme Court bans liquor sales within 500 metres of highways",
+    "when": "December 2016"
+   },
+   {
+    "text": "Kerala is hit by its worst floods in nearly a century",
+    "when": "August 2018"
+   }
+  ]
+ },
+ {
+  "id": "taper",
+  "title": "The Taper Tantrum",
+  "start": [
+   2013,
+   1
+  ],
+  "assets": [
+   "SUNPHARMA",
+   "SBIN",
+   "INFY",
+   "HINDUNILVR",
+   "USD",
+   "GOLD"
+  ],
+  "story": "In mid-2013 the US Federal Reserve hinted it would slow its bond buying, and the rupee fell to a record low near 69 to the dollar. Sun Pharma more than doubled in two years, then lost almost half amid its Ranbaxy merger and US regulator trouble. Hindustan Unilever and Infosys each rose over 4x, while SBI barely moved in eight years.",
+  "headlines": [
+   {
+    "text": "India takes delivery of a refitted Soviet-era aircraft carrier from Russia",
+    "when": "November 2013 (INS Vikramaditya)"
+   },
+   {
+    "text": "The Supreme Court strikes down a law used to arrest people over online posts",
+    "when": "March 2015 (Section 66A)"
+   },
+   {
+    "text": "A new nationwide tax is launched at a midnight session of Parliament",
+    "when": "July 2017 (GST)"
+   },
+   {
+    "text": "India's lunar lander loses contact moments before touchdown",
+    "when": "September 2019 (Chandrayaan-2)"
+   }
+  ]
+ },
+ {
+  "id": "goldrush",
+  "title": "All That Glitters",
+  "start": [
+   2014,
+   1
+  ],
+  "assets": [
+   "PCJEWELLER",
+   "TITAN",
+   "MUTHOOTFIN",
+   "GOLD",
+   "SILVER",
+   "PLATINUM"
+  ],
+  "story": "PC Jeweller rose about 11x by January 2018, then lost 95% in two years amid governance concerns in the wake of the Nirav Modi scandal. Titan (Tanishq) and gold-loan lender Muthoot Finance compounded 11-14x. Gold and silver did little until 2019 and then took off.",
+  "headlines": [
+   {
+    "text": "An Indian-born engineer is named CEO of Microsoft",
+    "when": "February 2014 (Satya Nadella)"
+   },
+   {
+    "text": "A liquor baron leaves India as banks chase about Rs 9,000 crore in dues",
+    "when": "March 2016 (Vijay Mallya)"
+   },
+   {
+    "text": "The world's tallest statue is unveiled in Gujarat",
+    "when": "October 2018 (Statue of Unity)"
+   },
+   {
+    "text": "India bans TikTok and 58 other Chinese apps",
+    "when": "June 2020"
+   }
+  ]
+ },
+ {
+  "id": "pharma",
+  "title": "Pharma Rollercoaster",
+  "start": [
+   2015,
+   1
+  ],
+  "assets": [
+   "LUPIN",
+   "DRREDDY",
+   "BIOCON",
+   "MARUTI",
+   "BRENT",
+   "EUR"
+  ],
+  "story": "A brutal stretch for Indian generic drugmakers as US drug prices fell and the US regulator cracked down on plants. Lupin lost half its value in eight years. Biocon's biosimilars took it up over 6x by 2021 before it fell back. Maruti Suzuki rose 2.5x.",
+  "headlines": [
+   {
+    "text": "The government launches a programme to put public services online",
+    "when": "July 2015 (Digital India)"
+   },
+   {
+    "text": "India's women cricketers reach the World Cup final at Lord's",
+    "when": "July 2017"
+   },
+   {
+    "text": "Electronic toll tags become mandatory on national highways",
+    "when": "December 2019 (FASTag)"
+   },
+   {
+    "text": "India administers its 100-crore-th Covid vaccine dose",
+    "when": "October 2021"
+   }
+  ]
+ },
+ {
+  "id": "power",
+  "title": "Power Play",
+  "start": [
+   2016,
+   1
+  ],
+  "assets": [
+   "GENUSPOWER",
+   "ADANIENT",
+   "TATAPOWER",
+   "TCS",
+   "COPPER",
+   "NATGAS"
+  ],
+  "story": "Adani Enterprises rose about 25x in six years, crashed after the Hindenburg report in January 2023, and still ended about 43x. Tata Power and Genus Power multiplied in 2020-24 on renewables and smart meters. TCS compounded and then went flat.",
+  "headlines": [
+   {
+    "text": "Parliament passes a new law for resolving corporate insolvency",
+    "when": "May 2016 (IBC)"
+   },
+   {
+    "text": "The Supreme Court decriminalises homosexuality",
+    "when": "September 2018 (Section 377)"
+   },
+   {
+    "text": "The Supreme Court grants women officers permanent commission in the Army",
+    "when": "February 2020"
+   },
+   {
+    "text": "Air India returns to the Tata Group after 69 years",
+    "when": "January 2022"
+   }
+  ]
+ },
+ {
+  "id": "jio",
+  "title": "The Jio Effect",
+  "start": [
+   2016,
+   7
+  ],
+  "assets": [
+   "RELIANCE",
+   "BHARTIARTL",
+   "IDEA",
+   "INFY",
+   "GOLD",
+   "USD"
+  ],
+  "story": "Reliance Jio launched in September 2016 with free calls and almost-free data. Idea merged with Vodafone, raised money again and again, and still lost 72% by 2024. Bharti Airtel survived and rose over 4x. Reliance rose 7x, raising money from Facebook and Google for Jio in 2020.",
+  "headlines": [
+   {
+    "text": "ISRO tests a scale model of a reusable space shuttle",
+    "when": "May 2016 (RLV-TD)"
+   },
+   {
+    "text": "The Supreme Court upholds Aadhaar but limits where it can be demanded",
+    "when": "September 2018"
+   },
+   {
+    "text": "The IPL is played entirely in the UAE, in empty stadiums",
+    "when": "September-November 2020"
+   },
+   {
+    "text": "India overtakes the UK to become the world's fifth-largest economy",
+    "when": "September 2022"
+   }
+  ]
+ },
+ {
+  "id": "smallcap",
+  "title": "Smallcap Fever",
+  "start": [
+   2017,
+   1
+  ],
+  "assets": [
+   "GRAPHITE",
+   "VAKRANGEE",
+   "AVANTIFEED",
+   "INDIGO",
+   "COPPER",
+   "GOLD"
+  ],
+  "story": "2017 was a smallcap mania. Graphite India rose about 14x by mid-2018 as Chinese electrode plants shut, then lost most of it within a year. Vakrangee went from favourite to pariah when its auditor quit in 2018. IndiGo became India's dominant airline after Jet Airways collapsed in 2019, rising over 5x.",
+  "headlines": [
+   {
+    "text": "ISRO puts a record 104 satellites into orbit with a single rocket",
+    "when": "February 2017"
+   },
+   {
+    "text": "A visa-free corridor opens for Indian pilgrims to a gurdwara in Pakistan",
+    "when": "November 2019 (Kartarpur)"
+   },
+   {
+    "text": "An Indian javelin thrower wins Olympic gold in athletics",
+    "when": "August 2021 (Neeraj Chopra)"
+   },
+   {
+    "text": "India overtakes China as the world's most populous country",
+    "when": "April 2023 (UN estimate)"
+   }
+  ]
+ },
+ {
+  "id": "pandemic",
+  "title": "The Pandemic Pivot",
+  "start": [
+   2018,
+   1
+  ],
+  "assets": [
+   "YESBANK",
+   "TANLA",
+   "RELIANCE",
+   "DEEPAKNTR",
+   "GOLD",
+   "BRENT"
+  ],
+  "story": "Yes Bank lost 93% and had to be rescued by the RBI. Tanla, an obscure SMS company, rose about 45x in four years as OTPs and digital payments boomed, then gave back much of it. Deepak Nitrite rose 11x in the chemicals boom, and gold rose 5x.",
+  "headlines": [
+   {
+    "text": "A health insurance scheme covering 500 million people is launched",
+    "when": "September 2018 (Ayushman Bharat)"
+   },
+   {
+    "text": "A new National Education Policy replaces the 1986 framework",
+    "when": "July 2020"
+   },
+   {
+    "text": "India's largest insurer lists in the country's biggest IPO",
+    "when": "May 2022 (LIC)"
+   },
+   {
+    "text": "An 18-year-old becomes the youngest undisputed world chess champion",
+    "when": "December 2024 (D. Gukesh)"
+   }
+  ]
+ },
+ {
+  "id": "defence",
+  "title": "The Defence Dividend",
+  "start": [
+   2018,
+   7
+  ],
+  "assets": [
+   "HAL",
+   "BEL",
+   "COCHINSHIP",
+   "COALINDIA",
+   "GOLD",
+   "BRENT"
+  ],
+  "story": "After the Galwan clash in 2020, India pushed hard to build its own weapons. Hindustan Aeronautics and Bharat Electronics rose 10-12x in eight years, and Cochin Shipyard rose about 15x in just two, 2022-24. Coal India, out of favour for years, more than doubled in the same stretch.",
+  "headlines": [
+   {
+    "text": "The Supreme Court allows women of all ages into the Sabarimala temple",
+    "when": "September 2018"
+   },
+   {
+    "text": "Indian and Chinese troops clash in the Galwan Valley",
+    "when": "June 2020"
+   },
+   {
+    "text": "India swears in its first tribal President",
+    "when": "July 2022 (Droupadi Murmu)"
+   },
+   {
+    "text": "India wins the T20 World Cup in Barbados",
+    "when": "June 2024"
+   }
+  ]
+ }
+]
