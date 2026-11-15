@@ -298,8 +298,8 @@ button.nm:active { opacity: .55; }
 .hist .legend { margin: 14px 0 0; }
 .hist.wide { margin-top: 32px; } .hist .hs-w { display: none; }
 /* legend row with the "Max possible" switch on its right */
-.lgrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.lgrow .legend { margin-bottom: 0; flex: 1; min-width: 0; }
+.lgrow { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 10px 12px; margin-bottom: 12px; }
+.lgrow .legend { margin-bottom: 0; flex: 1 1 180px; min-width: 0; }
 .tgl { position: relative; display: inline-flex; align-items: center; gap: 8px; flex: none; font-size: 13px; line-height: 18px; color: var(--t2); transition: color .25s var(--std); }
 .tgl::after { content: ""; position: absolute; inset: -13px -8px; }
 .tgl .sw { position: relative; width: 28px; height: 16px; border-radius: 8px; background: var(--s3); transition: background .25s var(--std); }
