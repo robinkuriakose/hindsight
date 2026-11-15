@@ -121,6 +121,9 @@ body[data-mood="brand"] .aura .a, body[data-mood="gain"] .aura .g, body[data-moo
 .pending .fade { opacity: 0; transform: translateY(6px); }
 .pending .after { display: none; }
 .after { animation: rise .45s var(--emph) both; }
+/* the next step appears with the results, not while the line is still drawing */
+.pending .dock { opacity: 0; visibility: hidden; transform: translateY(16px); pointer-events: none; }
+.dock { transition: opacity .45s var(--emph), transform .45s var(--emph), visibility .45s; }
 
 /* year slots */
 .yr { display: inline-flex; align-items: flex-end; font-weight: 600; letter-spacing: 0.02em; color: inherit; }
