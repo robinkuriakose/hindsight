@@ -317,6 +317,11 @@ button.nm:active { opacity: .55; }
 .hist svg { display: block; width: 100%; height: auto; margin-top: 18px; overflow: visible; }
 .hist text { font: 500 12px var(--f); fill: var(--t3); }
 .hist .legend { margin: 14px 0 0; }
+.hist svg.hs { touch-action: pan-y; cursor: crosshair; outline: none; }
+.hist svg.hs .hb { transition: opacity .2s var(--std); }
+.hist svg.hs.hov .hb { opacity: .3; } .hist svg.hs.hov .hb.on { opacity: 1; filter: brightness(1.25); }
+.hist svg.hs.hov > text:not(.htip text) { opacity: .2; }
+.hist svg.hs:focus-visible { outline: 2px solid var(--brand); outline-offset: 4px; border-radius: 6px; }
 .hist.wide { margin-top: 32px; } .hist .hs-w { display: none; }
 /* legend row with the "Max possible" switch on its right */
 .lgrow { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 10px 12px; margin-bottom: 12px; }
@@ -727,6 +732,17 @@ function bindScrub(el, n, xOf, W, onShow, onHide, isBusy) {
 /* One chart for the round and the whole game. The line runs edge to edge; labels live in the legend above.
    The whole line takes the colour of where it is right now against the bank: green above, red below. While it draws,
    every crossing flips the line, the dots and the light behind the screen together. */
+/* Legend items are [dot colour | null, label, value, value colour?]. Every state (idle and each scrub point)
+   has the same items in the same order, and each value gets the width of its widest reading,
+   so scrubbing only changes digits: no reflow, no line count changes. */
+function stableLegend(legendEl, states) {
+  const probe = document.createElement('b'); probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap';
+  legendEl.appendChild(probe);
+  const widths = [];
+  states.forEach(items => items.forEach((it, j) => { probe.textContent = it[2]; widths[j] = Math.max(widths[j] || 0, Math.ceil(probe.getBoundingClientRect().width)); }));
+  probe.remove();
+  return items => items.map(([dot, label, val, col], j) => `<span>${dot ? `<i style="background:${dot}"></i>` : ''}${label ? esc(label) + ' ' : ''}<b style="min-width:${widths[j]}px${col ? ';color:' + col : ''}">${val}</b></span>`).join('');
+}
 function lineChart(el, o) {
   const { you, bank, xl, ticks, log, markIdx, play, legendEl, heroEl, onScrub, onLand, onSide } = o;
   const W = Math.max(280, Math.round(el.clientWidth || 340)), H = o.height || 196, g = gutOf(el), m = { l: 8, r: 8, t: 14, b: 28 }, n = you.length;
@@ -757,10 +773,15 @@ function lineChart(el, o) {
   const svg = el.querySelector('svg'), guide = el.querySelector('.guide'), dot = el.querySelector('.gdot'), rect = el.querySelector('.cpr'), end = el.querySelector('.end'), halo = el.querySelector('.hl0');
   const setSide = sd => { if (svg.dataset.side !== sd) svg.dataset.side = sd; onSide && onSide(sd); };
   setSide(play ? firstSide : finalSide);
-  legendEl.innerHTML = o.legend(null); legendEl.classList.toggle('later', play); legendEl.classList.toggle('in', !play);
+  const states = [null, ...you.map((_, i) => i)];
+  let leg = stableLegend(legendEl, states.map(o.items));
+  const legend = i => o.items(i == null ? null : i);
+  legendEl.innerHTML = leg(legend(null)); legendEl.classList.toggle('later', play); legendEl.classList.toggle('in', !play);
+  /* the web font can land after the first measure: measure again once it has */
+  if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(() => { if (!legendEl.isConnected) return; leg = stableLegend(legendEl, states.map(o.items)); legendEl.innerHTML = leg(legend(null)); });
   let busy = play;
-  bindScrub(el, n, x, W, i => { guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('visibility', 'visible'); dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(you[i])); dot.setAttribute('visibility', 'visible'); legendEl.innerHTML = o.legend(i); onScrub(i); },
-    () => { guide.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); legendEl.innerHTML = o.legend(null); onScrub(null); }, () => busy);
+  bindScrub(el, n, x, W, i => { guide.setAttribute('x1', x(i)); guide.setAttribute('x2', x(i)); guide.setAttribute('visibility', 'visible'); dot.setAttribute('cx', x(i)); dot.setAttribute('cy', y(you[i])); dot.setAttribute('visibility', 'visible'); legendEl.innerHTML = leg(legend(i)); onScrub(i); },
+    () => { guide.setAttribute('visibility', 'hidden'); dot.setAttribute('visibility', 'hidden'); legendEl.innerHTML = leg(legend(null)); onScrub(null); }, () => busy);
   if (!play) return;
   lockFit(heroEl, you); setNum(heroEl, you[0]);
   /* time runs on the Reveal curve, but every crossing of the bank line slows it for a beat so the flip lands */
@@ -787,15 +808,16 @@ function histSVG(finals, you, bank, W = 400, H = 136) {
   const xv = v => W * (Math.log(Math.max(v, lo)) - la) / (lb - la), counts = new Array(B).fill(0);
   pos.forEach(v => { counts[Math.min(B - 1, Math.floor(xv(v) / W * B))]++; });
   const mc = Math.max(...counts), bw = W / B, xy = xv(Math.max(you, lo)), xb = xv(bank);
-  const bars = counts.map((c, i) => { const h = c ? Math.max(3, c / mc * (base - 30)) : 0, x0 = i * bw; return h ? `<rect x="${(x0 + 1).toFixed(1)}" y="${(base - h).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${x0 + bw <= xy + 0.5 ? 'var(--brand)' : 'var(--s3)'}"/>` : ''; }).join('');
+  const bars = counts.map((c, i) => { const h = c ? Math.max(3, c / mc * (base - 30)) : 0, x0 = i * bw; return h ? `<rect class="hb" data-i="${i}" x="${(x0 + 1).toFixed(1)}" y="${(base - h).toFixed(1)}" width="${(bw - 2).toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${x0 + bw <= xy + 0.5 ? 'var(--brand)' : 'var(--s3)'}"/>` : ''; }).join('');
   const cand = []; for (let e = Math.floor(Math.log10(lo)); e <= Math.ceil(Math.log10(hi)); e++) for (const k of [1, 2, 5]) { const v = k * 10 ** e; if (v >= lo && v <= hi) cand.push(v); }
   const tk = cand.length <= 3 ? cand : [...new Set([cand[0], cand[Math.round((cand.length - 1) / 2)], cand[cand.length - 1]])];
   const anc = v => (v < 36 ? 'start' : v > W - 36 ? 'end' : 'middle'), close = Math.abs(xy - xb) < 64;
   const ya = close ? (xy < xb ? 'end' : 'start') : anc(xy), ba = close ? (xy < xb ? 'start' : 'end') : anc(xb), yd = close ? (xy < xb ? -6 : 6) : 0, bd = close ? (xy < xb ? 6 : -6) : 0;
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Distribution of ${nf.format(finals.length)} random plays. You ${inr(you)}. The bank ${inr(bank)}.">${bars}
+  return `<svg class="hs" viewBox="0 0 ${W} ${H}" role="img" tabindex="0" data-w="${W}" data-la="${la}" data-lb="${lb}" data-c="${counts.join(',')}" data-n="${pos.length}" aria-label="Distribution of ${nf.format(finals.length)} random plays. You ${inr(you)}. The bank ${inr(bank)}. Use the arrow keys to read each bar.">${bars}
     <line x1="0" x2="${W}" y1="${base}" y2="${base}" stroke="var(--hair)"/>
     <line x1="${xb}" x2="${xb}" y1="16" y2="${base}" stroke="var(--t2)" stroke-width="1.25" stroke-dasharray="2 3"/><text x="${xb + bd}" y="10" text-anchor="${ba}" style="fill:var(--t2)">Bank</text>
     <line x1="${xy}" x2="${xy}" y1="16" y2="${base}" stroke="var(--t1)" stroke-width="2"/><circle cx="${xy}" cy="16" r="3.5" fill="var(--t1)"/><text x="${xy + yd}" y="10" text-anchor="${ya}" style="fill:var(--t1);font-weight:600">You</text>
+    <g class="htip" visibility="hidden"><rect y="-2" height="18" rx="5" fill="var(--s2)"/><text y="11" text-anchor="middle" style="fill:var(--t1);font-weight:500"></text></g>
     ${tk.map(v => `<line x1="${xv(v)}" x2="${xv(v)}" y1="${base}" y2="${base + 4}" stroke="var(--t3)"/><text x="${xv(v)}" y="${H - 4}" text-anchor="${anc(xv(v))}">${inrShort(v)}</text>`).join('')}</svg>`;
 }
 /* price since the start, in the sheet: % only, so prices don't give the year away */
@@ -1024,9 +1046,38 @@ async function shareImage(b) {
 /* a plain download works on a hosted page; inside an embedding viewer without the downloads capability it would not, so the button goes */
 const EMBEDDED = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 function initShare() { const b = app.querySelector('[data-act="image"]'); if (!b) return; dlReady.then(dl => { if (!dl && !canShareFiles && EMBEDDED && b.isConnected) b.remove(); }); }
+function bindHist(root) {
+  root.querySelectorAll('svg.hs').forEach(svg => {
+    const W = +svg.dataset.w, la = +svg.dataset.la, lb = +svg.dataset.lb, C = svg.dataset.c.split(',').map(Number), N = +svg.dataset.n, B = C.length;
+    const tip = svg.querySelector('.htip'), tr = tip.querySelector('rect'), tt = tip.querySelector('text'), val = x => Math.exp(la + x / W * (lb - la));
+    let cur = -1;
+    const show = i => {
+      if (i === cur) return; cur = i;
+      svg.querySelectorAll('.hb.on').forEach(r => r.classList.remove('on'));
+      if (i < 0 || !C[i]) { tip.setAttribute('visibility', 'hidden'); svg.classList.remove('hov'); return; }
+      const bar = svg.querySelector(`.hb[data-i="${i}"]`); bar && bar.classList.add('on'); svg.classList.add('hov');
+      const share = C[i] / N * 100;
+      tt.textContent = `${inrShort(val(i * W / B))}–${inrShort(val((i + 1) * W / B))} · ${nf.format(C[i])} play${C[i] > 1 ? 's' : ''} · ${share < 1 ? '<1' : Math.round(share)}%`;
+      tip.setAttribute('visibility', 'visible');
+      const tw = tt.getComputedTextLength() + 16, cx = Math.min(W - tw / 2, Math.max(tw / 2, (i + 0.5) * W / B));
+      tt.setAttribute('x', cx); tr.setAttribute('x', cx - tw / 2); tr.setAttribute('width', tw);
+    };
+    const at = e => { const r = svg.getBoundingClientRect(); return Math.max(0, Math.min(B - 1, Math.floor((e.clientX - r.left) / r.width * B))); };
+    let hideT;
+    svg.addEventListener('pointermove', e => { clearTimeout(hideT); show(at(e)); });
+    svg.addEventListener('pointerdown', e => { clearTimeout(hideT); show(at(e)); });
+    svg.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') show(-1); else hideT = setTimeout(() => show(-1), 1600); });
+    svg.addEventListener('blur', () => show(-1));
+    svg.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') { if (e.key === 'Escape') show(-1); return; }
+      e.preventDefault(); const d = e.key === 'ArrowRight' ? 1 : -1; let i = cur < 0 ? (d > 0 ? -1 : B) : cur;
+      do { i += d; } while (i >= 0 && i < B && !C[i]); if (i >= 0 && i < B) show(i);
+    });
+  });
+}
 function histHTML(s, R, mode, wide) {
   const p = Math.round(R.beat * 100);
-  return `<section class="hist${wide ? ' wide' : ''}"><div class="hh"><p class="x13 t2">Against ${nf.format(SIM_N)} random plays</p><h2>Better than ${beatTxt(R.beat)} of them.</h2></div><div class="hc">${(wide ? histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd).replace('<svg ', '<svg class="hs-n" ') + histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd, 680, 190).replace('<svg ', '<svg class="hs-w" ') : histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd))}</div>
+  return `<section class="hist${wide ? ' wide' : ''}"><div class="hh"><p class="x13 t2">Against ${nf.format(SIM_N)} random plays</p><h2>Better than ${beatTxt(R.beat)} of them.</h2></div><div class="hc">${(wide ? histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd).replace('<svg class="hs" ', '<svg class="hs hs-n" ') + histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd, 680, 190).replace('<svg class="hs" ', '<svg class="hs hs-w" ') : histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd))}</div>
     <p class="legend"><span>Median <b>${inrShort(R.med[R.end])}</b></span><span>Perfect hindsight <b>${inrShort(R.best[R.end])}</b></span></p></section>`;
 }
 const allocText = (s, al) => al.map((a, i) => (a ? `${a < 0 ? 'Short' : 'Long'} ${Math.abs(a)} ${sn(s.options[i])}` : '')).filter(Boolean).join(', ');
@@ -1093,6 +1144,7 @@ function render() {
   initShare();
   document.body.dataset.mood = 'brand';
   drawCharts(!!S.anim);
+  bindHist(app);
   rollSoon(app);
   if (S.anim) { S.anim = false; save(); }
 }
@@ -1111,11 +1163,13 @@ function drawCharts(animate) {
   const rc = $('roundChart');
   if (rc) {
     const rd = lastRound(), v = roundVals(s, rd), bank = [0, 1, 2, 3, 4].map(k => v[0] * fdGrowth(s, rd.d, rd.d + k)), hero = $('heroNum'), delta = $('delta'), base = delta.innerHTML;
+    const holdDelta = () => { delta.style.minHeight = ''; delta.style.minHeight = delta.getBoundingClientRect().height + 'px'; };
+    holdDelta(); if (document.fonts && document.fonts.status !== 'loaded') document.fonts.ready.then(holdDelta);
     const col = `var(--${tone(v[4] / bank[4])})`;
     lineChart(rc, { you: v, bank, xl: STOPS, ticks: [0, 1, 2, 3, 4], dots: [0, 1, 2, 3], play, onSide: mood, legendEl: $('legend'), heroEl: hero,
       aria: `Your money at each six-month stop: ${v.map((x, i) => STOPS[i] + ' ' + inr(x)).join(', ')}. The bank: ${inr(bank[4])}.`,
-      legend: i => i == null ? `<span><i style="background:${col}"></i>You <b style="color:${col}">${pct(v[4] / v[0])}</b></span><span><i style="background:var(--t3)"></i>Bank <b>${pct(bank[4] / bank[0])}</b></span>`
-        : `<span><b>${i ? WHEN[i - 1] + ' in' : 'Start'}</b></span><span>You <b>${inr(v[i])}</b></span><span>Bank <b>${inr(bank[i])}</b></span>`,
+      items: i => i == null ? [[null, '', WHEN[3] + ' in'], [col, 'You', pct(v[4] / v[0]), col], ['var(--t3)', 'Bank', pct(bank[4] / bank[0])]]
+        : [[null, '', i ? WHEN[i - 1] + ' in' : 'Start'], [col, 'You', inr(v[i])], ['var(--t3)', 'Bank', inr(bank[i])]],
       onScrub: i => { if (i == null) { setNum(hero, v[4]); delta.innerHTML = base; } else { setNum(hero, v[i]); delta.innerHTML = i ? `<span class="pre">After ${WHEN[i - 1]}</span>${chip(v[i] / v[0], fdGrowth(s, rd.d, rd.d + i))}` : 'Start'; } fit(hero); },
       onLand: pending });
     const ry = $('ryear'); if (ry && play) TIMERS.push(setTimeout(() => { if (ry.isConnected && ry.classList.contains('spin')) { ry.classList.remove('spin'); rollLate(ry); } }, 2000));
@@ -1132,9 +1186,8 @@ function drawFinal(fc, play) {
     const you = R.you, best = S.best ? R.best : null;
     lineChart(fc, { you, bank, best, xl, ticks, log: true, dots: mode === 'hold' ? [0, 4, 8, 12, 16] : [0, 4, 8, 12], markIdx: mode === 'hold' ? RESULT_IDX : null, play, onSide: mood, legendEl: $('legend'), heroEl: hero, height: 210,
       aria: `You ${inr(R.you[n - 1])}, the bank ${inr(bank[n - 1])}`,
-      legend: i => { const k = i == null ? n - 1 : i, [a, b] = moneyPair(R.you[k], bank[k]); const mx = best ? `<span><i style="background:var(--brand)"></i>Max <b>${inrShort(best[k])}</b></span>` : '';
-        return i == null ? `<span><i style="background:${col}"></i>You <b>${a}</b></span><span><i style="background:var(--t3)"></i>Bank, 6% a year <b>${b}</b></span>${mx}`
-        : `<span><b>${esc(labels[i])}</b></span><span>You <b>${a}</b></span><span>Bank <b>${b}</b></span>${mx}`; },
+      items: i => { const k = i == null ? n - 1 : i, [a, b] = moneyPair(R.you[k], bank[k]);
+        return [[null, '', esc(labels[k])], [col, 'You', a], ['var(--t3)', 'Bank, 6% a year', b], ...(best ? [['var(--brand)', 'Max', inrShort(best[k])]] : [])]; },
       onScrub: i => { setNum(hero, i == null ? R.you[n - 1] : R.you[i]); fit(hero); }, onLand: pending });
   }
 }
