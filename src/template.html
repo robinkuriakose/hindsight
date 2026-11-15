@@ -296,6 +296,16 @@ button.nm:active { opacity: .55; }
 .hist svg { display: block; width: 100%; height: auto; margin-top: 18px; overflow: visible; }
 .hist text { font: 500 12px var(--f); fill: var(--t3); }
 .hist .legend { margin: 14px 0 0; }
+.hist.wide { margin-top: 32px; } .hist .hs-w { display: none; }
+/* legend row with the "Max possible" switch on its right */
+.lgrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.lgrow .legend { margin-bottom: 0; flex: 1; min-width: 0; }
+.tgl { position: relative; display: inline-flex; align-items: center; gap: 8px; flex: none; font-size: 13px; line-height: 18px; color: var(--t2); transition: color .25s var(--std); }
+.tgl::after { content: ""; position: absolute; inset: -13px -8px; }
+.tgl .sw { position: relative; width: 28px; height: 16px; border-radius: 8px; background: var(--s3); transition: background .25s var(--std); }
+.tgl .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: #fff; transition: transform .25s var(--emph); }
+.tgl[aria-pressed="true"] { color: var(--t1); } .tgl[aria-pressed="true"] .sw { background: var(--brand); } .tgl[aria-pressed="true"] .sw::after { transform: translateX(12px); }
+.pending .tgl { visibility: hidden; }
 .pread { margin-bottom: 6px; }
 .poster { aspect-ratio: 4 / 5; border-radius: var(--r-l); padding: 22px; color: #f4f4f6; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; isolation: isolate;
   background: radial-gradient(90% 60% at 10% 8%, rgb(118 96 255 / 42%) 0%, transparent 62%), radial-gradient(95% 75% at 100% 100%, var(--pc), transparent 62%), linear-gradient(160deg, #141418, #08080a); box-shadow: inset 0 1px 0 rgb(255 255 255 / 14%), inset 0 0 0 1px rgb(255 255 255 / 7%); }
@@ -355,6 +365,11 @@ details.more.wide { margin-top: 32px; }
 .dgrid > .dsec + .dsec { margin-top: 24px; }
 @media (min-width: 960px) {
   details.more.wide { margin-top: 56px; }
+  .hist.wide { margin-top: 56px; display: grid; grid-template-columns: 300px minmax(0, 1fr); grid-template-areas: "t c" "l c"; column-gap: 56px; align-items: center; padding: 28px 32px; }
+  .hist.wide .hh { grid-area: t; align-self: end; } .hist.wide .hc { grid-area: c; } .hist.wide > .legend { grid-area: l; align-self: start; margin-top: 14px; flex-direction: column; gap: 6px; }
+  .hist.wide svg { margin-top: 0; } .hist.wide .hs-n { display: none; } .hist.wide .hs-w { display: block; }
+  .dgrid > .src { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 40px; border-top: 1px solid var(--hair); padding-top: 24px; }
+  .dgrid > .src h3 { grid-column: 1 / -1; } .dgrid > .src p + p { margin-top: 0; }
   .dgrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; align-items: start; padding-bottom: 8px; }
   .dgrid > .dsec + .dsec { margin-top: 0; }
 }
@@ -692,7 +707,7 @@ function bindScrub(el, n, xOf, W, onShow, onHide, isBusy) {
 function lineChart(el, o) {
   const { you, bank, xl, ticks, log, markIdx, play, legendEl, heroEl, onScrub, onLand, onSide } = o;
   const W = Math.max(280, Math.round(el.clientWidth || 340)), H = o.height || 196, g = gutOf(el), m = { l: 8, r: 8, t: 14, b: 28 }, n = you.length;
-  const vals = you.concat(bank).map(v => Math.max(v, 1));
+  const vals = you.concat(bank, o.best || []).map(v => Math.max(v, 1));
   let y;
   if (log) { const a = Math.log(Math.min(...vals) * 0.9), b = Math.log(Math.max(...vals) * 1.1); y = v => m.t + (H - m.t - m.b) * (1 - (Math.log(Math.max(v, 1)) - a) / (b - a)); }
   else { const mn = Math.min(...vals), mx = Math.max(...vals), pad = (mx - mn || mx * 0.1) * 0.14; y = v => m.t + (H - m.t - m.b) * (1 - (v - mn + pad) / (mx - mn + 2 * pad)); }
@@ -707,6 +722,7 @@ function lineChart(el, o) {
     <line x1="0" x2="${W}" y1="${y(you[0])}" y2="${y(you[0])}" stroke="var(--hair)"/>
     ${markIdx != null ? `<line x1="${x(markIdx)}" x2="${x(markIdx)}" y1="${m.t - 6}" y2="${H - m.b}" stroke="var(--t3)" stroke-dasharray="2 4"/><text x="${x(markIdx) + 6}" y="${m.t + 4}">Game ended</text>` : ''}
     <g clip-path="url(#${cid})"><path d="${pathOf(bank, x, y)}" fill="none" stroke="var(--t3)" stroke-width="1.5" stroke-linecap="round"/>
+      ${o.best ? `<path d="${pathOf(o.best, x, y)}" fill="none" stroke="var(--brand)" stroke-width="1.5" stroke-dasharray="4 4" stroke-linecap="round"/><circle cx="${x(n - 1)}" cy="${y(o.best[n - 1])}" r="3" fill="var(--brand)"/>` : ''}
       <path class="you" d="${pathOf(you, x, y)}" fill="none" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
       ${(o.dots || []).map(i => `<circle class="yd" cx="${x(i)}" cy="${y(you[i])}" r="3.25" fill="var(--bg)" stroke-width="2"/>`).join('')}
       <circle cx="${x(n - 1)}" cy="${y(bank[n - 1])}" r="3" fill="var(--t3)"/></g>
@@ -742,8 +758,8 @@ function lineChart(el, o) {
   })(performance.now());
 }
 /* 5,000 random plays: the bars you beat are brand-coloured; three readable ticks */
-function histSVG(finals, you, bank) {
-  const W = 400, H = 136, base = H - 26, B = 34, pos = finals.filter(v => v > 0);
+function histSVG(finals, you, bank, W = 400, H = 136) {
+  const base = H - 26, B = Math.round(W / 11.8), pos = finals.filter(v => v > 0);
   const lo = Math.max(1, Math.min(pos[0], you || pos[0], bank) * 0.92), hi = Math.max(pos[pos.length - 1], you, bank) * 1.06, la = Math.log(lo), lb = Math.log(hi);
   const xv = v => W * (Math.log(Math.max(v, lo)) - la) / (lb - la), counts = new Array(B).fill(0);
   pos.forEach(v => { counts[Math.min(B - 1, Math.floor(xv(v) / W * B))]++; });
@@ -896,7 +912,7 @@ function renderLevel() {
   const lr = prev ? roundVals(s, prev) : null;
   return `${topBar(L)}<div class="split mid"><div class="col">
       <section class="hero"><p class="kick">Round ${L} of 4${L === 4 ? ' · final picks' : ''}</p>${numHTML(S.value, 'heroNum')}
-        <p class="sub">${lr ? '<span class="pre">Last round</span>' + chip(lr[4] / lr[0], fdGrowth(s, prev.d, prev.d + 4)) + '<span class="aft">' : ''}The bank would make it <b>${inr(target)}</b>. Can you?${lr ? '</span>' : ''}</p></section>
+        <p class="sub">${lr ? '<span class="pre">Last 2 years</span>' + chip(lr[4] / lr[0], fdGrowth(s, prev.d, prev.d + 4)) + '<span class="aft">' : ''}The bank would make it <b>${inr(target)}</b>. Can you?${lr ? '</span>' : ''}</p></section>
       ${clueHTML(s, L - 1, yearAt(s, d), shownDigits(L))}</div>
     <div class="col"><section id="bet">${betHTML(s)}</section><div class="dock" id="dock">${dockHTML()}</div></div></div>`;
 }
@@ -920,7 +936,7 @@ function renderRound() {
   const play = S.anim && !REDUCED, shown = last ? 4 : shownDigits(rd.level + 1), was = shownDigits(rd.level);
   return `${topBar(rd.level)}<div class="split${play ? ' pending' : ''}"><div class="col">
       <section class="hero"><p class="kick">2 years later · ${play ? yearHTML(yearAt(s, d + 4), shown, was).replace('class="yr odo"', 'class="yr odo spin" id="ryear"') : yearHTML(yearAt(s, d + 4), shown)}</p>${numHTML(v[4], 'heroNum')}
-        <p class="sub fade" id="delta">${chip(r, fdGrowth(s, d, d + 4))}<span class="aft">${inr(Math.abs(v[4] - fdv))} ${v[4] >= fdv ? 'ahead of' : 'behind'} the bank</span></p></section>
+        <p class="sub fade" id="delta"><span class="pre">Over 2 years</span>${chip(r, fdGrowth(s, d, d + 4))}<span class="aft">${inr(Math.abs(v[4] - fdv))} ${v[4] >= fdv ? 'ahead of' : 'behind'} the bank</span></p></section>
       <section><div class="legend" id="legend"></div><div class="chart bleed" id="roundChart"></div></section>
       <section class="verdict after"><h2>${h}</h2><p>${p}</p></section></div>
     <div class="col"><section class="after"><p class="label"><span>₹10K in each</span><span>2 years on</span></p><ul class="group${play ? ' casc' : ''}">${rows}</ul></section>
@@ -985,9 +1001,9 @@ async function shareImage(b) {
 /* a plain download works on a hosted page; inside an embedding viewer without the downloads capability it would not, so the button goes */
 const EMBEDDED = (() => { try { return window.self !== window.top; } catch (e) { return true; } })();
 function initShare() { const b = app.querySelector('[data-act="image"]'); if (!b) return; dlReady.then(dl => { if (!dl && !canShareFiles && EMBEDDED && b.isConnected) b.remove(); }); }
-function histHTML(s, R, mode) {
+function histHTML(s, R, mode, wide) {
   const p = Math.round(R.beat * 100);
-  return `<section class="hist"><p class="x13 t2">Against ${nf.format(SIM_N)} random plays</p><h2>Better than ${beatTxt(R.beat)} of them.</h2>${histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd)}
+  return `<section class="hist${wide ? ' wide' : ''}"><div class="hh"><p class="x13 t2">Against ${nf.format(SIM_N)} random plays</p><h2>Better than ${beatTxt(R.beat)} of them.</h2></div><div class="hc">${(wide ? histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd).replace('<svg ', '<svg class="hs-n" ') + histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd, 680, 190).replace('<svg ', '<svg class="hs-w" ') : histSVG(simulate(s, mode).finals, R.you[R.end], R.fdEnd))}</div>
     <p class="legend"><span>Median <b>${inrShort(R.med[R.end])}</b></span><span>Perfect hindsight <b>${inrShort(R.best[R.end])}</b></span></p></section>`;
 }
 const allocText = (s, al) => al.map((a, i) => (a ? `${a < 0 ? 'Short' : 'Long'} ${Math.abs(a)} ${sn(s.options[i])}` : '')).filter(Boolean).join(', ');
@@ -1013,14 +1029,15 @@ function renderResult() {
   }).join('');
   return `${topBar(5)}<div class="split${play ? ' pending' : ''}"><div class="col">
       <section class="hero"><p class="kick">8 years later</p>${numHTML(you, 'heroNum')}
-        <p class="sub fade">${(([a, b]) => vsBank(pill(tone(you / START_CASH), a), pill(tone(R.fdEnd / START_CASH), b)))(multPair(you / START_CASH, R.fdEnd / START_CASH))}<span class="aft">From ₹1,00,000</span></p></section>
-      <section><div class="legend" id="legend"></div><div class="chart bleed" id="finalChart"></div></section>
+        <p class="sub fade"><span class="pre">Over 8 years</span>${(([a, b]) => vsBank(pill(tone(you / START_CASH), a), pill(tone(R.fdEnd / START_CASH), b)))(multPair(you / START_CASH, R.fdEnd / START_CASH))}<span class="aft">From ₹1,00,000</span></p></section>
+      <section><div class="lgrow"><div class="legend" id="legend"></div><button class="tgl" data-act="best" aria-pressed="${S.best ? 'true' : 'false'}"><span class="sw" aria-hidden="true"></span>Max possible</button></div><div class="chart bleed" id="finalChart"></div></section>
       <section class="verdict fade"><h2>${verdictOf(you, R.fdEnd, '')[0]}</h2><p>${verdictOf(you, R.fdEnd, '')[1]}</p></section>
       <section class="fade"><div class="years" role="text" aria-label="${yearAt(s, 0)} to ${yearAt(s, RESULT_IDX)}"><span class="odo" aria-hidden="true">${odoInner(yearAt(s, 0), false)}</span><span class="arr" aria-hidden="true">→</span><span class="odo" aria-hidden="true">${odoInner(yearAt(s, RESULT_IDX), false)}</span></div>
         <p class="ttl">${esc(s.title)}</p><p class="story" id="story">${esc(first)}</p>${first.length < s.story.length ? '<button class="linkb" data-act="story">Read the story</button>' : ''}</section>
-      ${histHTML(s, R, 'result')}</div>
+</div>
     <div class="col"><section>${posterHTML(s, R)}</section>
       <div class="dock"><div class="dock-in"><button class="cta" data-act="hold">Hold till today</button><button class="cta2" data-act="new">Play again</button></div></div></div></div>
+      ${histHTML(s, R, 'result', true)}
       <details class="more wide"><summary>Details ${I.down}</summary><div class="dgrid">
         <div class="dsec"><h3>Round by round</h3><ul class="group rnd">${rounds}</ul></div>
         <div class="dsec"><h3>The headlines</h3><ul class="heads">${s.headlines.map((x, i) => `<li>${esc(x.text)}<span>Round ${i + 1} · ${esc(x.when)}</span></li>`).join('')}</ul></div>
@@ -1031,9 +1048,9 @@ function renderHold() {
   const T = table(s, 12, R.end), dead = S.rounds[3].alloc.map((a, i) => (a < 0 && T.S[i][T.n] === 0 ? i : -1)).filter(i => i >= 0);
   return `${topBar(5)}<div class="split${play ? ' pending' : ''}"><div class="col">
       <section class="hero"><p class="kick">Held to today · 11 Nov 2026</p>${numHTML(you, 'heroNum')}
-        <p class="sub fade">${chip(you / atRes, fdGrowth(s, RESULT_IDX, R.end))}<span class="aft">Since the game ended · ${mult(you / START_CASH)} overall</span></p>
+        <p class="sub fade"><span class="pre">Since ${yearAt(s, 0)}</span>${(([a, b]) => vsBank(pill(tone(you / START_CASH), a), pill(tone(R.fdEnd / START_CASH), b)))(multPair(you / START_CASH, R.fdEnd / START_CASH))}<span class="aft">${pct(you / atRes)} since the game ended in ${yearAt(s, RESULT_IDX)}</span></p>
         ${dead.length ? `<p class="sub fade">${dead.map(i => `Your ${esc(sn(s.options[i]))} short didn’t survive.`).join(' ')}</p>` : ''}</section>
-      <section><div class="legend" id="legend"></div><div class="chart bleed" id="holdChart"></div></section>
+      <section><div class="lgrow"><div class="legend" id="legend"></div><button class="tgl" data-act="best" aria-pressed="${S.best ? 'true' : 'false'}"><span class="sw" aria-hidden="true"></span>Max possible</button></div><div class="chart bleed" id="holdChart"></div></section>
       <section class="verdict fade"><h2>${verdictOf(you, R.fdEnd, ' by today')[0]}</h2><p>${verdictOf(you, R.fdEnd, ' by today')[1]}</p></section></div>
     <div class="col">${histHTML(s, R, 'hold')}
       <div class="dock"><div class="dock-in"><button class="cta" data-act="new">Play again</button><button class="cta2" data-act="back-result">Back to result</button></div></div></div></div>
@@ -1076,19 +1093,25 @@ function drawCharts(animate) {
       aria: `Your money at each six-month stop: ${v.map((x, i) => STOPS[i] + ' ' + inr(x)).join(', ')}. The bank: ${inr(bank[4])}.`,
       legend: i => i == null ? `<span><i style="background:${col}"></i>You <b style="color:${col}">${pct(v[4] / v[0])}</b></span><span><i style="background:var(--t3)"></i>Bank <b>${pct(bank[4] / bank[0])}</b></span>`
         : `<span><b>${i ? WHEN[i - 1] + ' in' : 'Start'}</b></span><span>You <b>${inr(v[i])}</b></span><span>Bank <b>${inr(bank[i])}</b></span>`,
-      onScrub: i => { if (i == null) { setNum(hero, v[4]); delta.innerHTML = base; } else { setNum(hero, v[i]); delta.innerHTML = i ? `${chip(v[i] / v[0], fdGrowth(s, rd.d, rd.d + i))}<span class="aft">${WHEN[i - 1][0].toUpperCase() + WHEN[i - 1].slice(1)} in</span>` : 'Start'; } fit(hero); },
+      onScrub: i => { if (i == null) { setNum(hero, v[4]); delta.innerHTML = base; } else { setNum(hero, v[i]); delta.innerHTML = i ? `<span class="pre">After ${WHEN[i - 1]}</span>${chip(v[i] / v[0], fdGrowth(s, rd.d, rd.d + i))}` : 'Start'; } fit(hero); },
       onLand: pending });
     const ry = $('ryear'); if (ry && play) TIMERS.push(setTimeout(() => { if (ry.isConnected && ry.classList.contains('spin')) { ry.classList.remove('spin'); rollLate(ry); } }, 2000));
   }
   const fc = $('finalChart') || $('holdChart');
-  if (fc) {
+  if (fc) drawFinal(fc, play);
+}
+/* the result and hold chart; "Max possible" adds the perfect-hindsight path and redraws without animation */
+function drawFinal(fc, play) {
+  const s = sc(), mood = sd => { document.body.dataset.mood = sd; }, pending = () => { const sp = app.querySelector('.split.pending'); if (sp) sp.classList.remove('pending'); };
+  {
     const mode = fc.id === 'finalChart' ? 'result' : 'hold', R = summary(s, mode), labels = R.you.map((_, k) => label(s, k)), bank = R.you.map((_, k) => START_CASH * fdGrowth(s, 0, k)), hero = $('heroNum');
     const n = R.you.length, ticks = mode === 'hold' ? [0, 16, n - 1] : [0, 4, 8, 12, 16], xl = labels.map(l => l.slice(-4)), col = `var(--${tone(R.you[n - 1] / bank[n - 1])})`;
-    const you = mode === 'hold' ? R.you : R.you;
-    lineChart(fc, { you, bank, xl, ticks, log: true, dots: mode === 'hold' ? [0, 4, 8, 12, 16] : [0, 4, 8, 12], markIdx: mode === 'hold' ? RESULT_IDX : null, play, onSide: mood, legendEl: $('legend'), heroEl: hero, height: 210,
+    const you = R.you, best = S.best ? R.best : null;
+    lineChart(fc, { you, bank, best, xl, ticks, log: true, dots: mode === 'hold' ? [0, 4, 8, 12, 16] : [0, 4, 8, 12], markIdx: mode === 'hold' ? RESULT_IDX : null, play, onSide: mood, legendEl: $('legend'), heroEl: hero, height: 210,
       aria: `You ${inr(R.you[n - 1])}, the bank ${inr(bank[n - 1])}`,
-      legend: i => { const k = i == null ? n - 1 : i, [a, b] = moneyPair(R.you[k], bank[k]); return i == null ? `<span><i style="background:${col}"></i>You <b>${a}</b></span><span><i style="background:var(--t3)"></i>Bank, 6% a year <b>${b}</b></span>`
-        : `<span><b>${esc(labels[i])}</b></span><span>You <b>${a}</b></span><span>Bank <b>${b}</b></span>`; },
+      legend: i => { const k = i == null ? n - 1 : i, [a, b] = moneyPair(R.you[k], bank[k]); const mx = best ? `<span><i style="background:var(--brand)"></i>Max <b>${inrShort(best[k])}</b></span>` : '';
+        return i == null ? `<span><i style="background:${col}"></i>You <b>${a}</b></span><span><i style="background:var(--t3)"></i>Bank, 6% a year <b>${b}</b></span>${mx}`
+        : `<span><b>${esc(labels[i])}</b></span><span>You <b>${a}</b></span><span>Bank <b>${b}</b></span>${mx}`; },
       onScrub: i => { setNum(hero, i == null ? R.you[n - 1] : R.you[i]); fit(hero); }, onLand: pending });
   }
 }
@@ -1132,6 +1155,7 @@ document.addEventListener('click', e => {
   if (act === 'copy') return copyShare(b);
   if (act === 'image') return shareImage(b);
   if (act === 'sqinfo') { const p = $('sqinfo'), open = p.hidden; p.hidden = !open; b.setAttribute('aria-expanded', String(open)); return; }
+  if (act === 'best') { S.best = !S.best; save(); b.setAttribute('aria-pressed', String(S.best)); const fc = $('finalChart') || $('holdChart'); if (fc) drawFinal(fc, false); return; }
   if (act === 'story') { $('story').textContent = sc().story; b.remove(); return; }
   if (act === 'close') return closeSheet();
   if (S.screen !== 'level') return;
